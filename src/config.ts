@@ -7,6 +7,8 @@ export interface Config {
 }
 
 export const config: Config = {
-  site: { name: 'Devias Kit', description: '', themeColor: '#090a0b', url: getSiteURL() },
+  site: { name: 'ООО НИИ МИГС', description: '', themeColor: '#090a0b', url: getSiteURL() },
   logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
 };
+export const BASE_URL = 'http://89.108.76.29';
+// export const BASE_URL: string = 'http://localhost:5000';

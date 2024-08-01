@@ -44,23 +44,12 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
         <Stack spacing={3}>
           <Stack spacing={1}>
             <Typography color="inherit" sx={{ fontSize: '24px', lineHeight: '32px', textAlign: 'center' }} variant="h1">
-              Welcome to{' '}
-              <Box component="span" sx={{ color: '#15b79e' }}>
-                Devias Kit
-              </Box>
+              Добро пожаловать в {' '}
             </Typography>
-            <Typography align="center" variant="subtitle1">
-              A professional template that comes with ready-to-use MUI components.
+            <Typography align="center" variant="h5" sx={{ color: '#408ff8' }}>
+              Систему мониторинга ООО НИИ МИГС
             </Typography>
           </Stack>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Box
-              component="img"
-              alt="Widgets"
-              src="/assets/auth-widgets.png"
-              sx={{ height: 'auto', width: '100%', maxWidth: '600px' }}
-            />
-          </Box>
         </Stack>
       </Box>
     </Box>
