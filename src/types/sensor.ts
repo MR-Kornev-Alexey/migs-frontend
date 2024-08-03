@@ -15,7 +15,7 @@ export interface SensorAndObjectInfoApi {
   data: Data;
   message: number;
   statusCode: number;
-  error: any;
+  error: string;
 }
 
 interface Data {
@@ -48,9 +48,9 @@ export interface SensorInfo {
   object: ObjectInfo;
   additional_sensor_info: AdditionalSensorInfo[];
   sensor_operation_log: SensorOperationLog[];
-  files: any[]; // More specific typing can be added if known
+  files: string[]; // More specific typing can be added if known
   requestSensorInfo: LatestData[];
-  error_information: any[]; // More specific typing can be added if known
+  error_information: string[]; // More specific typing can be added if known
 }
 
 interface AdditionalSensorInfo {

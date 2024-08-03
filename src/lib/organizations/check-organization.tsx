@@ -6,13 +6,21 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import type { Organization } from '@/types/result-api';
 
-export default function CheckOrganisation({ initialData }): React.JSX.Element {
-  const organizationEntries = Object.entries(initialData);
+// Define the prop types for the component
+interface CheckOrganisationProps {
+  initialData: Organization;
+}
+
+export default function CheckOrganisation({ initialData }: CheckOrganisationProps): React.JSX.Element {
+  // Convert initialData to an array of key-value pairs
+  const organizationEntries: [string, string | number | undefined][] = Object.entries(initialData);
+
   return (
     <Stack spacing={3}>
       <Typography variant="h4" sx={{ textAlign: 'center' }}>
-        Первичная организация введена
+        Первичная организация загружена в базу данных
       </Typography>
       <Stack sx={{ overflowX: 'auto' }}>
         <Table sx={{ minWidth: '600px' }}>
@@ -23,10 +31,10 @@ export default function CheckOrganisation({ initialData }): React.JSX.Element {
             </TableRow>
           </TableHead>
           <TableBody>
-            {organizationEntries.map(([key, value], index:number) => (
+            {organizationEntries.map(([key, value], index) => (
               <TableRow key={key}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{value as React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | Iterable<React.ReactNode> | React.ReactPortal | boolean | undefined | null}</TableCell>
+                <TableCell>{value}</TableCell>
               </TableRow>
             ))}
           </TableBody>

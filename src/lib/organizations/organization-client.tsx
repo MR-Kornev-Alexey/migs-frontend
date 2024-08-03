@@ -1,26 +1,21 @@
 'use client';
+
 import { BASE_URL } from '@/config';
+import type { Result, SendData } from '@/types/result-api';
+import { getHeaders } from '@/lib/common-api/get-header';
 
-async function getHeaders(): Promise<HeadersInit> {
-  const dataUser = localStorage.getItem('custom-auth-token');
-  let token = '';
-  let email = '';
-
-  if (dataUser !== null) {
-    const parsedData = JSON.parse(dataUser);
-    token = parsedData.password;
-    email = parsedData.email;
-  }
-
-  return {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-    email,
-  };
+// Define specific types for form data
+interface FormDataOrganization {
+  name: string;
+  inn: string;
+  address: string;
+  directorName: string;
+  organizationPhone: string;
+  organizationEmail: string;
 }
 
 export class OrganizationClient {
-  async checkOrganization(value: any): Promise<any> {
+  async checkOrganization(value:any): Promise<Result> {
     const url = `${BASE_URL}/organization/check_organization`;
     try {
       const headers = await getHeaders();
@@ -29,11 +24,9 @@ export class OrganizationClient {
         headers,
         body: JSON.stringify(value),
       });
-
       if (!response.ok) {
         throw new Error(`Ошибка HTTP: ${response.status}`);
       }
-
       return await response.json();
     } catch (error) {
       console.error('Произошла ошибка:', (error as Error).message);
@@ -41,30 +34,11 @@ export class OrganizationClient {
     }
   }
 
-  async getAllOrganization(): Promise<any> {
-    const url = `${BASE_URL}/organization/get_all_organizations`;
+  async initMainOrganization(formDataOrganization: FormDataOrganization): Promise<Result> {
+    const url = `${BASE_URL}/organization/initial_main_organization`;
     try {
       const headers = await getHeaders();
       const response = await fetch(url, {
-        method: 'GET',
-        headers,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Ошибка HTTP: ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Произошла ошибка:', (error as Error).message);
-      return { error: (error as Error).message };
-    }
-  }
-
-  async initMainOrganization(formDataOrganization: any): Promise<any> {
-    try {
-      const headers = await getHeaders();
-      const response = await fetch(`${BASE_URL}/organization/initial_main_organization`, {
         method: 'POST',
         headers,
         body: JSON.stringify(formDataOrganization),
@@ -81,15 +55,17 @@ export class OrganizationClient {
     }
   }
 
-  async createNewOrganization(formDataOrganization: any): Promise<any> {
+  async createNewOrganization(formDataOrganization: FormDataOrganization): Promise<Result> {
+    const url = `${BASE_URL}/organization/create_new_organization`;
+
     try {
       const headers = await getHeaders();
       const sentData = {
-        email: headers.email,
+        email: headers.email, // Access email from headers
         organizationsData: formDataOrganization,
       };
 
-      const response = await fetch(`${BASE_URL}/organization/create_new_organization`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers,
         body: JSON.stringify(sentData),

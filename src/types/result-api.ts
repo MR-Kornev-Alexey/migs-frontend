@@ -1,29 +1,52 @@
-import { type SensorInfo } from '@/types/sensor';
-
-interface Record {
-  id: number;
-  sensor_id: string;
-  request_code: string;
-  answer_code: string;
-  created_at: string;
+export interface Organization {
+  id: string;
+  name: string;
+  inn: string;
+  address: string;
+  directorName: string;
+  organizationPhone: string;
+  organizationEmail: string;
 }
-type GroupedData = Record<string, Record[]>;
 
-interface Data {
-  groupedData: GroupedData;
-  oneSensor: SensorInfo;
-  allSensors: SensorInfo[];
-  message: number;
-  statusCode: number;
-  organization: string[];
+export interface SendData {
+  inn: string;
+  email: string;
 }
+
+// types.ts or similar file
+export interface Data {
+  groupedData?: any;
+  oneSensor?: any;
+  allSensors?: any;
+  organization?: any;
+}
+
+
 
 export interface Result {
-  data?: {
-    allSensors?: SensorInfo[];
-    oneSensor?: SensorInfo;
-  };
+  data?: Data;
+  error?: string;
+  statusCode?: number;  // Note that statusCode is optional
   message?: string;
-  statusCode?: number;
-  error?: any;
+  organization?: any;
 }
+
+
+export interface Data {
+  statusCode?: number;  // Make sure these fields match your API response
+  message?: string;
+  groupedData?: any;
+  oneSensor?: any;
+  allSensors?: any;
+  organization?: any;
+}
+
+export interface ApiResult {
+  data?: Data;  // The result can have data of type Data
+  error?: string;
+  organization?: any;
+  statusCode?: number;  // Note that statusCode is optional
+  message?: string;
+}
+
+

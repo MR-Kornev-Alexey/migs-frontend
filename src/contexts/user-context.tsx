@@ -25,30 +25,33 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
     error: null,
     isLoading: true,
   });
-
   const checkSession = React.useCallback(async (): Promise<void> => {
     try {
-      const { data, error } = await authClient.getUser();
-
-      if (error) {
-        logger.error(error);
-        setState((prev) => ({ ...prev, user: null, error: 'Something went wrong', isLoading: false }));
-        return;
+      let email;
+      const dataUser: any = localStorage.getItem('custom-auth-token'); // Получение  роли  пользователя из контекста или хранилища
+      if (dataUser != null) {
+        email = JSON.parse(dataUser).email;
       }
 
+      const { data, error } = await authClient.getUser(email);
+
+      if (error) {
+        logger.error(JSON.parse(dataUser));
+        setState((prev) => ({ ...prev, user: null, error: 'Ошибка загрузки первый вариант', isLoading: false }));
+        return;
+      }
       setState((prev) => ({ ...prev, user: data ?? null, error: null, isLoading: false }));
     } catch (err) {
       logger.error(err);
-      setState((prev) => ({ ...prev, user: null, error: 'Something went wrong', isLoading: false }));
+      setState((prev) => ({ ...prev, user: null, error: 'Ошибка загрузки второй вариант ', isLoading: false }));
     }
   }, []);
 
   React.useEffect(() => {
-    checkSession().catch((err: unknown) => {
+    checkSession().catch((err) => {
       logger.error(err);
       // noop
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
   }, []);
 
   return <UserContext.Provider value={{ ...state, checkSession }}>{children}</UserContext.Provider>;
