@@ -1,7 +1,7 @@
 export interface FormAdditionalData {
-  firstName: String;
-  surName: String;
-  telegram: String;
-  position: String;
-  phone: String;
+  firstName: string;
+  surName: string;
+  telegram: string;
+  position: string;
+  phone: string;
 }

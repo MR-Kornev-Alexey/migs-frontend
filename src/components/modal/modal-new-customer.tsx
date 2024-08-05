@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';
 
 import { SignUpFormNewCustomer } from '@/lib/customers/sign-up-form-new-customer';
-import {Customer} from "@/components/dashboard/customer/customers-table";
+import {type Customer} from "@/components/dashboard/customer/customers-table";
 
 interface ModalNewCustomerProps {
   isOpen: boolean;

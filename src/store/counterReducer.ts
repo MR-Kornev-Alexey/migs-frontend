@@ -1,7 +1,7 @@
 'use client';
 
 // counterReducer.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 // Начальное состояние счетчика
 const initialState = {

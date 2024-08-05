@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { UserData } from '@/types/userData';
+import { UserData } from '@/types/user-data';
 
 const initialState = {
   value: 'первый раз', // Установите начальное значение текста здесь

@@ -15,8 +15,8 @@ import type { Customer } from '@/components/dashboard/customer/customers-table';
 import ModalAboutOneCustomer from '@/components/modal/modal-about-one-customer';
 import ModalNewCustomer from '@/components/modal/modal-new-customer';
 import CustomTableWithoutSelect from '@/components/tables/custom-table-without-select';
-import {CustomerType} from "@/types/customer";
-import {AlertColor} from "@mui/material";
+import {type CustomerType} from "@/types/customer";
+import {type AlertColor} from "@mui/material";
 
 export default function Page(): React.JSX.Element {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -43,7 +43,7 @@ export default function Page(): React.JSX.Element {
   useEffect(() => {
     fetchCustomers()
       .then((data) => {
-        let selected:any = [];
+        const selected:any = [];
         if (data?.allUsers.length > 0) {
           setLoading(true);
           // Перебор каждого пользователя
@@ -62,7 +62,7 @@ export default function Page(): React.JSX.Element {
       })
       .catch((error:any) => {
         setAlertColor('error');
-        setIsMessage('Ошибка при загрузке данных:' + error);
+        setIsMessage(`Ошибка при загрузке данных:${  error}`);
         setLoading(false); // Установка loading в false в случае ошибки
       });
   }, []);
@@ -125,14 +125,14 @@ export default function Page(): React.JSX.Element {
   function onSelectedRowsCustomers(objects: any, selected:any) {
     if (objects?.length > 0) {
       return objects.filter((obj:any) => selected.includes(obj.organization_id));
-    } else {
+    } 
       return [];
-    }
+    
   }
 
   function restoreAllOrganization() {
     setShowChoice(false);
-    let selected: any = [];
+    const selected: any = [];
     // Перебор каждого пользователя
     customers.forEach((user: any) => {
       // Проверка, существует ли уже organization_id в массиве selected
@@ -168,11 +168,9 @@ export default function Page(): React.JSX.Element {
             <Button variant="contained" onClick={openModal}>
               Добавить пользователя
             </Button>
-            {showChoice && (
-              <Button variant="contained" onClick={restoreAllOrganization}>
+            {showChoice ? <Button variant="contained" onClick={restoreAllOrganization}>
                 Сбросить выборку{' '}
-              </Button>
-            )}
+              </Button> : null}
           </Box>
           <ModalNewCustomer
             isOpen={isModalOpen}

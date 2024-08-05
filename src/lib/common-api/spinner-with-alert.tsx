@@ -1,5 +1,5 @@
 import Alert from "@mui/material/Alert";
-import {AlertColor} from "@mui/material";
+import {type AlertColor} from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
 
@@ -29,7 +29,7 @@ const SpinnerWithAlert: React.FC<SpinnerWithAlertProps> = ({ isMessage, alertCol
         />
       </g>
     </svg>
-    {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+    {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
   </Box>
 );
 

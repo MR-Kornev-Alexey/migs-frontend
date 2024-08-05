@@ -3,7 +3,7 @@
 import { BASE_URL } from '@/config';
 import type { Result, SendData } from '@/types/result-api';
 import { getHeaders } from '@/lib/common-api/get-header';
-import {FormDataOrganization} from "@/types/form-data-organization";
+import {type FormDataOrganization} from "@/types/form-data-organization";
 
 export class OrganizationClient {
   async checkOrganization(value:any): Promise<Result> {

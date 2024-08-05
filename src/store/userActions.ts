@@ -2,9 +2,9 @@
 
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-import {UserData} from '@/types/userData'; // Предположим, что у вас есть тип UserData для данных пользователя
+import {type UserData} from '@/types/user-data'; // Предположим, что у вас есть тип UserData для данных пользователя
 
-export const getUserData = createAsyncThunk<UserData, void>('user/getUserData', async () => {
+export const getUserData = createAsyncThunk<UserData>('user/getUserData', async () => {
   try {
     const response = await fetch('/api/user');
     return await response.json();

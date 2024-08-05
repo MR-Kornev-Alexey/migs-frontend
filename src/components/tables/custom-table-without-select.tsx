@@ -101,7 +101,7 @@ export default function CustomTableWithoutSelect({
                 <TableCell
                   style={{ width: '5%', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => deleteCustomer(row.id)}
+                  onClick={() => { deleteCustomer(row.id); }}
                 >
                   <Trash size={24} />
                 </TableCell>

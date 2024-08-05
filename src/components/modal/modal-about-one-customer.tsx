@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';
-import {CustomerType} from "@/types/customer";
+import {type CustomerType} from "@/types/customer";
 
 
 interface ModalAboutOneCustomerProps {
@@ -23,11 +23,11 @@ const ModalAboutOneCustomer: React.FC <ModalAboutOneCustomerProps> = ({ isModalI
   const toggleExpanded = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
-  const UserInfoUnavailable = () => (
-    <Box sx={{ marginTop: 1 }}>
+  function UserInfoUnavailable() {
+  return <Box sx={{ marginTop: 1 }}>
       <Typography variant="body1">Дополнительная информация недоступна</Typography>
     </Box>
-  );
+}
 
   const DialogContentItem: React.FC<DialogContentItemProps> = ({ label, value }) => (
     <Box sx={{ marginTop: 1 }}>
@@ -104,15 +104,13 @@ const ModalAboutOneCustomer: React.FC <ModalAboutOneCustomerProps> = ({ isModalI
               <UserInfoUnavailable />
             )}
             <Box sx={styles.container}>
-              {expanded && (
-                <Box sx={styles.textContainer}>
+              {expanded ? <Box sx={styles.textContainer}>
                   <>
                     <DialogContentItem label="Адрес" value={oneCustomer?.organization?.address} />
                     <DialogContentItem label="Email" value={oneCustomer?.organization?.organizationEmail} />
                     <DialogContentItem label="Телефон" value={oneCustomer?.organization?.organizationPhone} />
                   </>
-                </Box>
-              )}
+                </Box> : null}
             </Box>
           </Stack>
         </Box>

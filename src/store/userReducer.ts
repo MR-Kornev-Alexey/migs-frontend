@@ -1,8 +1,8 @@
 'use client';
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { UserData } from '@/types/userData';
+import { type UserData } from '@/types/user-data';
 
 // Use the UserData interface to define the type of data in the state
 interface UserState {

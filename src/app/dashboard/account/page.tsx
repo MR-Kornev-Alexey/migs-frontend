@@ -11,8 +11,9 @@ import { customersClient } from '@/lib/customers/customers-client';
 import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
 import { AccountInfo } from '@/components/dashboard/account/account-info';
 import { ProfileForm } from '@/components/dashboard/account/profile-form';
-import {AlertColor} from "@mui/material";
-import {Organization} from "@/types/customer";
+import {type AlertColor} from "@mui/material";
+import {type Organization} from "@/types/customer";
+
 interface AdditionalUserInfo {
   firstName: string;
   surName: string;

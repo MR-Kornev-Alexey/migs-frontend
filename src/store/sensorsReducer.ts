@@ -1,8 +1,8 @@
 'use client';
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { LatestData, SensorInfo } from '@/types/sensor';
+import { type LatestData, type SensorInfo } from '@/types/sensor';
 import sortSensorsByObjectId from '@/components/dashboard/sensors/sort-sensors-by-objects';
 
 const initialState: { value: SensorInfo[] } = {
@@ -28,7 +28,7 @@ const sensorsSlice = createSlice({
     },
     updateLastValueSensor(state, action: PayloadAction<any>) {
       const inputLastValues = action.payload;
-      inputLastValues.forEach((input: { [key: string]: any }) => {
+      inputLastValues.forEach((input: Record<string, any>) => {
         const sensorId = Object.keys(input)[0];
         const newLastValue = input[sensorId];
 

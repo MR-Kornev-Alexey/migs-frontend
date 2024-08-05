@@ -7,8 +7,8 @@ export async function getHeaders(): Promise<{
   email?: string; // Ensure email is optional if not always provided
 }> {
   const dataUser: string | null = localStorage.getItem('custom-auth-token');
-  let token:string = '';
-  let email:string = '';
+  let token = '';
+  let email = '';
 
   if (dataUser !== null) {
     const parsedData:CustomAdditionalData = JSON.parse(dataUser);

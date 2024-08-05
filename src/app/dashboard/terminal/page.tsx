@@ -17,8 +17,7 @@ export default function Page(): React.JSX.Element {
         <Typography variant="h4">Терминал</Typography>
       </div>
       <Grid container spacing={3}>
-        <Grid lg={4} md={6} xs={12}>
-        </Grid>
+        <Grid lg={4} md={6} xs={12} />
       </Grid>
     </Stack>
   );

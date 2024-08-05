@@ -23,8 +23,8 @@ import {authClient} from '@/lib/auth/client';
 import {useUser} from '@/hooks/use-user';
 import Box from "@mui/material/Box";
 import {fetchOrganizationData} from "@/lib/common-api/fetch-data-check-main";
-import {Organization} from "@/types/result-api";
-import {AlertColor} from "@mui/material";
+import {type Organization} from "@/types/result-api";
+import {type AlertColor} from "@mui/material";
 import {customersClient} from "@/lib/customers/customers-client";
 
 // Define the schema for form validation using Zod
@@ -142,8 +142,7 @@ export function SignInForm(): React.JSX.Element {
           </Box>
         )}
       </Stack>
-      {isReady && (
-        <Stack>
+      {isReady ? <Stack>
           <Typography variant="h4" sx={{marginBottom: 2}}>
             Вход в систему
           </Typography>
@@ -173,13 +172,13 @@ export function SignInForm(): React.JSX.Element {
                           <EyeIcon
                             cursor="pointer"
                             fontSize="var(--icon-fontSize-md)"
-                            onClick={() => setShowPassword(false)}
+                            onClick={() => { setShowPassword(false); }}
                           />
                         ) : (
                           <EyeSlashIcon
                             cursor="pointer"
                             fontSize="var(--icon-fontSize-md)"
-                            onClick={() => setShowPassword(true)}
+                            onClick={() => { setShowPassword(true); }}
                           />
                         )
                       }
@@ -196,11 +195,10 @@ export function SignInForm(): React.JSX.Element {
               </Button>
             </Stack>
           </form>
-        </Stack>
-      )
+        </Stack> : null
       }
       {
-        isMessage && <Alert sx={{marginTop: 2}} color={alertColor}>{isMessage}</Alert>
+        isMessage ? <Alert sx={{marginTop: 2}} color={alertColor}>{isMessage}</Alert> : null
       }
     </Stack>
   )

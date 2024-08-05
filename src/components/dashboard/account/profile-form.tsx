@@ -16,7 +16,7 @@ import { Controller, useForm, FieldErrors } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import { customersClient } from '@/lib/customers/customers-client';
-import { AlertColor } from '@mui/material';
+import { type AlertColor } from '@mui/material';
 
 // Regex definitions for validation
 const CyrillicLettersRegex = /^[а-яА-Я\s]+$/;
@@ -48,7 +48,7 @@ const schema = zod.object({
 type FormData = zod.infer<typeof schema> & { user_id: string; flagEdit: boolean };
 
 // Define a type for the default values
-type DefaultValues = {
+interface DefaultValues {
   user_id: string;
   firstName: string;
   surName: string;
@@ -56,20 +56,20 @@ type DefaultValues = {
   position: string;
   phone: string;
   flagEdit: boolean;
-};
+}
 
 // Define the props type for the ProfileForm component
 interface ProfileFormProps {
   changeData: () => void;
   flagEdit: boolean;
   receivedData: {
-    additionalUserInfo: Array<{
+    additionalUserInfo: {
       firstName: string;
       surName: string;
       telegram: string;
       position: string;
       phone: string;
-    }>;
+    }[];
   };
   successRecorded: (data: any) => void;
 }
@@ -237,8 +237,8 @@ export function ProfileForm({ flagEdit, receivedData, successRecorded }: Profile
               )}
             />
           </Grid>
-          {errors.root && <Alert color="error">{errors.root.message}</Alert>}
-          {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+          {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
+          {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
           <Grid md={12} xs={12} display="flex" justifyContent="center" alignItems="center">
             <Button disabled={isPending} type="submit" variant="contained">
               {isPending ? (
@@ -247,7 +247,7 @@ export function ProfileForm({ flagEdit, receivedData, successRecorded }: Profile
                     fill="currentColor"
                     d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
                     opacity={0.25}
-                  ></path>
+                   />
                   <path
                     fill="currentColor"
                     d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
@@ -258,7 +258,7 @@ export function ProfileForm({ flagEdit, receivedData, successRecorded }: Profile
                       repeatCount="indefinite"
                       type="rotate"
                       values="0 12 12;360 12 12"
-                    ></animateTransform>
+                     />
                   </path>
                 </svg>
               ) : flagEdit ? (
@@ -270,7 +270,7 @@ export function ProfileForm({ flagEdit, receivedData, successRecorded }: Profile
           </Grid>
         </Grid>
       </form>
-      {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
     </Stack>
   );
 }

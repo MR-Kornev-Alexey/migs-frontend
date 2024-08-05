@@ -23,7 +23,7 @@ export interface UserPopoverProps {
 
 export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): React.JSX.Element {
   const { checkSession } = useUser();
-  const dataUser = JSON.parse(localStorage.getItem('custom-auth-token') as string);
+  const dataUser = JSON.parse(localStorage.getItem('custom-auth-token')!);
   const router = useRouter();
   const handleSignOut = React.useCallback(async (): Promise<void> => {
     try {

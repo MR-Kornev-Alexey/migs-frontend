@@ -3,15 +3,6 @@ export interface SendData {
   email: string;
 }
 
-// types.ts or similar file
-export interface Data {
-  groupedData?: any;
-  oneSensor?: any;
-  allSensors?: any;
-  organization?: any;
-}
-
-
 
 export interface Result {
   data?: Data;

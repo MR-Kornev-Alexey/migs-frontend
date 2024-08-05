@@ -1,4 +1,4 @@
-import { SensorInfo } from "@/types/sensor";
+import { type SensorInfo } from "@/types/sensor";
 
 // Adjust the parameter type to be an array of SensorInfo
 export default function sortSensorsByObjectId(sensors: SensorInfo[]) {

@@ -16,7 +16,7 @@ import { UserPopover } from './user-popover';
 export function MainNav(): React.JSX.Element {
   const [openNav, setOpenNav] = React.useState<boolean>(false);
   const userPopover = usePopover<HTMLDivElement>();
-  const dataUser = JSON.parse(localStorage.getItem('custom-auth-token') as string);
+  const dataUser = JSON.parse(localStorage.getItem('custom-auth-token')!);
   return (
     <React.Fragment>
       <Box
