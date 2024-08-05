@@ -83,8 +83,28 @@ export default function Page(): React.JSX.Element {
     // setIsModalObjectOpen(false);
   };
 
-  const deleteCustomer = (id:any) => {
-    alert(id);
+  const deleteCustomer = async (id: string) => {
+    const result: any = await customersClient.deleteCustomer(id);
+    console.log(result)
+    switch (result?.data?.statusCode) {
+      case 200:
+        setAlertColor('success');
+        setIsMessage(result?.data?.message);
+        setCustomers(result?.data?.allUsers);
+        setTimeout(() => {
+          setIsMessage("");
+        }, 2000);
+        break;
+      case 400:
+      case 500:
+        setAlertColor('error');
+        setIsMessage(result?.data?.message);
+        break;
+      default:
+        setAlertColor('error');
+        setIsMessage(result?.error?.message || 'Произошла ошибка');
+        break;
+    }
   };
   async function infoAboutCustomer(row:any) {
     await setOneCustomer(row);
@@ -92,6 +112,7 @@ export default function Page(): React.JSX.Element {
     console.log(row);
   }
   async function onRegistrationCustomerSuccess(allUsers:Customer[]) {
+    console.log(allUsers)
     setCustomers(allUsers);
   }
   function onSelectedRowsChange(selected:any) {

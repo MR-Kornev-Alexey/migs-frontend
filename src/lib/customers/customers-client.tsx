@@ -29,15 +29,26 @@ export class CustomersClient {
     const sendData = {
       email: headers.email as string,
     };
-
     return this.fetchWrapper<any>(`${BASE_URL}/customers/all_customers`, {
       method: 'POST',
       headers,
       body: JSON.stringify(sendData),
     });
   }
+  async deleteCustomer(value: string): Promise<ApiResponse<any>> {
+    const headers = await getHeaders();
+    const sendData = {
+      email: headers.email as string,
+      idCustomer: value,
+    };
+    return this.fetchWrapper<any>(`${BASE_URL}/customers/delete_one_customer`, {
+      method: 'POST',
+      headers: await getHeaders(),
+      body: JSON.stringify(sendData),
+    });
+  }
 
-  async initSignAdditionalData(formAdditionalData: FormAdditionalData): Promise<ApiResponse<any>> {
+  async initSignAdditionalData(formAdditionalData: { user_id: string; flagEdit: boolean }): Promise<ApiResponse<any>> {
     const headers = await getHeaders();
     const sendData = {
       email: headers.email as string,

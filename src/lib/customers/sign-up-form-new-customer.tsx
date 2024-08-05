@@ -87,6 +87,7 @@ export function SignUpFormNewCustomer({ onRegistrationCustomerSuccess, closeModa
     setIsPending(true);
     setIsMessage('');
     const result: any = await customersClient.createNewCustomer(values);
+
     switch (result?.data?.statusCode) {
       case 200:
         setAlertColor('success');
@@ -94,7 +95,7 @@ export function SignUpFormNewCustomer({ onRegistrationCustomerSuccess, closeModa
         onRegistrationCustomerSuccess(result?.data?.allUsers);
         setTimeout(() => {
           closeModal(false);
-        }, 2000);
+        }, 3000);
         break;
       case 400:
       case 500:

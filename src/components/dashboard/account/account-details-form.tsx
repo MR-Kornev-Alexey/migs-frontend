@@ -7,79 +7,73 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 
-const states = [
-  { value: 'alabama', label: 'Alabama' },
-  { value: 'new-york', label: 'New York' },
-  { value: 'san-francisco', label: 'San Francisco' },
-  { value: 'los-angeles', label: 'Los Angeles' },
-] as const;
+// Define the structure for additional user information
+interface AdditionalUserInfo {
+  firstName: string;
+  surName: string;
+  telegram: string;
+  position: string;
+  phone: string;
+}
 
-export function AccountDetailsForm(): React.JSX.Element {
+// Define the structure for the dataUser prop
+interface DataUser {
+  additionalUserInfo: AdditionalUserInfo[];
+}
+
+// Define the props for the AccountDetailsForm component
+interface AccountDetailsFormProps {
+  dataUser: DataUser;
+  changeData: () => void;
+}
+
+export function AccountDetailsForm({ dataUser, changeData }: AccountDetailsFormProps): React.JSX.Element {
+  const userInfo = dataUser?.additionalUserInfo[0];
+
   return (
     <form
       onSubmit={(event) => {
-        event.preventDefault();
+        console.log(event);
+        event.preventDefault(); // Prevent default form submission
       }}
     >
       <Card>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader title="Дополнительные данные" />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel>First name</InputLabel>
-                <OutlinedInput defaultValue="Sofia" label="First name" name="firstName" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel>Last name</InputLabel>
-                <OutlinedInput defaultValue="Rivers" label="Last name" name="lastName" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel>Email address</InputLabel>
-                <OutlinedInput defaultValue="sofia@devias.io" label="Email address" name="email" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>Phone number</InputLabel>
-                <OutlinedInput label="Phone number" name="phone" type="tel" />
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>State</InputLabel>
-                <Select defaultValue="New York" label="State" name="state" variant="outlined">
-                  {states.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>City</InputLabel>
-                <OutlinedInput label="City" />
-              </FormControl>
-            </Grid>
+            {userInfo ? (
+              <>
+                <Grid md={6} xs={12}>
+                  <Typography variant="body1">{userInfo.firstName}</Typography>
+                </Grid>
+                <Grid md={6} xs={12}>
+                  <Typography variant="body1">{userInfo.surName}</Typography>
+                </Grid>
+                <Grid md={6} xs={12}>
+                  <Typography variant="body1">{userInfo.telegram}</Typography>
+                </Grid>
+                <Grid md={6} xs={12}>
+                  <Typography variant="body1">{userInfo.position}</Typography>
+                </Grid>
+                <Grid md={6} xs={12}>
+                  <Typography variant="body1">{userInfo.phone}</Typography>
+                </Grid>
+              </>
+            ) : (
+              <Grid xs={12}>
+                <Typography variant="body1">Дополнительная информация недоступна</Typography>
+              </Grid>
+            )}
           </Grid>
         </CardContent>
-        <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">Save details</Button>
+        <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button onClick={changeData} variant="contained">
+            Изменить
+          </Button>
         </CardActions>
       </Card>
     </form>
