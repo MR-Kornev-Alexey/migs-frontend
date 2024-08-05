@@ -50,7 +50,8 @@ export interface SensorInfo {
   sensor_operation_log: SensorOperationLog[];
   files: string[]; // More specific typing can be added if known
   requestSensorInfo: LatestData[];
-  error_information: string[]; // More specific typing can be added if known
+  error_information: string[];
+  [key: string]: any; // Allows dynamic key access// More specific typing can be added if known
 }
 
 interface AdditionalSensorInfo {

@@ -1,151 +1,171 @@
+'use client';
+
 import * as React from 'react';
-import type { Metadata } from 'next';
+import { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Download as DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
-import dayjs from 'dayjs';
 
-import { config } from '@/config';
+import ImportExportButtons from '@/lib/common/import-export-buttons';
+import SpinnerWithAlert from '@/lib/common-api/spinner-with-alert';
+import { customersClient } from '@/lib/customers/customers-client';
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
-import { CustomersTable } from '@/components/dashboard/customer/customers-table';
 import type { Customer } from '@/components/dashboard/customer/customers-table';
-
-export const metadata = { title: `Customers | Dashboard | ${config.site.name}` } satisfies Metadata;
-
-const customers = [
-  {
-    id: 'USR-010',
-    name: 'Alcides Antonio',
-    avatar: '/assets/avatar-10.png',
-    email: 'alcides.antonio@devias.io',
-    phone: '908-691-3242',
-    address: { city: 'Madrid', country: 'Spain', state: 'Comunidad de Madrid', street: '4158 Hedge Street' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-009',
-    name: 'Marcus Finn',
-    avatar: '/assets/avatar-9.png',
-    email: 'marcus.finn@devias.io',
-    phone: '415-907-2647',
-    address: { city: 'Carson City', country: 'USA', state: 'Nevada', street: '2188 Armbrester Drive' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-008',
-    name: 'Jie Yan',
-    avatar: '/assets/avatar-8.png',
-    email: 'jie.yan.song@devias.io',
-    phone: '770-635-2682',
-    address: { city: 'North Canton', country: 'USA', state: 'Ohio', street: '4894 Lakeland Park Drive' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-007',
-    name: 'Nasimiyu Danai',
-    avatar: '/assets/avatar-7.png',
-    email: 'nasimiyu.danai@devias.io',
-    phone: '801-301-7894',
-    address: { city: 'Salt Lake City', country: 'USA', state: 'Utah', street: '368 Lamberts Branch Road' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-006',
-    name: 'Iulia Albu',
-    avatar: '/assets/avatar-6.png',
-    email: 'iulia.albu@devias.io',
-    phone: '313-812-8947',
-    address: { city: 'Murray', country: 'USA', state: 'Utah', street: '3934 Wildrose Lane' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-005',
-    name: 'Fran Perez',
-    avatar: '/assets/avatar-5.png',
-    email: 'fran.perez@devias.io',
-    phone: '712-351-5711',
-    address: { city: 'Atlanta', country: 'USA', state: 'Georgia', street: '1865 Pleasant Hill Road' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-
-  {
-    id: 'USR-004',
-    name: 'Penjani Inyene',
-    avatar: '/assets/avatar-4.png',
-    email: 'penjani.inyene@devias.io',
-    phone: '858-602-3409',
-    address: { city: 'Berkeley', country: 'USA', state: 'California', street: '317 Angus Road' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-003',
-    name: 'Carson Darrin',
-    avatar: '/assets/avatar-3.png',
-    email: 'carson.darrin@devias.io',
-    phone: '304-428-3097',
-    address: { city: 'Cleveland', country: 'USA', state: 'Ohio', street: '2849 Fulton Street' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-002',
-    name: 'Siegbert Gottfried',
-    avatar: '/assets/avatar-2.png',
-    email: 'siegbert.gottfried@devias.io',
-    phone: '702-661-1654',
-    address: { city: 'Los Angeles', country: 'USA', state: 'California', street: '1798 Hickory Ridge Drive' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-  {
-    id: 'USR-001',
-    name: 'Miron Vitold',
-    avatar: '/assets/avatar-1.png',
-    email: 'miron.vitold@devias.io',
-    phone: '972-333-4106',
-    address: { city: 'San Diego', country: 'USA', state: 'California', street: '75247' },
-    createdAt: dayjs().subtract(2, 'hours').toDate(),
-  },
-] satisfies Customer[];
+import ModalAboutOneCustomer from '@/components/modal/modal-about-one-customer';
+import ModalNewCustomer from '@/components/modal/modal-new-customer';
+import CustomTableWithoutSelect from '@/components/tables/custom-table-without-select';
+import {CustomerType} from "@/types/customer";
+import {AlertColor} from "@mui/material";
 
 export default function Page(): React.JSX.Element {
-  const page = 0;
-  const rowsPerPage = 5;
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalInfoOpen, setIsModalInfoOpen] = useState<boolean>(false);
+  const [isSelectedCustomers, setIsSelectedCustomers] = useState([]);
+  const [oneCustomer, setOneCustomer] = useState<CustomerType>({
+    id: "",
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+    registration_status: "",
+    created_at: new Date(),
+    additionalUserInfo: [],
+    organization: undefined // or an appropriate default object if required
+  });
+  const [isMessage, setIsMessage] = React.useState<string>('');
+  const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
+  const [page, setPage] = React.useState(0);
+  const [showChoice, setShowChoice] = useState<boolean>(false);
 
-  const paginatedCustomers = applyPagination(customers, page, rowsPerPage);
+  useEffect(() => {
+    fetchCustomers()
+      .then((data) => {
+        let selected:any = [];
+        if (data?.allUsers.length > 0) {
+          setLoading(true);
+          // Перебор каждого пользователя
+          data?.allUsers.forEach((user:any) => {
+            // Проверка, существует ли уже organization_id в массиве selected
+            if (!selected.includes(user.organization_id)) {
+              // Если нет, добавляем его в массив selected
+              selected.push(user.organization_id);
+            }
+          });
+          setIsSelectedCustomers(selected);
+          setCustomers(data?.allUsers);
+        } else {
+          setIsMessage('Ошибка при загрузке данных о пользователях');
+        }
+      })
+      .catch((error:any) => {
+        setAlertColor('error');
+        setIsMessage('Ошибка при загрузке данных:' + error);
+        setLoading(false); // Установка loading в false в случае ошибки
+      });
+  }, []);
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const closeInfoModal = () => {
+    setIsModalInfoOpen(false);
+  };
+  const onExportClick = () => {
+    // setIsModalObjectOpen(false);
+  };
+  const onImportClick = () => {
+    // setIsModalObjectOpen(false);
+  };
+
+  const deleteCustomer = (id:any) => {
+    alert(id);
+  };
+  async function infoAboutCustomer(row:any) {
+    await setOneCustomer(row);
+    await setIsModalInfoOpen(true);
+    console.log(row);
+  }
+  async function onRegistrationCustomerSuccess(allUsers:Customer[]) {
+    setCustomers(allUsers);
+  }
+  function onSelectedRowsChange(selected:any) {
+    setShowChoice(true);
+    if (selected.length > 0) {
+      setPage(0);
+      setIsSelectedCustomers(selected);
+    }
+  }
+  function onSelectedRowsCustomers(objects: any, selected:any) {
+    if (objects?.length > 0) {
+      return objects.filter((obj:any) => selected.includes(obj.organization_id));
+    } else {
+      return [];
+    }
+  }
+
+  function restoreAllOrganization() {
+    setShowChoice(false);
+    let selected: any = [];
+    // Перебор каждого пользователя
+    customers.forEach((user: any) => {
+      // Проверка, существует ли уже organization_id в массиве selected
+      if (!selected.includes(user?.organization_id)) {
+        // Если нет, добавляем его в массив selected
+        selected.push(user?.organization_id);
+      }
+      setIsSelectedCustomers(selected);
+    });
+  }
   return (
     <Stack spacing={3}>
-      <Stack direction="row" spacing={3}>
-        <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography variant="h4">Customers</Typography>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Button color="inherit" startIcon={<UploadIcon fontSize="var(--icon-fontSize-md)" />}>
-              Import
-            </Button>
-            <Button color="inherit" startIcon={<DownloadIcon fontSize="var(--icon-fontSize-md)" />}>
-              Export
-            </Button>
-          </Stack>
-        </Stack>
-        <div>
-          <Button startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-            Add
-          </Button>
-        </div>
-      </Stack>
+      <div>
+        <Typography variant="h4">Пользователи</Typography>
+      </div>
+      <ImportExportButtons onExportClick={onExportClick} onImportClick={onImportClick} />
       <CustomersFilters />
-      <CustomersTable
-        count={paginatedCustomers.length}
-        page={page}
-        rows={paginatedCustomers}
-        rowsPerPage={rowsPerPage}
-      />
+      {!loading ? (
+        <SpinnerWithAlert isMessage={isMessage} alertColor={alertColor} />
+      ) : (
+        <Box>
+          <CustomTableWithoutSelect
+            rows={onSelectedRowsCustomers(customers, isSelectedCustomers)}
+            openModal={openModal}
+            selectOrganization={onSelectedRowsChange}
+            restoreAllOrganization={restoreAllOrganization}
+            page={page}
+            setPage={setPage}
+            deleteCustomer={deleteCustomer}
+            infoAboutCustomer={infoAboutCustomer}
+          />{' '}
+          <Box display="flex" justifyContent="space-around" sx={{ marginTop: 3 }}>
+            <Button variant="contained" onClick={openModal}>
+              Добавить пользователя
+            </Button>
+            {showChoice && (
+              <Button variant="contained" onClick={restoreAllOrganization}>
+                Сбросить выборку{' '}
+              </Button>
+            )}
+          </Box>
+          <ModalNewCustomer
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            onRegistrationCustomerSuccess={onRegistrationCustomerSuccess}
+          />
+          <ModalAboutOneCustomer isModalInfoOpen={isModalInfoOpen} onClose={closeInfoModal} oneCustomer={oneCustomer} />
+        </Box>
+      )}
     </Stack>
   );
 }
 
-function applyPagination(rows: Customer[], page: number, rowsPerPage: number): Customer[] {
-  return rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+async function fetchCustomers() {
+  const result: any = await customersClient.getCustomers();
+  return result?.data;
 }

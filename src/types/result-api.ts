@@ -1,13 +1,3 @@
-export interface Organization {
-  id: string;
-  name: string;
-  inn: string;
-  address: string;
-  directorName: string;
-  organizationPhone: string;
-  organizationEmail: string;
-}
-
 export interface SendData {
   inn: string;
   email: string;
@@ -39,6 +29,7 @@ export interface Data {
   oneSensor?: any;
   allSensors?: any;
   organization?: any;
+  allOrganizations?: Organization[]
 }
 
 export interface ApiResult {
@@ -47,6 +38,16 @@ export interface ApiResult {
   organization?: any;
   statusCode?: number;  // Note that statusCode is optional
   message?: string;
+  allOrganizations?: any
 }
 
+export interface Organization {
+  id: string;
+  name: string;
+  inn: string;
+  address: string;
+  directorName: string;
+  organizationPhone: string;
+  organizationEmail: string;
+}
 

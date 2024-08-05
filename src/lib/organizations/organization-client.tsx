@@ -3,16 +3,7 @@
 import { BASE_URL } from '@/config';
 import type { Result, SendData } from '@/types/result-api';
 import { getHeaders } from '@/lib/common-api/get-header';
-
-// Define specific types for form data
-interface FormDataOrganization {
-  name: string;
-  inn: string;
-  address: string;
-  directorName: string;
-  organizationPhone: string;
-  organizationEmail: string;
-}
+import {FormDataOrganization} from "@/types/form-data-organization";
 
 export class OrganizationClient {
   async checkOrganization(value:any): Promise<Result> {
@@ -81,6 +72,24 @@ export class OrganizationClient {
       return { error: (error as Error).message };
     }
   }
+  async getAllOrganization() {
+    const url = `${BASE_URL}/organization/get_all_organizations`;
+    try {
+      const headers = await getHeaders();
+      const response = await fetch(url, {
+        method: 'get',
+        headers,
+      });
+      if (!response.ok) {
+        throw new Error(`Ошибка HTTP: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Произошла ошибка:', (error as Error).message);
+      return { error: (error as Error).message };
+    }
+  }
+
 }
 
 export const organizationClient = new OrganizationClient();
