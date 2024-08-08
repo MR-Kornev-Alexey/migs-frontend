@@ -15,7 +15,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { Controller, useForm, FieldErrors } from 'react-hook-form';
 import { z as zod } from 'zod';
 
-import { customersClient } from '@/lib/customers/customers-client';
+import { customersClient } from '@/components/dashboard/customers/customers-client';
 import { type AlertColor } from '@mui/material';
 
 // Regex definitions for validation

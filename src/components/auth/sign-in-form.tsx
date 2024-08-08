@@ -25,7 +25,7 @@ import Box from "@mui/material/Box";
 import {fetchOrganizationData} from "@/lib/common-api/fetch-data-check-main";
 import {type Organization} from "@/types/result-api";
 import {type AlertColor} from "@mui/material";
-import {customersClient} from "@/lib/customers/customers-client";
+import {customersClient} from "@/components/dashboard/customers/customers-client";
 
 // Define the schema for form validation using Zod
 const schema = zod.object({

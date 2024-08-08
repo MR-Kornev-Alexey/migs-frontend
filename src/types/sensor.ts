@@ -20,7 +20,7 @@ export interface SensorAndObjectInfoApi {
 
 interface Data {
   allSensors: SensorInfo[];
-  allObjects: ObjectInfo[];
+  allObjectsFromApi: ObjectInfo[];
   allSensorsType: SensorModel[];
   message: number;
   statusCode: number;
@@ -54,7 +54,7 @@ export interface SensorInfo {
   [key: string]: any; // Allows dynamic key access// More specific typing can be added if known
 }
 
-interface AdditionalSensorInfo {
+export interface AdditionalSensorInfo {
   id: number;
   sensor_id: string;
   factory_number: string | null;

@@ -1,4 +1,4 @@
-export default function setRole(role: string) {
+export default function setRole(role: string): string {
   switch (role) {
     case 'admin':
       return 'Администратор';

@@ -1,0 +1,478 @@
+[
+ {
+  "network_number": 19,
+  "designation ": "IL01",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 2,
+  "designation ": "IL02",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 8,
+  "designation ": "IL03",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 1,
+  "designation ": "IL04",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 10,
+  "designation ": "IL05",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 4,
+  "designation ": "IL06",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 13,
+  "designation ": "IL07",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 17,
+  "designation ": "IL08",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 14,
+  "designation ": "IL09",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 7,
+  "designation ": "IL10",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 20,
+  "designation ": "IR01",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 12,
+  "designation ": "IR02",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 15,
+  "designation ": "IR03",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 16,
+  "designation ": "IR04",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 3,
+  "designation ": "IR05",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 5,
+  "designation ": "IR06",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 6,
+  "designation ": "IR07",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 11,
+  "designation ": "IR08",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 9,
+  "designation ": "IR09",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 18,
+  "designation ": "IR10",
+  "model": "ИН-Д3",
+  "sensor_type": "Инклинометр",
+  "sensor_key": "inclinoMeter"
+ },
+ {
+  "network_number": 182,
+  "designation ": "TL01C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 181,
+  "designation ": "TL01S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 151,
+  "designation ": "TL02C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 152,
+  "designation ": "TL02S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 159,
+  "designation ": "TL03C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 158,
+  "designation ": "TL03S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 178,
+  "designation ": "TL04C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 180,
+  "designation ": "TL04S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 174,
+  "designation ": "TL05C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 177,
+  "designation ": "TL05S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 133,
+  "designation ": "TL06C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 173,
+  "designation ": "TL06S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 170,
+  "designation ": "TL07C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 171,
+  "designation ": "TL07S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 169,
+  "designation ": "TL08C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 176,
+  "designation ": "TL08S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 134,
+  "designation ": "TL09C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 135,
+  "designation ": "TL09S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 153,
+  "designation ": "TL10C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 136,
+  "designation ": "TL10S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 131,
+  "designation ": "TL11C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 132,
+  "designation ": "TL11S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 130,
+  "designation ": "TL12C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 129,
+  "designation ": "TL12S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 179,
+  "designation ": "TR01C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 145,
+  "designation ": "TR01S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 150,
+  "designation ": "TR02C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 149,
+  "designation ": "TR02S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 147,
+  "designation ": "TR03C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 161,
+  "designation ": "TR03S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 146,
+  "designation ": "TR04C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 161,
+  "designation ": "TR04S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 172,
+  "designation ": "TR05C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 165,
+  "designation ": "TR05S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 164,
+  "designation ": "TR06C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 163,
+  "designation ": "TR06S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 168,
+  "designation ": "TR07C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 175,
+  "designation ": "TR07S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 167,
+  "designation ": "TR08C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 166,
+  "designation ": "TR08S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 139,
+  "designation ": "TR09C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 141,
+  "designation ": "TR09S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 137,
+  "designation ": "TR10C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 138,
+  "designation ": "TR10S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 160,
+  "designation ": "TR11C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 143,
+  "designation ": "TR11S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 142,
+  "designation ": "TR12C",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ },
+ {
+  "network_number": 140,
+  "designation ": "TR12S",
+  "model": "SVWG-D01",
+  "sensor_type": "Тензомер",
+  "sensor_key": "strainGauge"
+ }
+]

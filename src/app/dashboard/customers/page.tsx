@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 import ImportExportButtons from '@/lib/common/import-export-buttons';
 import SpinnerWithAlert from '@/lib/common-api/spinner-with-alert';
-import { customersClient } from '@/lib/customers/customers-client';
+import { customersClient } from '@/components/dashboard/customers/customers-client';
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
 import type { Customer } from '@/components/dashboard/customer/customers-table';
 import ModalAboutOneCustomer from '@/components/modal/modal-about-one-customer';
@@ -125,9 +125,9 @@ export default function Page(): React.JSX.Element {
   function onSelectedRowsCustomers(objects: any, selected:any) {
     if (objects?.length > 0) {
       return objects.filter((obj:any) => selected.includes(obj.organization_id));
-    } 
+    }
       return [];
-    
+
   }
 
   function restoreAllOrganization() {

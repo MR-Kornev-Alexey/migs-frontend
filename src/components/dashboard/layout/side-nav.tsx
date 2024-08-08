@@ -14,8 +14,7 @@ import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { Logo } from '@/components/core/logo';
 
-import { getNavItemsForRole } from './configRole';
-// import { navItems } from './config';
+import { getNavItemsForRole } from './config-role';
 import { navIcons } from './nav-icons';
 import setRole from "@/lib/common/set-role";
 

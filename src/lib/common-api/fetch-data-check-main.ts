@@ -2,7 +2,7 @@
 
 import { type AlertColor } from '@mui/material';
 import { type Organization } from '@/types/result-api';
-import { organizationClient } from '@/lib/organizations/organization-client';
+import { organizationClient } from '@/components/dashboard/organizations/organization-client';
 import { handleApiResult } from '@/lib/common-api/result-handler';
 import type React from "react";
 

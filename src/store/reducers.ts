@@ -1,31 +1,33 @@
 'use client';
 
-import additionalDataOfSensorReducer from '@/store/additionalDataOfSensorReducer';
-import lastValuesReducer from '@/store/lastValuesReducer';
-import objectReducer from '@/store/objectReducer';
-import selectedSensorReducer from '@/store/selectedSensorReducer';
-import sensorsReducer from '@/store/sensorsReducer';
-import typeOfSensorsReducer from '@/store/typeOfSensorsReducer';
+import additionalDataOfSensorReducer from '@/store/additional-data-of-sensor-reducer';
+import lastValuesReducer from '@/store/last-values-reducer';
+import objectReducer from '@/store/object-reducer';
+import selectedSensorReducer from '@/store/selected-sensor-reducer';
+import sensorsReducer from '@/store/sensors-reducer';
+import typeOfSensorsReducer from '@/store/type-of-sensors-reducer';
 import { combineReducers } from '@reduxjs/toolkit';
 
-import addUserReducer from './addUserReducer';
-import mainUserReducer from './mainUserReducer';
-import notificationReducer from './notificationReducer';
-import userReducer from './userReducer';
+import addUserReducer from './add-user-reducer';
+import mainUserReducer from './main-user-reducer';
+import notificationReducer from './notification-reducer';
+import userReducer from './user-reducer';
+import organizationReducer from "@/store/organization-reducer";
 
 // Объединяем редюсеры
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  lastValues: lastValuesReducer,
-  addUser: addUserReducer,
-  mainUser: mainUserReducer,
-  notifications: notificationReducer,
-  selectedSensor: selectedSensorReducer,
-  allSensors: sensorsReducer,
+  // user: userReducer,
+  // lastValues: lastValuesReducer,
+  // addUser: addUserReducer,
+  // mainUser: mainUserReducer,
+  // notifications: notificationReducer,
+  // selectedSensor: selectedSensorReducer,
+  // allSensors: sensorsReducer,
   allTypesOfSensors: typeOfSensorsReducer,
   allObjects: objectReducer,
-  additionalDataOfSensor: additionalDataOfSensorReducer,
+  allOrganizations: organizationReducer,
+  // additionalDataOfSensor: additionalDataOfSensorReducer,
 });
 
 export default rootReducer;

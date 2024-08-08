@@ -29,7 +29,7 @@ export interface ApiResult {
   organization?: any;
   statusCode?: number;  // Note that statusCode is optional
   message?: string;
-  allOrganizations?: any
+  allOrganizations?: any;
 }
 
 export interface Organization {

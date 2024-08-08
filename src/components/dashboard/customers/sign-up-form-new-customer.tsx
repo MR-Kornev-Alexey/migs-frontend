@@ -14,10 +14,12 @@ import Stack from '@mui/material/Stack';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
-import { customersClient } from '@/lib/customers/customers-client';
+import { customersClient } from '@/components/dashboard/customers/customers-client';
 import type { AlertColor } from '@mui/material';
 import { type ApiResult, type Organization } from '@/types/result-api';
-import { organizationClient } from '@/lib/organizations/organization-client';
+import { organizationClient } from '@/components/dashboard/organizations/organization-client';
+import {useSelector} from "react-redux";
+import {RootState} from "@/store/store";
 
 // Define the schema
 const schema = zod.object({
@@ -49,33 +51,7 @@ export function SignUpFormNewCustomer({ onRegistrationCustomerSuccess, closeModa
   const [isPending, setIsPending] = React.useState<boolean>(false);
   const [isMessage, setIsMessage] = React.useState<string>('');
   const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
-  const [isAllOrganizations, setAllOrganizations] = React.useState<Organization[]>([]);
-
-  useEffect(() => {
-    const fetchAllOrganization = async () => {
-      try {
-        const result: ApiResult = await organizationClient.getAllOrganization();
-
-        if (result?.statusCode === 200) {
-          console.log(result);
-          setAlertColor('success');
-          setIsMessage('Успешное получение данных предприятий');
-          setTimeout(() => {
-            setIsMessage('');
-          }, 2000);
-          setAllOrganizations(result?.allOrganizations);
-        } else {
-          setAlertColor('error');
-          setIsMessage(result?.data?.message || 'Произошла ошибка получения данных орагнизаций');
-        }
-      } catch (error) {
-        console.error('Ошибка при регистрации:', error);
-        setAlertColor('error');
-        setIsMessage('Произошла ошибка');
-      }
-    };
-    fetchAllOrganization();
-  }, []);
+  const isAllOrganizations = useSelector((state: RootState) => state.allOrganizations.value);
 
   const {
     control,

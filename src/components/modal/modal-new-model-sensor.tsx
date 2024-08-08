@@ -3,16 +3,24 @@ import { Modal } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';
+import { SignUpFormNewTypeSensor } from '@/components/dashboard/type-of-sensors/sign-up-form-new-type-sensor';
 
-import { SignUpFormNewCustomer } from '@/components/dashboard/customers/sign-up-form-new-customer';
-import {type Customer} from "@/components/dashboard/customer/customers-table";
-
-interface ModalNewCustomerProps {
+// Define the types for the props
+interface ModalNewModelSensorProps {
   isOpen: boolean;
   onClose: () => void;
-  onRegistrationCustomerSuccess: (allUsers: Customer[]) => Promise<void>;
+  isSensorKey: { sensorKey: string; sensorType: string };
+  isResultSuccess: () => void;
+  isDisabled: boolean;
 }
-const ModalNewCustomer: React.FC <ModalNewCustomerProps>  = ({ isOpen, onClose, onRegistrationCustomerSuccess }) => {
+
+const ModalNewModelSensor: React.FC<ModalNewModelSensorProps> = ({
+                                                                   isOpen,
+                                                                   onClose,
+                                                                   isSensorKey,
+                                                                   isResultSuccess,
+                                                                   isDisabled,
+                                                                 }) => {
   return (
     <Box>
       <Modal
@@ -40,11 +48,16 @@ const ModalNewCustomer: React.FC <ModalNewCustomerProps>  = ({ isOpen, onClose, 
               <X size={32} onClick={onClose} style={{ cursor: 'pointer' }} />
             </Box>
           </Stack>
-          <SignUpFormNewCustomer onRegistrationCustomerSuccess={onRegistrationCustomerSuccess} closeModal={onClose} />
+          <SignUpFormNewTypeSensor
+            closeModal={onClose}
+            isSensorKey={isSensorKey}
+            isResultSuccess={isResultSuccess}
+            isDisabled={isDisabled}
+          />
         </Box>
       </Modal>
     </Box>
   );
 };
 
-export default ModalNewCustomer;
+export default ModalNewModelSensor;

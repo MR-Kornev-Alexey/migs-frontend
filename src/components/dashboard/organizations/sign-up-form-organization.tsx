@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { z as zod } from 'zod';
 
-import { organizationClient } from '@/lib/organizations/organization-client';
+import { organizationClient } from '@/components/dashboard/organizations/organization-client';
 import type { ApiResult } from '@/types/result-api';
 
 interface SignUpFormValues {

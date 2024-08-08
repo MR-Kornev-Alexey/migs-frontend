@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import SpinnerWithAlert from '@/lib/common-api/spinner-with-alert';
-import { customersClient } from '@/lib/customers/customers-client';
+import { customersClient } from '@/components/dashboard/customers/customers-client';
 import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
 import { AccountInfo } from '@/components/dashboard/account/account-info';
 import { ProfileForm } from '@/components/dashboard/account/profile-form';
@@ -54,8 +54,7 @@ export default function Page(): React.JSX.Element {
 
 
   const dataUser = localStorage.getItem('custom-auth-token');
-  let token = '',
-    email = '';
+  let email = '';
   if (dataUser !== null) {
     email = JSON.parse(dataUser).email;
   }

@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import { paths } from '@/paths';
-import { customersClient } from '@/lib/customers/customers-client';
+import { customersClient } from '@/components/dashboard/customers/customers-client';
 import { GuestGuard } from '@/components/auth/guest-guard';
 import { Layout } from '@/components/auth/layout';
 import { SignUpForm } from '@/components/auth/sign-up-form';
