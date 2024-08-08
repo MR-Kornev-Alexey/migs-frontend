@@ -58,16 +58,16 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject }: Ob
           <TableHead>
             <TableRow>
               <TableCell>Название</TableCell>
-              <TableCell style={{ width: '20%' }} align="center">
+              <TableCell  align="center">
                 Адрес
               </TableCell>
-              <TableCell style={{ width: '20%' }} align="center">
+              <TableCell align="center">
                 Организация
               </TableCell>
               <TableCell style={{ width: '20%' }} align="center">
                 Тип объекта
               </TableCell>
-              <TableCell style={{ width: '20%' }} align="center">
+              <TableCell style={{ width: '5%' }} align="center">
                 Датчики
               </TableCell>
               <TableCell style={{ width: '10%' }} align="center">
@@ -81,16 +81,16 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject }: Ob
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
-                <TableCell style={{ width: '20%' }} align="center">
+                <TableCell  align="center">
                   {row.address}
                 </TableCell>
-                <TableCell style={{ width: '20%' }} align="center">
+                <TableCell align="center">
                   {row?.organization?.name || "N/A"}
                 </TableCell>
                 <TableCell style={{ width: '20%' }} align="center">
                   {setKindOfObject(row.objectsType)}
                 </TableCell>
-                <TableCell style={{ width: '20%' }} align="center">
+                <TableCell style={{ width: '5%' }} align="center">
                   {row.Sensor.length}
                 </TableCell>
                 <TableCell
@@ -108,8 +108,8 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject }: Ob
               </TableRow>
             )}
           </TableBody>
-          <TableFooter>
-            <TableRow>
+          <TableFooter sx={{display: 'flex', justifyContent: 'left'}}>
+            <TableRow >
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={6}
@@ -119,7 +119,7 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject }: Ob
                 slotProps={{
                   select: {
                     inputProps: {
-                      'aria-label': 'rows per page',
+                      'aria-label': 'Объектов на страницу',
                     },
                     native: true,
                   },

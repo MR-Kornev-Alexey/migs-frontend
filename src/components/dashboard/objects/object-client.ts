@@ -10,7 +10,6 @@ export class ObjectClient {
 
 
   async initSignObject(formDataObject: ObjectFormInput) {
-    console.log(formDataObject);
     const getEmail = await getHeaders();
     const sendData = {
       email: getEmail.email,

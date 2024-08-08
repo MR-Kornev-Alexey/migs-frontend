@@ -10,7 +10,7 @@ interface ModalNewObjectProps {
   isOpenObject: boolean;
   onCloseObject: () => void;
   rowsOrganizations: any; // Replace 'any' with a more specific type if possible
-  onRegistrationObjectSuccess: () => void;
+  onRegistrationObjectSuccess: (data: any) => Promise<void>;
 }
 
 const ModalNewObject: React.FC<ModalNewObjectProps> = ({

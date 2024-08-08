@@ -19,7 +19,7 @@ function Page(): React.JSX.Element {
   const [isMessage, setIsMessage] = React.useState<string>('check');
   const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
   const [isMainInn, setIsMainInn] = React.useState<string>('7716852062');
-
+  const onClose =() => {}
   React.useEffect(() => {
     void fetchOrganizationData(isMainInn, setInitialData, setIsMessage, setAlertColor);
   }, [isMainInn]);
@@ -41,7 +41,7 @@ function Page(): React.JSX.Element {
               onRegistrationSuccess={handleRegistrationSuccess}
               setIsMessage={setIsMessage}
               setAlertColor={setAlertColor}
-            />
+              onClose={onClose}/>
           )}
           {isMessage ? <Alert sx={{ marginTop: 2 }} color={alertColor}>{isMessage}</Alert> : null}
         </Box>

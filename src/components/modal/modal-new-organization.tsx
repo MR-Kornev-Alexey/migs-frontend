@@ -8,6 +8,7 @@ import type {ApiResult} from "@/types/result-api";
 
 // Define the props interface for the ModalNewOrganization component
 interface ModalNewOrganizationProps {
+  isMain: boolean;
   isOpen: boolean;
   onClose: () => void;
   onRegistrationSuccess: (result: ApiResult) => void;
@@ -15,14 +16,13 @@ interface ModalNewOrganizationProps {
   setAlertColor: (color: AlertColor) => void;
 }
 
-const ModalNewOrganization: React.FC<ModalNewOrganizationProps> = ({
+const ModalNewOrganization: React.FC<ModalNewOrganizationProps> = ({ isMain,
                                                                      setAlertColor,
                                                                      setIsMessage,
                                                                      isOpen,
                                                                      onClose,
                                                                      onRegistrationSuccess
                                                                    }) => {
-  const isMain: boolean = false;
   return (
     <Box>
       <Modal
@@ -53,6 +53,7 @@ const ModalNewOrganization: React.FC<ModalNewOrganizationProps> = ({
           <SignUpFormOrganization
             onRegistrationSuccess={onRegistrationSuccess}
             isMain={isMain}
+            onClose={onClose}
             setAlertColor={setAlertColor}
             setIsMessage={setIsMessage}/>
         </Box>

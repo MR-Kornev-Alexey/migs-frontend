@@ -16,6 +16,7 @@ import { z as zod } from 'zod';
 
 import { organizationClient } from '@/components/dashboard/organizations/organization-client';
 import type { ApiResult } from '@/types/result-api';
+import Spinner from "@/components/svg-icons/spinner";
 
 interface SignUpFormValues {
   name: string;
@@ -31,6 +32,7 @@ interface SignUpFormOrganizationProps {
   onRegistrationSuccess: (result: ApiResult) => void;
   setIsMessage: (message: string) => void;
   setAlertColor: (color: AlertColor) => void;
+  onClose: () => void;
 }
 
 export function SignUpFormOrganization({
@@ -38,8 +40,11 @@ export function SignUpFormOrganization({
                                          onRegistrationSuccess,
                                          setIsMessage,
                                          setAlertColor,
+                                         onClose,
                                        }: SignUpFormOrganizationProps): React.JSX.Element {
   const [isPending, setIsPending] = React.useState<boolean>(false);
+  const [isModalMessage, setIsModalMessage] = React.useState<any>('');
+  const [alertModalColor, setModalAlertColor] = React.useState<AlertColor>('error');
   const numberRegex = /^(?:\d{10}|\d{12})$/;
   const phoneRegex = /^\+7\d{10}$/;
 
@@ -81,18 +86,35 @@ export function SignUpFormOrganization({
       } else {
         result = await organizationClient.createNewOrganization(values);
       }
-      if (result.statusCode === 200) {
+      if (result?.statusCode === 200) {
         setIsPending(false);
         onRegistrationSuccess(result);
-      } else {
-        setIsMessage('Что пошло не так, попробуйте перегрузться');
-        setAlertColor('error');
+        setIsMessage(result?.message ?? ''); // Provide a default empty string
+        setAlertColor('success');
+        onClose()
+        setTimeout(() => {
+          setIsMessage('');
+        }, 2500)
+      } else if (result?.statusCode === 400){
+        setIsModalMessage(result?.message);
+        setModalAlertColor('error');
+        setIsPending(false);
+        setTimeout(() => {
+          setIsModalMessage('');
+        }, 2500)
+      }
+      else {
+        setIsModalMessage(result?.message);
+        setModalAlertColor('error');
+        setIsPending(false);
+        setTimeout(() => {
+          setIsModalMessage('');
+        }, 2500)
       }
     } catch (error) {
-      console.error('Произошла ошибка:', (error as Error).message);
+      setIsModalMessage('Произошла ошибка:' + (error as Error).message);
+      setModalAlertColor('error');
       setIsPending(false);
-      setIsMessage('Произошла ошибка');
-      setAlertColor('error');
     }
   }, [isMain, onRegistrationSuccess, setIsMessage, setAlertColor]);
 
@@ -128,31 +150,14 @@ export function SignUpFormOrganization({
           ))}
           <Button disabled={isPending} type="submit" variant="contained" sx={{ marginTop: 2 }}>
             {isPending ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-                  opacity={0.25}
-                />
-                <path
-                  fill="currentColor"
-                  d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
-                >
-                  <animateTransform
-                    attributeName="transform"
-                    dur="0.75s"
-                    repeatCount="indefinite"
-                    type="rotate"
-                    values="0 12 12;360 12 12"
-                  />
-                </path>
-              </svg>
+              <Spinner />
             ) : (
               <Box>Зарегистрировать</Box>
             )}
           </Button>
         </Stack>
       </form>
+      {isModalMessage && <Alert color={alertModalColor}>{isModalMessage}</Alert>}
     </Stack>
   );
 }

@@ -12,46 +12,76 @@ import { addOrganizations } from '@/store/organization-reducer';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/store/store';
 import Box from "@mui/material/Box";
+import {objectClient} from "@/components/dashboard/objects/object-client";
+import {sensorsClient} from "@/components/dashboard/sensors/sensors-client";
+import {addObjects} from "@/store/object-reducer";
+import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
+import { AnyAction } from "redux";
 
 interface CustomProviderProps {
   children: React.ReactNode;
 }
-
 const CustomProvider: React.FC<CustomProviderProps> = ({ children }) => {
   const [isMessage, setIsMessage] = React.useState<string>('');
   const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const fetchAllOrganization = async () => {
+    const fetchData = async () => {
       try {
-        const result: ApiResult = await organizationClient.getAllOrganization();
-        if (result?.statusCode === 200) {
-          // console.log(result);
-          setAlertColor('success');
-          setIsMessage('Успешное получение данных предприятий');
-          setTimeout(() => {
-            setIsMessage('');
-          }, 2000);
-          dispatch(addOrganizations(result?.allOrganizations));
-        } else {
-          setAlertColor('error');
-          setIsMessage(result?.data?.message || 'Произошла ошибка получения данных организаций');
-        }
+        // Explicitly type the promises
+        const promises: Promise<ApiResult>[] = [
+          organizationClient.getAllOrganization(),
+          objectClient.getAllObjects(),
+          sensorsClient.getAllTypeOfSensors(),
+        ];
+
+        const [orgResult, objResult, sensorResult] = await Promise.allSettled(promises);
+
+        // Cast results to PromiseSettledResult<ApiResult> for TypeScript inference
+        handleResult(orgResult as PromiseSettledResult<ApiResult>, "организаций", addOrganizations, "allOrganizations");
+        handleResult(objResult as PromiseSettledResult<ApiResult>, "объектов", addObjects, "allObjects");
+        handleResult(sensorResult as PromiseSettledResult<ApiResult>, "типов датчиков", addTypeOfSensors, "allSensorsType");
       } catch (error) {
-        console.error('Ошибка при регистрации:', error);
-        setAlertColor('error');
-        setIsMessage('Произошла ошибка');
+        console.error("Ошибка при получении данных:", error);
+        setAlertColor("error");
+        setIsMessage("Произошла ошибка при получении данных");
       }
     };
-    fetchAllOrganization();
-  }, []);
 
+    const handleResult = (
+      result: PromiseSettledResult<ApiResult>,
+      entityName: string,
+      dispatchAction: (data: any[]) => AnyAction, // Ensure this returns a valid action
+      dataKey: keyof ApiResult
+    ) => {
+      if (result.status === "fulfilled") {
+        if (result.value.statusCode === 200) {
+          setAlertColor("success");
+          setIsMessage(`Успешное получение данных ${entityName}`);
+          setTimeout(() => {
+            setIsMessage("");
+          }, 2000);
+          dispatch(dispatchAction(result.value[dataKey] || [])); // Correctly use the dispatch function
+        } else {
+          setAlertColor("error");
+          setIsMessage(
+            result.value.data?.message || `Произошла ошибка получения данных ${entityName}`
+          );
+        }
+      } else {
+        console.error(`Ошибка при получении данных ${entityName}:`, result.reason);
+        setAlertColor("error");
+        setIsMessage(`Произошла ошибка получения данных ${entityName}`);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
   return (
     <LocalizationProvider>
       <UserProvider>
         <ThemeProvider>
-
   {isMessage && (
     <Box  display="flex" justifyContent="center" alignItems="center">
       <Alert sx={{ marginTop: 2 }} color={alertColor}>

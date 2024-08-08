@@ -115,7 +115,7 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
             </TableRow>
           )}
         </TableBody>
-        <TableFooter>
+        <TableFooter sx={{display: 'flex', justifyContent: 'left'}}>
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}

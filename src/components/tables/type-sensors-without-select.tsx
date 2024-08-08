@@ -22,7 +22,7 @@ interface SensorModel {
 
 interface TypeSensorsWithoutSelectProps {
   rows: SensorModel[];
-  openModalNewModel: (params: { sensorKey: string; sensorType: string }) => void;
+  openModalNewModel: (params: any) => void;
 }
 
 export default function TypeSensorsWithoutSelect({ rows, openModalNewModel }: TypeSensorsWithoutSelectProps) {
@@ -77,7 +77,7 @@ export default function TypeSensorsWithoutSelect({ rows, openModalNewModel }: Ty
             </TableRow>
           )}
         </TableBody>
-        <TableFooter>
+        <TableFooter sx={{display: 'flex', justifyContent: 'left'}}>
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
