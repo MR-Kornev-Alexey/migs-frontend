@@ -23,16 +23,34 @@ import Spinner from "@/components/animated-icon/spinner";
 import {ApiResult} from "@/types/result-api";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
 import ModalNewModelSensor from "@/components/modal/modal-new-model-sensor";
+import ModalDataOrganisation from "@/components/modal/modal-data-organisation";
+import ModalDataObject from "@/components/modal/modal-data-object";
 
 interface SensorKeyType {
   sensorKey: string;
   sensorType: string;
 }
+
+interface DataOrganisation {
+  name: string;
+  inn: string;
+  address: string;
+  directorName: string;
+  organizationPhone: string;
+  organizationEmail: string;
+}
+
 export default function Page(): React.JSX.Element {
   const objects = useSelector((state: RootState) => state.allObjects.value);
   const organizations = useSelector((state: RootState) => state.allOrganizations.value);
   const typesSensors = useSelector((state: RootState) => state.allTypesOfSensors.value);
-  const [isSelectOrganisation, setIsSelectOrganisation] = useState<any[]>([]);
+  const [isSelectOrganisation, setIsSelectOrganisation] = useState<DataOrganisation>( { name: "string",
+  inn: '',
+  address: '',
+  directorName: '',
+  organizationPhone: '',
+  organizationEmail:''}
+);
   const [isSelectObject, setIsSelectObject] = useState<any[]>([]);
   const [isOpenDataOrganisation, setIsOpenDataOrganisation] = useState<boolean>(false);
   const [isOpenDataObject, setIsOpenDataObject] = useState<boolean>(false);
@@ -43,7 +61,7 @@ export default function Page(): React.JSX.Element {
   const [isModalObjectOpen, setIsModalObjectOpen] = useState<boolean>(false);
   const [showInit, setShowInit] = useState<boolean>(true);
   const [isPending, setIsPending] = React.useState<boolean>(false);
-  const [isSensorKey, setIsNewKey] = useState<SensorKeyType>({ sensorKey: '', sensorType: '' });
+  const [isSensorKey, setIsNewKey] = useState<SensorKeyType>({sensorKey: '', sensorType: ''});
   const [isOpenNewTypeSensor, setIsOpenNewTypeSensor] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const isMain = false;
@@ -55,12 +73,16 @@ export default function Page(): React.JSX.Element {
     setIsModalObjectOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeDataObject = () => {
+    setIsOpenDataObject(false);
   };
 
-  const closeObjectModal = () => {
-    setIsModalObjectOpen(false);
+  const closeDataOrganisation = () => {
+    setIsOpenDataOrganisation(false);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const openModalNewModel = (sensorKey: SensorKeyType) => {
@@ -72,20 +94,21 @@ export default function Page(): React.JSX.Element {
     setIsOpenNewTypeSensor(false);
   };
 
-  const isResultSuccess = async (result:ApiResult) => {
+  const isResultSuccess = async (result: ApiResult) => {
     dispatch(addTypeOfSensors(result.allSensorsType));
   };
   const initAllTypeSensors = async () => {
     setIsPending(true);
     try {
-      const result:ApiResult = await sensorsClient.initNewAllTypeOfSensors(jsonData);
+      const result: ApiResult = await sensorsClient.initNewAllTypeOfSensors(jsonData);
       if (result?.statusCode === 200) {
         dispatch(addTypeOfSensors(result.allSensorsType));
         setIsMessage(result?.message ?? ''); // Provide a default empty string
         setAlertColor('success');
       } else if (result?.statusCode === 400) {
         setIsMessage(result?.message ?? '');
-        setAlertColor('error');;
+        setAlertColor('error');
+        ;
       } else {
         setIsMessage(result?.message ?? '');
         setAlertColor('error');
@@ -102,12 +125,9 @@ export default function Page(): React.JSX.Element {
   };
 
   const openModalNewType = () => {
-    setIsNewKey({ sensorKey: '', sensorType: '' });
+    setIsNewKey({sensorKey: '', sensorType: ''});
     setIsOpenNewTypeSensor(true);
     setIsDisabled(false);
-  };
-  const closeModalObject = () => {
-    setIsModalObjectOpen(false);
   };
   const onExportClick = () => {
     // setIsModalObjectOpen(false);
@@ -148,7 +168,7 @@ export default function Page(): React.JSX.Element {
     setIsSelectObject(selectedObject);
   };
   useEffect(() => {
-    if(typesSensors.length !== 0 ) {
+    if (typesSensors.length !== 0) {
       setShowInit(false);
     }
   }, [typesSensors]);
@@ -232,9 +252,19 @@ export default function Page(): React.JSX.Element {
         setAlertColor={setAlertColor}
         setIsMessage={setIsMessage}/>
 
+      <ModalDataObject
+        isOpen={isOpenDataObject}
+        onCloseOut={closeDataObject}
+        dataObject={isSelectObject} />
+
+      <ModalDataOrganisation
+        isOpen={isOpenDataOrganisation}
+        onClose={closeDataOrganisation}
+        dataOrganisation={isSelectOrganisation}
+      />
       <ModalNewObject
         isOpenObject={isModalObjectOpen}
-        onCloseObject={closeObjectModal}
+        onCloseObject={closeDataObject}
         onRegistrationObjectSuccess={onRegistrationObjectSuccess}
         rowsOrganizations={organizations}
       />

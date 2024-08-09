@@ -1,13 +1,6 @@
 import * as React from 'react';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import { useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -21,15 +14,6 @@ import { GearFine } from '@phosphor-icons/react';
 import setKindOfObject from '@/lib/common/kind-of-object';
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
 
-// Define the TablePaginationActionsProps interface
-interface TablePaginationActionsProps {
-  count: number;
-  page: number;
-  rowsPerPage: number;
-  onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
-}
-
-// Define the ObjectsPaginationActionsTableProps interface
 interface ObjectsPaginationActionsTableProps {
   rows: any;
   selectObject: (id: string) => void;

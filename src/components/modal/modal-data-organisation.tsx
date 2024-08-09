@@ -7,7 +7,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { X } from '@phosphor-icons/react';
@@ -26,13 +25,13 @@ interface DataOrganisation {
 interface ModalDataOrganisationProps {
   isOpen: boolean;
   onClose: () => void;
-  dataOrganisation?: DataOrganisation; // Made optional to handle the case where no data is provided
+  dataOrganisation?: DataOrganisation;
 }
 
 const ModalDataOrganisation: React.FC<ModalDataOrganisationProps> = ({
                                                                        isOpen,
                                                                        onClose,
-                                                                       dataOrganisation,
+                                                                       dataOrganisation
                                                                      }) => {
   return (
     <Box>
@@ -48,14 +47,14 @@ const ModalDataOrganisation: React.FC<ModalDataOrganisationProps> = ({
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 600,
+            width: 400,
             maxWidth: '95%',
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
             p: 2,
-            maxHeight: '600px', // Ограничение максимальной высоты модального окна
-            overflowY: 'auto', // Вертикальный скролл
+            maxHeight: '600px', // Limit modal's max height
+            overflowY: 'auto', // Enable vertical scroll
           }}
         >
           <Stack id="modal-modal-title" sx={{ marginBottom: 3, position: 'relative' }}>
@@ -70,44 +69,30 @@ const ModalDataOrganisation: React.FC<ModalDataOrganisationProps> = ({
           </Stack>
           {dataOrganisation ? (
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 400 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <strong>Название:</strong>
-                    </TableCell>
-                    <TableCell>{dataOrganisation.name}</TableCell>
-                  </TableRow>
-                </TableHead>
+              <Table sx={{ minWidth: 300 }} aria-label="organization details">
                 <TableBody>
                   <TableRow>
-                    <TableCell>
-                      <strong>ИНН:</strong>
-                    </TableCell>
+                    <TableCell><strong>Название:</strong></TableCell>
+                    <TableCell>{dataOrganisation.name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><strong>ИНН:</strong></TableCell>
                     <TableCell>{dataOrganisation.inn}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>
-                      <strong>Адрес:</strong>
-                    </TableCell>
+                    <TableCell><strong>Адрес:</strong></TableCell>
                     <TableCell>{dataOrganisation.address}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>
-                      <strong>Имя руководителя:</strong>
-                    </TableCell>
+                    <TableCell><strong>Имя руководителя:</strong></TableCell>
                     <TableCell>{dataOrganisation.directorName}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>
-                      <strong>Телефон:</strong>
-                    </TableCell>
+                    <TableCell><strong>Телефон:</strong></TableCell>
                     <TableCell>{dataOrganisation.organizationPhone}</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>
-                      <strong>Email:</strong>
-                    </TableCell>
+                    <TableCell><strong>Email:</strong></TableCell>
                     <TableCell>{dataOrganisation.organizationEmail}</TableCell>
                   </TableRow>
                 </TableBody>

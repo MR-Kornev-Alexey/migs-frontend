@@ -38,20 +38,20 @@ interface DataObject {
 
 interface ModalDataObjectProps {
   isOpen: boolean;
-  onClose: () => void;
+  onCloseOut: () => void;
   dataObject?: any; // Made optional to handle the case where no data is provided
 }
 
 const ModalDataObject: React.FC<ModalDataObjectProps> = ({
                                                            isOpen,
-                                                           onClose,
+                                                           onCloseOut,
                                                            dataObject,
                                                          }) => {
   return (
     <Box>
       <Modal
         open={isOpen}
-        onClose={onClose}
+        onClose={onCloseOut}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -77,7 +77,7 @@ const ModalDataObject: React.FC<ModalDataObjectProps> = ({
                 Информация об объекте
               </Typography>
               <Box position="absolute" top={0} right={0}>
-                <X size={32} onClick={onClose} style={{ cursor: 'pointer' }} />
+                <X size={32} onClick={() => onCloseOut()} style={{ cursor: 'pointer' }} />
               </Box>
             </Box>
           </Stack>
