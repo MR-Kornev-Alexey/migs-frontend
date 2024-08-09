@@ -32,6 +32,7 @@ export interface ApiResult {
   allOrganizations?: any[];
   allObjects?: any[];
   allSensorsType?: any[];
+  allSensors?:  any[];
 }
 
 export interface Organization {

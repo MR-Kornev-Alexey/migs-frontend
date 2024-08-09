@@ -1,6 +1,6 @@
 "use client"
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ImportExportButtons from '@/lib/common/import-export-buttons';
@@ -19,8 +19,7 @@ import TypeSensorsWithoutSelect from "@/components/tables/type-sensors-without-s
 import {sensorsClient} from "@/components/dashboard/sensors/sensors-client";
 import ModalNewObject from "@/components/modal/modal-new-object";
 import {addObjects} from "@/store/object-reducer";
-import {ObjectFormInput} from "@/types/object-form-input";
-import Spinner from "@/components/svg-icons/spinner";
+import Spinner from "@/components/animated-icon/spinner";
 import {ApiResult} from "@/types/result-api";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
 import ModalNewModelSensor from "@/components/modal/modal-new-model-sensor";
@@ -148,6 +147,13 @@ export default function Page(): React.JSX.Element {
     const selectedObject = objects.find((obj: any) => obj.id === iDObject);
     setIsSelectObject(selectedObject);
   };
+  useEffect(() => {
+    if(typesSensors.length !== 0 ) {
+      setShowInit(false);
+    }
+  }, [typesSensors]);
+
+
   return (
     <Stack spacing={3}>
       <Box>

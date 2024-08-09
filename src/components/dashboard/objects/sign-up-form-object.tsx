@@ -18,7 +18,7 @@ import {z as zod} from 'zod';
 import {objectsMaterialsOptions, objectsTypeOptions} from '@/components/dashboard/objects/options-objects';
 import {objectClient} from './object-client';
 import {AlertColor} from '@mui/material';
-import Spinner from "@/components/svg-icons/spinner";
+import Spinner from "@/components/animated-icon/spinner";
 
 // Define the props type for SignUpFormObject
 interface SignUpFormObjectProps {

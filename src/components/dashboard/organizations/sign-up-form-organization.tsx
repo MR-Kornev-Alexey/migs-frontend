@@ -16,7 +16,7 @@ import { z as zod } from 'zod';
 
 import { organizationClient } from '@/components/dashboard/organizations/organization-client';
 import type { ApiResult } from '@/types/result-api';
-import Spinner from "@/components/svg-icons/spinner";
+import Spinner from "@/components/animated-icon/spinner";
 
 interface SignUpFormValues {
   name: string;

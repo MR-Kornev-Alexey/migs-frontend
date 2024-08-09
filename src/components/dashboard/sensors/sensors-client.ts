@@ -4,6 +4,7 @@ import { BASE_URL } from '@/config';
 import calculateRequestCode from '@/lib/calculate/calculate-request-code';
 import { getHeaders } from '@/lib/common-api/get-header';
 import postData from '@/lib/common/post-data';
+import {DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
 
 // Define types for request payloads and responses
 interface GetEmailResponse {
@@ -95,13 +96,13 @@ export class SensorsClient {
     }
   }
 
-  async changeIPForSensor(ip: string, id: string): Promise<any> {
+  async changeIPForSensor(id: string, ip: string): Promise<any> {
     const email = await this.getEmail();
-    const sendData: { ip: string; id: string; email: string } = { email, ip, id };
+    const sendData: { email: string; ip: string; id: string; } = { email, ip, id };
     return postData(`${BASE_URL}/sensors/change_ip_for_sensor`, sendData, await this.getHeadersWithEmail());
   }
 
-  async changeNetAddressSensor(netAddress: string, id: string): Promise<any> {
+  async changeNetAddressSensor(id: string, netAddress: string): Promise<any> {
     const email = await this.getEmail();
     const sendData: { id: string; email: string; network_number: number } = { email, network_number: Number(netAddress), id };
     return postData(`${BASE_URL}/sensors/change_net_address_for_sensor`, sendData, await this.getHeadersWithEmail());
@@ -157,9 +158,9 @@ export class SensorsClient {
     return postData(`${BASE_URL}/sensors/import_new_sensors_to_object`, sendData, await this.getHeadersWithEmail());
   }
 
-  async setNewSensorToObject(sensorData: SensorInfo, requestData: any): Promise<any> {
+  async setNewSensorToObject(sensorData: DefaultValuesNewSensor, requestData: any): Promise<any> {
     const email = await this.getEmail();
-    const sendData: { sensorsData: SensorInfo; requestData: any; email: string } = { email, sensorsData: sensorData, requestData };
+    const sendData: { sensorsData: DefaultValuesNewSensor; requestData: DefaultValuesNewSensor; email: string } = { email, sensorsData: sensorData, requestData };
     return postData(`${BASE_URL}/sensors/set_new_sensor_to_object`, sendData, await this.getHeadersWithEmail());
   }
 
