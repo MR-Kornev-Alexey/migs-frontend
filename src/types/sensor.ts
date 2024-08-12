@@ -50,10 +50,14 @@ export interface SensorInfo {
   sensor_operation_log: SensorOperationLog[];
   files: string[]; // More specific typing can be added if known
   requestSensorInfo: LatestData[];
-  error_information: string[];
+  error_information: ErrorData[] ;
   [key: string]: any; // Allows dynamic key access// More specific typing can be added if known
 }
 
+export interface ErrorData {
+  created_at: string; // You can change this to 'Date' if dates are handled as Date objects
+  error_information: string;
+}
 export interface AdditionalSensorInfo {
   id: number;
   sensor_id: string;

@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   // addUser: addUserReducer,
   // mainUser: mainUserReducer,
   // notifications: notificationReducer,
-  // selectedSensor: selectedSensorReducer,
+  selectedSensor: selectedSensorReducer,
   allSensors: sensorsReducer,
   allTypesOfSensors: typeOfSensorsReducer,
   allObjects: objectReducer,

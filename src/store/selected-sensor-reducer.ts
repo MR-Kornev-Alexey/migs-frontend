@@ -2,15 +2,15 @@
 
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: { value: any[] } = {
-  value: [],
+const initialState: { value: string } = {
+  value: '',
 };
 
 const selectedSensorSlice = createSlice({
   name: 'selectedSensor',
   initialState,
   reducers: {
-    addSelectedSensor(state, action: PayloadAction<any>) {
+    addSelectedSensor(state, action: PayloadAction<string>) {
       state.value = action.payload;
     },
   },

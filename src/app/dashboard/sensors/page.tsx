@@ -20,6 +20,7 @@ import {ApiResult} from "@/types/result-api";
 import {SensorInfo} from "@/types/sensor";
 import DialogChangeNetAddress from "@/components/dialogs/dialog-change-net-address";
 import ModalAddNewSensor from "@/components/modal/modal-add-new-sensor";
+import {addSelectedSensor} from "@/store/selected-sensor-reducer";
 
 // import DialogChangeNetAddress from '@/components/dialog/dialog-change-net-adress';
 // import DialogInputIP from '@/components/dialog/dialogInputIP';
@@ -102,7 +103,9 @@ export default function Page(): React.JSX.Element {
 
   //
   async function openAddInfoAboutSensors(sensor_id: string) {
-    console.log(sensor_id)
+    dispatch(addSelectedSensor(sensor_id));
+    router.push('/dashboard/sensors/additional-data-sensor');
+    console.log()
   }
 
   async function handleChangeStatus(sensor_id: string) {
@@ -148,7 +151,6 @@ export default function Page(): React.JSX.Element {
           setIsSelectedSensors(selected);
         }
       });
-      console.log('allSensors changed:', allSensors);
       setSensors(allSensors);
     }
   }, [allSensors]);
@@ -183,9 +185,9 @@ export default function Page(): React.JSX.Element {
 
   return (
     <Stack spacing={3}>
-      <div>
+      <Box>
         <Typography variant="h4">Датчики</Typography>
-      </div>
+      </Box>
       {loading ? (
         <Spinner/>
       ) : (
