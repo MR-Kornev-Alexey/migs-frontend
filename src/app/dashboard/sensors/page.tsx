@@ -50,9 +50,7 @@ export default function Page(): React.JSX.Element {
   const router = useRouter();
   const dispatch: AppDispatch = useDispatch();
   const [sensors, setSensors] = useState<any[]>([]); // Define appropriate type for sensors
-  const [objects, setObjects] = useState(allObjects);
   const [isSelectedSensors, setIsSelectedSensors] = useState<string[]>([]); // or any suitable type
-  const [typesSensors, setTypesSensors] = useState(allTypesSensors);
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalImportOpen, setIsModalImportOpen] = useState<boolean>(false);
@@ -235,7 +233,6 @@ export default function Page(): React.JSX.Element {
         objects={allObjects}
         typesSensors={allTypesSensors}
       />
-
       {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
     </Stack>
   );

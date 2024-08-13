@@ -23,6 +23,7 @@ import {useDispatch} from "react-redux";
 import {DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
 import {Spinner} from "@phosphor-icons/react";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
+import {addSensors} from "@/store/sensors-reducer";
 
 interface SignUpFormNewSensorProps {
   closeModal: () => void;
@@ -83,10 +84,12 @@ export function SignUpFormNewSensor({
     try {
       const result: ApiResult = await sensorsClient.setNewSensorToObject(values, requestData);
       if (result?.statusCode === 200) {
-        dispatch(addTypeOfSensors(result.allSensors));
+        dispatch(addSensors(result.allSensors));
         setIsMessage(result?.message ?? ''); // Provide a default empty string
         setAlertColor('success');
-        closeModal()
+        setTimeout(() => {
+          closeModal()
+        }, 2000);
       } else if (result?.statusCode === 400) {
         setIsMessage(result?.message ?? '');
         setAlertColor('error');
