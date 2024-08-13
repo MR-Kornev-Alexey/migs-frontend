@@ -72,19 +72,15 @@ export default function Page(): React.JSX.Element {
   const openModalObject = () => {
     setIsModalObjectOpen(true);
   };
-
   const closeDataObject = () => {
     setIsOpenDataObject(false);
   };
-
   const closeDataOrganisation = () => {
     setIsOpenDataOrganisation(false);
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
   const openModalNewModel = (sensorKey: SensorKeyType) => {
     setIsNewKey(sensorKey);
     setIsOpenNewTypeSensor(true);
@@ -93,7 +89,6 @@ export default function Page(): React.JSX.Element {
   const closeModalNewModel = () => {
     setIsOpenNewTypeSensor(false);
   };
-
   const isResultSuccess = async (result: ApiResult) => {
     dispatch(addTypeOfSensors(result.allSensorsType));
   };
@@ -123,7 +118,6 @@ export default function Page(): React.JSX.Element {
       }, 2500);
     }
   };
-
   const openModalNewType = () => {
     setIsNewKey({sensorKey: '', sensorType: ''});
     setIsOpenNewTypeSensor(true);
@@ -135,21 +129,18 @@ export default function Page(): React.JSX.Element {
   const onImportClick = () => {
     // setIsModalObjectOpen(false);
   };
-
   async function onSelectedRowsChange(selected: Set<string>) {
     // Convert the Set to an array
     const selectedArray = Array.from(selected);
     // Set the array to state
     setIsSelectedObjects(selectedArray);
   }
-
   const openDataOrganisation = (iDOrganisation: any) => {
     setIsOpenDataOrganisation(true);
     console.log('iDOrganisation ---', iDOrganisation);
     const selectedOrganisation = organizations.find((org) => org.id === iDOrganisation);
     setIsSelectOrganisation(selectedOrganisation);
   };
-
   async function onRegistrationOrganizationSuccess(organizationsData: any) {
     dispatch(addOrganizations(organizationsData?.allOrganizations));
   }

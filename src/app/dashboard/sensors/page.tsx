@@ -194,7 +194,6 @@ export default function Page(): React.JSX.Element {
         <Stack>
           <ImportExportButtons onExportClick={onExportClick} onImportClick={onImportClick}/>
           <SensorsPaginationAndSelectTable
-
             rows={onSelectedRowsSensors(sensors, isSelectedSensors)}
             selectObject={selectObject}
             page={page}
