@@ -13,7 +13,7 @@ import {
 import { Article } from '@phosphor-icons/react';
 import { SvgSpinnersBarsScale } from '@/components/animated-icon/chart-icon';
 import { LineMdPlayFilledToPauseTransition } from '@/components/animated-icon/pause-icon';
-import { SensorInfo } from "@/types/sensor";
+import { type SensorInfo } from "@/types/sensor";
 
 interface MainSensorDataTableProps {
   dataOfSensor: SensorInfo;

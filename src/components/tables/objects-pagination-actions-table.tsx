@@ -80,7 +80,7 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject }: Ob
                 <TableCell
                   style={{ width: '10%', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => selectObject(row.id)}
+                  onClick={() => { selectObject(row.id); }}
                 >
                   <GearFine size={24} />
                 </TableCell>

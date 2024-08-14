@@ -64,7 +64,7 @@ export default function TypeSensorsWithoutSelect({ rows, openModalNewModel }: Ty
                 <TableCell
                   style={{ width: '10%', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => openModalNewModel({ sensorKey: row.sensor_key, sensorType: row.sensor_type })}
+                  onClick={() => { openModalNewModel({ sensorKey: row.sensor_key, sensorType: row.sensor_type }); }}
                 >
                   <PlusSquare size={24} />
                 </TableCell>

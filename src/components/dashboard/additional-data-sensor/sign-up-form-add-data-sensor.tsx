@@ -14,19 +14,19 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography, AlertColor
+  Typography, type AlertColor
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 import { Spinner } from "@phosphor-icons/react";
-import { SensorInfo } from "@/types/sensor";
+import { type SensorInfo } from "@/types/sensor";
 
-type Props = {
+interface Props {
   sensorMain: SensorInfo;
   successOfResult: (value: Values) => void;
   isMessageAlertModal: string;
   isAlertModalColor: AlertColor;
-};
+}
 
 
 const numericSingleDotOrCommaRegex = /^-?[0-9]+([,.][0-9]{1,2})?$/;
@@ -112,7 +112,7 @@ export function SignUpFormAddDataSensor({
               <FormControl error={Boolean(errors.factory_number)}>
                 <InputLabel>Введите заводской номер</InputLabel>
                 <OutlinedInput {...field} label="Введите заводской номер" />
-                {errors.factory_number && <FormHelperText>{errors.factory_number.message}</FormHelperText>}
+                {errors.factory_number ? <FormHelperText>{errors.factory_number.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -129,9 +129,7 @@ export function SignUpFormAddDataSensor({
                     </MenuItem>
                   ))}
                 </Select>
-                {errors.unit_of_measurement && (
-                  <FormHelperText>{errors.unit_of_measurement.message}</FormHelperText>
-                )}
+                {errors.unit_of_measurement ? <FormHelperText>{errors.unit_of_measurement.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -143,9 +141,7 @@ export function SignUpFormAddDataSensor({
               <FormControl error={Boolean(errors.installation_location)}>
                 <InputLabel>Введите место установки</InputLabel>
                 <OutlinedInput {...field} label="Введите место установки" />
-                {errors.installation_location && (
-                  <FormHelperText>{errors.installation_location.message}</FormHelperText>
-                )}
+                {errors.installation_location ? <FormHelperText>{errors.installation_location.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -156,7 +152,7 @@ export function SignUpFormAddDataSensor({
               <FormControl error={Boolean(errors.coefficient)}>
                 <InputLabel>Введите коэффициент</InputLabel>
                 <OutlinedInput {...field} label="Введите коэффициент" />
-                {errors.coefficient && <FormHelperText>{errors.coefficient.message}</FormHelperText>}
+                {errors.coefficient ? <FormHelperText>{errors.coefficient.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -167,9 +163,7 @@ export function SignUpFormAddDataSensor({
               <FormControl error={Boolean(errors.additionalSensorInfoNotation)}>
                 <InputLabel>Введите примечание</InputLabel>
                 <OutlinedInput {...field} label="Введите примечание" />
-                {errors.additionalSensorInfoNotation && (
-                  <FormHelperText>{errors.additionalSensorInfoNotation.message}</FormHelperText>
-                )}
+                {errors.additionalSensorInfoNotation ? <FormHelperText>{errors.additionalSensorInfoNotation.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -178,7 +172,7 @@ export function SignUpFormAddDataSensor({
           </Button>
         </Stack>
       </form>
-      {isMessageAlertModal && <Alert color={isAlertModalColor}>{isMessageAlertModal}</Alert>}
+      {isMessageAlertModal ? <Alert color={isAlertModalColor}>{isMessageAlertModal}</Alert> : null}
     </Stack>
   );
 }

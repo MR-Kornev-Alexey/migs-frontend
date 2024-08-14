@@ -1,6 +1,6 @@
 'use client';
 
-import { ObjectFormInput } from '@/types/object-form-input';
+import { type ObjectFormInput } from '@/types/object-form-input';
 import { BASE_URL } from '@/config';
 import { getHeaders } from '@/lib/common-api/get-header';
 import postData from "@/lib/common/post-data";

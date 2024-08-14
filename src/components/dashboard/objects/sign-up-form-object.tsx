@@ -17,7 +17,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {z as zod} from 'zod';
 import {objectsMaterialsOptions, objectsTypeOptions} from '@/components/dashboard/objects/options-objects';
 import {objectClient} from './object-client';
-import {AlertColor} from '@mui/material';
+import {type AlertColor} from '@mui/material';
 import Spinner from "@/components/animated-icon/spinner";
 
 // Define the props type for SignUpFormObject
@@ -84,7 +84,7 @@ export function SignUpFormObject({
           setAlertColor('error');
         }
       } catch (error) {
-        setIsMessage('Произошла ошибка:' + (error as Error).message);
+        setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
         setAlertColor('error');
       } finally {
         setIsPending(false);
@@ -224,7 +224,7 @@ export function SignUpFormObject({
           </Button>
         </Stack>
       </form>
-      {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
     </Stack>
   );
 }

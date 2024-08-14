@@ -112,7 +112,7 @@ export function SignUpFormOrganization({
         }, 2500)
       }
     } catch (error) {
-      setIsModalMessage('Произошла ошибка:' + (error as Error).message);
+      setIsModalMessage(`Произошла ошибка:${  (error as Error).message}`);
       setModalAlertColor('error');
       setIsPending(false);
     }
@@ -157,7 +157,7 @@ export function SignUpFormOrganization({
           </Button>
         </Stack>
       </form>
-      {isModalMessage && <Alert color={alertModalColor}>{isModalMessage}</Alert>}
+      {isModalMessage ? <Alert color={alertModalColor}>{isModalMessage}</Alert> : null}
     </Stack>
   );
 }

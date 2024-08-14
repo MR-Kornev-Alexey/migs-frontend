@@ -3,7 +3,7 @@ interface Sensor {
   model: string | string[];
 }
 
-const typeOfSensorsForCreate: { [key: string]: Sensor } = {
+const typeOfSensorsForCreate: Record<string, Sensor> = {
   strainGauge: { type: 'Тензометр', model: ['РФ-251', 'LS5', 'SVWG-D01'] },
   inclinoMeter: { type: 'Инклинометр', model: ['ИН-Д3'] },
   rangefinder: { type: 'Дальномер', model: ['DLS-B 15', 'FLS-C 10'] },

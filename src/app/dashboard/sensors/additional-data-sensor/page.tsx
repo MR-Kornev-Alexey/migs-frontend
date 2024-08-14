@@ -4,26 +4,30 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {useDispatch, useSelector} from 'react-redux';
-import {Alert, AlertColor, Stack, Typography, Grid} from '@mui/material';
-import {AppDispatch, RootState} from '@/store/store';
+import {Alert, type AlertColor, Stack, Typography, Grid} from '@mui/material';
+import {type AppDispatch, type RootState} from '@/store/store';
 import ModalInfoAboutSensor from '@/components/modal/modal-info-about-sensor';
 import MainSensorDataTable from "@/components/tables/main-sensor-data-table";
 import AdditionalSensorInfoTable from "@/components/tables/additional-sensor-info-table";
-import {AdditionalSensorInfo, SensorInfo} from "@/types/sensor";
+import {type AdditionalSensorInfo, type SensorInfo} from "@/types/sensor";
 import {sensorsClient} from "@/components/dashboard/sensors/sensors-client";
-import {ApiResult} from "@/types/result-api";
+import {type ApiResult} from "@/types/result-api";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {addSensors} from "@/store/sensors-reducer";
 import ModalNewAdditionalDataSensor from "@/components/modal/modal-new-additional-data-sensor";
 import ModalSetLimitValueSensor from "@/components/modal/modal-set-limit-value-sensor";
+import RequestSensorInfoTable from "@/components/tables/request-sensor-info-table";
+import {RequestDataForSensors} from "@/types/out-sensors-data";
+import {handleResponseNoModal} from "@/lib/utils/handle-response-no-modal";
+import { handleResponse, handleError } from '@/lib/utils/handler-response-with-modal';
 
 export default function Page(): React.JSX.Element {
-  const [alertFileColor, setAlertFileColor] = useState<AlertColor>('success');
+  const [alertColor, setAlertColor] = useState<AlertColor>('success');
+  const [isMessage, setIsMessage] = useState<string>('');
   const [isModalErrorOpen, setIsModalErrorOpen] = useState<boolean>(false);
   const [dataOfSensor, setIsDataOfSensor] = useState<SensorInfo>();
   const [additionalInfo, setAdditionalInfo] = useState<AdditionalSensorInfo | null>(null);
-  const [isMessage, setIsMessage] = useState<string>('');
   const router = useRouter();
   const allSensors = useSelector((state: RootState) => state.allSensors.value);
   const selectedID: string = useSelector((state: RootState) => state.selectedSensor.value);
@@ -43,12 +47,12 @@ export default function Page(): React.JSX.Element {
         setAdditionalInfo(sensorData.additional_sensor_info[0] ?? null); // Track the first additional sensor info
       } else {
         setIsMessage('Данные датчика не найдены');
-        setAlertFileColor('error');
+        setAlertColor('error');
         router.push('/dashboard/sensors'); // Redirect if data is not found
       }
     } else {
       setIsMessage('Данные датчика не найдены');
-      setAlertFileColor('error');
+      setAlertColor('error');
       router.push('/dashboard/sensors'); // Redirect if no ID is selected
     }
   }, [allSensors, selectedID, router]);
@@ -56,20 +60,11 @@ export default function Page(): React.JSX.Element {
   const openModalErrorInfoSensor = () => {
     setIsModalErrorOpen(true);
   };
-
   const closeModalErrorInfoSensor = () => {
     setIsModalErrorOpen(false);
   };
-
-
   const goBack = () => {
     router.push('/dashboard/sensors');
-  };
-
-  const updateAdditionalParameterForSensors = async (value: string, parameter: string) => {
-    console.log(value, parameter)
-    const sensorsData: ApiResult = await sensorsClient.addAdditionalParameterForSensor(value, parameter, dataOfSensor?.id)
-    dispatch(addSensors(sensorsData?.allSensors));
   };
   const openModalNewAdditionalDataSensor = () => {
     setIsAdditionalOpen(true);
@@ -77,37 +72,23 @@ export default function Page(): React.JSX.Element {
   const openSetIsModalLimitValueSensor = () => {
     setIsModalLimitValueSensor(true);
   };
-
   const closeIsModalLimitValueSensor = () => {
     setIsModalLimitValueSensor(false);
   };
-
   const closeModalNewAdditionalDataSensor = () => {
     setIsAdditionalOpen(false);
   };
-  const handleResponse = (response: ApiResult, successMessage: string, errorMessage: string) => {
-    if (response?.statusCode === 200) {
-      dispatch(addSensors(response?.allSensors));
-      setIsMessageAlertModal(response?.message || successMessage);
-      setIsAlertModalColor("success");
-      return true;
-    } else {
-      setIsAlertModalColor("error");
-      setIsMessageAlertModal(response?.message || errorMessage);
-      return false;
-    }
-  };
-
-  const handleError = (error: any) => {
-    setIsAlertModalColor("error");
-    setIsMessageAlertModal(error?.message || 'Ошибка при выполнении запроса');
-  };
-
   const successOfResult = async (data: any) => {
     try {
-      // Попытка отправить запрос и получить данные
       const sensorsData: ApiResult = await sensorsClient.addAdditionalDataForSensor(data);
-      const success = handleResponse(sensorsData, 'Успешное выполнение операции', 'Неизвестная ошибка');
+      const success = handleResponse({
+        response: sensorsData,
+        successMessage: 'Успешное выполнение операции',
+        errorMessage: 'Неизвестная ошибка',
+        dispatch,
+        setIsMessageAlertModal,
+        setIsAlertModalColor,
+      });
       if (success) {
         setTimeout(() => {
           setIsAdditionalOpen(false);
@@ -115,36 +96,74 @@ export default function Page(): React.JSX.Element {
         }, 2000);
       }
     } catch (error) {
-      handleError(error);
+      handleError({
+        error,
+        setIsMessageAlertModal,
+        setIsAlertModalColor,
+      });
     }
   };
-
   const sendChangeDataForModelOnObject = async (data: any) => {
     try {
-      // Попытка отправить запрос и получить данные
       const sensorsData: ApiResult = await sensorsClient.changeValuesDataSensor(data);
-      const success = handleResponse(sensorsData, 'Успешное выполнение операции', 'Неизвестная ошибка');
+      const success = handleResponse({
+        response: sensorsData,
+        successMessage: 'Успешное выполнение операции',
+        errorMessage: 'Неизвестная ошибка',
+        dispatch,
+        setIsMessageAlertModal,
+        setIsAlertModalColor,
+      });
       if (success) {
         setTimeout(() => {
           setIsModalLimitValueSensor(false);
           setIsMessageAlertModal('');
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
-      handleError(error);
+      handleError({
+        error,
+        setIsMessageAlertModal,
+        setIsAlertModalColor,
+      });
     }
+  };
+  const updateAdditionalParameterForSensors = async (value: string, parameter: string) => {
+    const response: ApiResult = await sensorsClient.addAdditionalParameterForSensor(value, parameter, dataOfSensor?.id);
+    handleResponseNoModal({
+      response,
+      setIsMessage,
+      setAlertColor,
+      dispatch
+    });
+  };
+  const updateRequestDataForSensors = async (value: string, parameter: string) => {
+    const sendData = {
+      sensor_id: dataOfSensor?.id,
+      parameter,
+      model: dataOfSensor?.model,
+      object_id: dataOfSensor?.object_id,
+      value,
+      email: ''
+    };
+    const response: ApiResult = await sensorsClient.addRequestDataForSensor(sendData);
+    handleResponseNoModal({
+      response,
+      setIsMessage,
+      setAlertColor,
+      dispatch
+    });
   };
 
   return (
     <Stack spacing={3}>
       <Box display="flex" justifyContent="left" sx={{marginTop: 2}}>
-        <Button variant="contained" onClick={goBack}> назад
+        <Button variant="contained" onClick={goBack} sx={{minWidth: 200}}> назад
         </Button>
       </Box>
-      {dataOfSensor && (
-        <Stack>
+      {dataOfSensor ? <Stack>
           <Typography variant="h4">
-            {dataOfSensor.sensor_type} | {dataOfSensor.designation} {dataOfSensor.id}
+            {dataOfSensor.sensor_type} | {dataOfSensor.designation} {dataOfSensor.model}
           </Typography>
           <Typography variant="h5" sx={{marginY: 2}}>
             Основные данные
@@ -154,22 +173,31 @@ export default function Page(): React.JSX.Element {
           <Typography variant="h5" sx={{marginY: 2}}>
             Дополнительные данные
           </Typography>
-          {additionalInfo && <AdditionalSensorInfoTable additionalInfo={additionalInfo}/>}
-          <Grid container spacing={2} sx={{ marginY: 3 }}>
-            <Grid  md={6} xs={12} display="flex" justifyContent="center">
-              <Button variant="contained" onClick={openModalNewAdditionalDataSensor}>
+          {additionalInfo ? <AdditionalSensorInfoTable additionalInfo={additionalInfo}/> : null}
+          <Grid container spacing={2} sx={{marginY: 3}}>
+            <Grid md={6} xs={12} display="flex" justifyContent="center">
+              <Button variant="contained" onClick={openModalNewAdditionalDataSensor} sx={{minWidth: 200}}>
                 Загрузить данные
               </Button>
             </Grid>
             <Grid md={6} xs={12} display="flex" justifyContent="center">
-              <Button variant="contained" onClick={openSetIsModalLimitValueSensor}>
+              <Button variant="contained" onClick={openSetIsModalLimitValueSensor} sx={{minWidth: 200}}>
                 Управление контролем
               </Button>
             </Grid>
           </Grid>
-        </Stack>
-      )}
-      {isMessage && <Alert color={alertFileColor}>{isMessage}</Alert>}
+          <RequestSensorInfoTable dataOfSensor={dataOfSensor}
+                                  updateRequestDataForSensors={updateRequestDataForSensors}/>
+          <Box sx={{marginY: 2}}>
+            <Box>
+              <sup>&#8432;</sup> Параметры устанавливаются для всех датчиков указанной модели и типа на объекте
+            </Box>
+            <Box>
+              <sup>&#8432;&nbsp;&nbsp;&#8432;</sup> Обнуление устанавливается для всех датчиков на объекте
+            </Box>
+          </Box>
+        </Stack> : null}
+      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
       <ModalInfoAboutSensor
         isOpen={isModalErrorOpen}
         onClose={closeModalErrorInfoSensor}

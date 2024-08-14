@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import {Alert, AlertColor, Modal} from '@mui/material';
+import {Alert, type AlertColor, Modal} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { X } from '@phosphor-icons/react';
-import { SensorInfo } from "@/types/sensor";
+import { type SensorInfo } from "@/types/sensor";
 import NumberInputIntroduction from "@/components/dashboard/additional-data-sensor/number-input-introduction";
 
 interface ModalSetLimitValueSensorProps {
@@ -138,6 +138,7 @@ const ModalSetLimitValueSensor: React.FC<ModalSetLimitValueSensorProps> = ({
               </Typography>
               <NumberInputIntroduction value={minQuantity} onChange={setMinQuantity} />
             </Box>
+            {isMessageAlertModal ? <Alert sx={{marginY:1 }} color={isAlertModalColor}>{isMessageAlertModal}</Alert> : null}
             <Box mt={2} display="flex" justifyContent="space-between">
               <Button onClick={onClose}>Отмена</Button>
               <Button onClick={sendAllDataForSensors} disabled={limitValue === 0}>
@@ -147,7 +148,6 @@ const ModalSetLimitValueSensor: React.FC<ModalSetLimitValueSensorProps> = ({
             <Typography sx={{ marginTop: 1 }} variant="body2"><sup>*</sup>
               Значения выставляются для всего объекта и для данного типа датчика
             </Typography>
-            {isMessageAlertModal && <Alert sx={{marginY:2 }} color={isAlertModalColor}>{isMessageAlertModal}</Alert>}
           </Stack>
         </Box>
       </Modal>

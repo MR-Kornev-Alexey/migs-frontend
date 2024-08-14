@@ -15,8 +15,8 @@ export default async function calculateRequestCode(netNumber: number | string, m
     case 'ИН-Д3':
       return formatSensorString(netNumberValue);
     case 'РФ-251':
-      return hexNumber + ' ' + 86;
+      return `${hexNumber  } 86`;
     default:
-      return 'error';
+      return 'Не определен';
   }
 }

@@ -102,7 +102,7 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
                 <TableCell
                   style={{ width: '5%', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => openDataOrganisation(row.id)}
+                  onClick={() => { openDataOrganisation(row.id); }}
                 >
                   <GearFine size={24} />
                 </TableCell>

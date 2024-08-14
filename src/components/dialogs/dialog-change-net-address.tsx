@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSensors } from '@/store/sensors-reducer';
-import { AppDispatch, RootState } from '@/store/store';
+import { type AppDispatch, type RootState } from '@/store/store';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';

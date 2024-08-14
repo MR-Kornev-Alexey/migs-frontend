@@ -77,7 +77,7 @@ const ModalDataObject: React.FC<ModalDataObjectProps> = ({
                 Информация об объекте
               </Typography>
               <Box position="absolute" top={0} right={0}>
-                <X size={32} onClick={() => onCloseOut()} style={{ cursor: 'pointer' }} />
+                <X size={32} onClick={() => { onCloseOut(); }} style={{ cursor: 'pointer' }} />
               </Box>
             </Box>
           </Stack>

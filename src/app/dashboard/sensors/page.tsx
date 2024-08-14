@@ -4,8 +4,8 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {addSensors, updateSensors} from '@/store/sensors-reducer';
-import {AppDispatch, RootState} from '@/store/store';
-import {Alert, AlertColor} from '@mui/material';
+import {type AppDispatch, type RootState} from '@/store/store';
+import {Alert, type AlertColor} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -16,8 +16,8 @@ import Spinner from "@/components/animated-icon/spinner";
 import updateSensorsAfterAPI from '@/components/dashboard/sensors/update-sensors-after-api';
 import {sensorsClient} from '@/components/dashboard/sensors/sensors-client';
 import SensorsPaginationAndSelectTable from "@/components/tables/sensors-pagination-and-select-table";
-import {ApiResult} from "@/types/result-api";
-import {SensorInfo} from "@/types/sensor";
+import {type ApiResult} from "@/types/result-api";
+import {type SensorInfo} from "@/types/sensor";
 import DialogChangeNetAddress from "@/components/dialogs/dialog-change-net-address";
 import ModalAddNewSensor from "@/components/modal/modal-add-new-sensor";
 import {addSelectedSensor} from "@/store/selected-sensor-reducer";
@@ -139,7 +139,7 @@ export default function Page(): React.JSX.Element {
   }
 
   useEffect(() => {
-    let selected: string[] = [];
+    const selected: string[] = [];
     if (allSensors.length > 0) {
       allSensors.forEach((sensor) => {
         // Check if organization_id already exists in the selected array
@@ -155,7 +155,7 @@ export default function Page(): React.JSX.Element {
 
   async function restoreAllSensors(sensorsData: any) {
     setShowChoice(false);
-    let selected: string[] = [];
+    const selected: string[] = [];
     sensorsData.forEach((sensor: any) => {
       if (!selected.includes(sensor.object.id)) {
         selected.push(sensor.object.id);
@@ -176,9 +176,9 @@ export default function Page(): React.JSX.Element {
     // console.log('sensors --', sensors);
     if (sensors.length > 0) {
       return sensors.filter((obj: any) => selected.includes(obj.object.id));
-    } else {
+    } 
       return sensors;
-    }
+    
   }
 
   return (
@@ -205,11 +205,9 @@ export default function Page(): React.JSX.Element {
             openAddInfoAboutSensors={openAddInfoAboutSensors}
           />
           <Box display="flex" justifyContent="space-around" sx={{marginTop: 3}}>
-            {showChoice && (
-              <Button variant="contained" onClick={() => restoreAllSensors(sensors)}>
+            {showChoice ? <Button variant="contained" onClick={() => restoreAllSensors(sensors)}>
                 Сбросить выборку
-              </Button>
-            )}
+              </Button> : null}
           </Box>
         </Stack>
       )}
@@ -233,7 +231,7 @@ export default function Page(): React.JSX.Element {
         objects={allObjects}
         typesSensors={allTypesSensors}
       />
-      {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
     </Stack>
   );
 }

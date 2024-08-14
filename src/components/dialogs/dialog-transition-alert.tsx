@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
+import { type TransitionProps } from '@mui/material/transitions';
 import { styled } from '@mui/material/styles';
 
 // Определяем типы пропсов
@@ -54,7 +54,7 @@ const DialogTransitionAlert: React.FC<DialogAlertInfoProps> = ({
       onClose={onClose}
       aria-describedby="alert-dialog-slide-description"
     >
-      <StyledDialogTitle>{"Внимание"}</StyledDialogTitle>
+      <StyledDialogTitle>Внимание</StyledDialogTitle>
       <DialogContent>
         <StyledDialogContentText id="alert-dialog-slide-description">
           {isMessageAlert}

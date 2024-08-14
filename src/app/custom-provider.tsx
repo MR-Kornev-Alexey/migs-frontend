@@ -16,7 +16,7 @@ import {objectClient} from "@/components/dashboard/objects/object-client";
 import {sensorsClient} from "@/components/dashboard/sensors/sensors-client";
 import {addObjects} from "@/store/object-reducer";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
-import {AnyAction} from "redux";
+import {type AnyAction} from "redux";
 import {addSensors} from "@/store/sensors-reducer";
 
 interface CustomProviderProps {
@@ -39,10 +39,10 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
           sensorsClient.getAllSensors()
         ];
         const [orgResult, objResult,typeResult, sensorResult] = await Promise.allSettled(promises);
-        handleResult(orgResult as PromiseSettledResult<ApiResult>, "организаций", addOrganizations, "allOrganizations");
-        handleResult(objResult as PromiseSettledResult<ApiResult>, "объектов", addObjects, "allObjects");
-        handleResult(typeResult as PromiseSettledResult<ApiResult>, "типов датчиков", addTypeOfSensors, "allSensorsType");
-        handleResult(sensorResult as PromiseSettledResult<ApiResult>, "датчиков", addSensors, "allSensors");
+        handleResult(orgResult, "организаций", addOrganizations, "allOrganizations");
+        handleResult(objResult, "объектов", addObjects, "allObjects");
+        handleResult(typeResult, "типов датчиков", addTypeOfSensors, "allSensorsType");
+        handleResult(sensorResult, "датчиков", addSensors, "allSensors");
 
       } catch (error) {
         console.error("Ошибка при получении данных:", error);
@@ -84,13 +84,11 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
     <LocalizationProvider>
       <UserProvider>
         <ThemeProvider>
-          {isMessage && (
-            <Box display="flex" justifyContent="center" alignItems="center">
+          {isMessage ? <Box display="flex" justifyContent="center" alignItems="center">
               <Alert sx={{marginTop: 2}} color={alertColor}>
                 {isMessage}
               </Alert>
-            </Box>
-          )}
+            </Box> : null}
           {children}
         </ThemeProvider>
       </UserProvider>

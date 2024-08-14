@@ -1,7 +1,7 @@
 // Converts a decimal number to its hexadecimal representation
 function decimalToHex(decimal: number): string {
   if (decimal < 0) {
-    return '-' + Math.abs(decimal).toString(16).padStart(2, '0');
+    return `-${  Math.abs(decimal).toString(16).padStart(2, '0')}`;
   }
   return decimal.toString(16).padStart(2, '0');
 }

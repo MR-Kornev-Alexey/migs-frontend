@@ -13,7 +13,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="6;1;6"
-        ></animate>
+         />
         <animate
           attributeName="height"
           begin="0;svgSpinnersBarsScale1.end-0.1s"
@@ -21,7 +21,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="12;22;12"
-        ></animate>
+         />
       </rect>
       <rect width={2.8} height={12} x={5.8} y={6} fill="#086837">
         <animate
@@ -31,7 +31,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="6;1;6"
-        ></animate>
+         />
         <animate
           attributeName="height"
           begin="svgSpinnersBarsScale0.begin+0.1s"
@@ -39,7 +39,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="12;22;12"
-        ></animate>
+         />
       </rect>
       <rect width={2.8} height={12} x={10.6} y={6} fill="#086837">
         <animate
@@ -49,7 +49,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="6;1;6"
-        ></animate>
+         />
         <animate
           attributeName="height"
           begin="svgSpinnersBarsScale0.begin+0.2s"
@@ -57,7 +57,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="12;22;12"
-        ></animate>
+         />
       </rect>
       <rect width={2.8} height={12} x={15.4} y={6} fill="#086837">
         <animate
@@ -67,7 +67,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="6;1;6"
-        ></animate>
+         />
         <animate
           attributeName="height"
           begin="svgSpinnersBarsScale0.begin+0.3s"
@@ -75,7 +75,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="12;22;12"
-        ></animate>
+         />
       </rect>
       <rect width={2.8} height={12} x={20.2} y={6} fill="#086837">
         <animate
@@ -86,7 +86,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="6;1;6"
-        ></animate>
+         />
         <animate
           attributeName="height"
           begin="svgSpinnersBarsScale0.begin+0.4s"
@@ -94,7 +94,7 @@ export function SvgSpinnersBarsScale(props: SVGProps<SVGSVGElement>) {
           dur="0.6s"
           keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
           values="12;22;12"
-        ></animate>
+         />
       </rect>
     </svg>
   );

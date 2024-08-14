@@ -1,16 +1,12 @@
 'use client';
-import {AdditionalSensorInfo, SensorInfo} from '@/types/sensor';
+import {type AdditionalSensorInfo, type SensorInfo} from '@/types/sensor';
 import {BASE_URL} from '@/config';
 import calculateRequestCode from '@/lib/calculate/calculate-request-code';
 import {getHeaders} from '@/lib/common-api/get-header';
 import postData from '@/lib/common/post-data';
-import {DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
-import {ApiResult} from "@/types/result-api";
-
-// Define types for request payloads and responses
-interface GetEmailResponse {
-  email: string;
-}
+import {type DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
+import {type ApiResult} from "@/types/result-api";
+import {RequestDataForSensors} from "@/types/out-sensors-data";
 
 interface SensorData {
   email: string;
@@ -146,7 +142,7 @@ export class SensorsClient {
     try {
       // Fetch the email (assuming getEmail is an async function)
       const email = await this.getEmail();
-      const sendData= { additionalSensorsData: sensorsData, email: email }
+      const sendData= { additionalSensorsData: sensorsData, email }
       return await postData(
         `${BASE_URL}/sensors/set_additional_data_for_sensor`,
         sendData,
@@ -161,16 +157,16 @@ export class SensorsClient {
   async addAdditionalParameterForSensor(
     value: string,
     parameter: string,
-    sensorsId: string | undefined // Assuming sensorsId is a string. Adjust type if different.
+    sensorsId: string | undefined
   ): Promise<ApiResult> {
     try {
       // Fetch the email (assuming getEmail is an async function)
       const email = await this.getEmail();
       const sendData = {
         sensor_id: sensorsId,
-        email: email,
-        parameter: parameter,
-        value: value
+        email,
+        parameter,
+        value
       };
       // Return the response or handle it as needed
       return await postData(
@@ -185,12 +181,28 @@ export class SensorsClient {
     }
   }
 
-
-  async addRequestDataForSensor(requestDataForSensor: any): Promise<any> {
-    const email = await this.getEmail();
-    requestDataForSensor.periodicity = Number(requestDataForSensor.periodicity);
-    const sendData: { email: string; requestDataForSensor: any } = { email, requestDataForSensor };
-    return postData(`${BASE_URL}/sensors/set_request_data_for_sensor`, sendData, await this.getHeadersWithEmail());
+  async addRequestDataForSensor(sendData: {
+                                  sensor_id: string | undefined;
+                                  parameter: string;
+                                  model: string | undefined;
+                                  value: string;
+                                  object_id: string | undefined;
+                                  email: string;
+                                }
+  ): Promise<ApiResult> {
+    try {
+      sendData.email =  await this.getEmail();
+      // Return the response or handle it as needed
+      return await postData(
+        `${BASE_URL}/sensors/set_request_parameter_for_sensor`,
+        sendData,
+        await this.getHeadersWithEmail()
+      );
+    } catch (error) {
+      // Handle any errors that occur during the process
+      console.error('Error adding additional parameter for sensor:', error);
+      throw error;
+    }
   }
 
   async importNewSensorsToObject(object_id: string, csv: any): Promise<any> {
@@ -207,7 +219,7 @@ export class SensorsClient {
 
   async changeValuesDataSensor(data:SensorInfo): Promise<any> {
     const email = await this.getEmail();
-    const sendData= {  limitValuesDataSensor: data, email: email }
+    const sendData= {  limitValuesDataSensor: data, email }
     return postData(`${BASE_URL}/sensors/change_limit_values_one_sensor`, sendData, await this.getHeadersWithEmail());
   }
 

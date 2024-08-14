@@ -19,7 +19,7 @@ import type { AlertColor } from '@mui/material';
 import { type ApiResult, type Organization } from '@/types/result-api';
 import { organizationClient } from '@/components/dashboard/organizations/organization-client';
 import {useSelector} from "react-redux";
-import {RootState} from "@/store/store";
+import {type RootState} from "@/store/store";
 
 // Define the schema
 const schema = zod.object({

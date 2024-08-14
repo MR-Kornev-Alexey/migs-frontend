@@ -1,8 +1,8 @@
-import { SensorInfo } from '@/types/sensor';
+import { type SensorInfo } from '@/types/sensor';
 
 const useUpdateSensor = (updatedSensor: SensorInfo, allSensors: any) => {
   // Копируем массив всех датчиков
-  let updatedAllSensors = [...allSensors];
+  const updatedAllSensors = [...allSensors];
 
   // Находим индекс датчика
   const sensorIndex = updatedAllSensors.findIndex((sensor) => sensor.id === updatedSensor.id);

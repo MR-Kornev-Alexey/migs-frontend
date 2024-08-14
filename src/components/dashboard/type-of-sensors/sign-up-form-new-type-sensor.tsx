@@ -15,8 +15,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import { sensorsClient } from '@/components/dashboard/sensors/sensors-client';
-import { AlertColor } from '@mui/material';
-import {ApiResult} from "@/types/result-api";
+import { type AlertColor } from '@mui/material';
+import {type ApiResult} from "@/types/result-api";
 import {addOrganizations} from "@/store/organization-reducer";
 import {Spinner} from "@phosphor-icons/react";
 
@@ -114,7 +114,7 @@ export function SignUpFormNewTypeSensor({
               <FormControl error={Boolean(errors.sensor_key)}>
                 <InputLabel>Введите ключ</InputLabel>
                 <OutlinedInput {...field} label="Введите ключ" disabled={isDisabled} />
-                {errors.sensor_key && <FormHelperText>{errors.sensor_key.message}</FormHelperText>}
+                {errors.sensor_key ? <FormHelperText>{errors.sensor_key.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -125,7 +125,7 @@ export function SignUpFormNewTypeSensor({
               <FormControl error={Boolean(errors.sensor_type)}>
                 <InputLabel>Введите название</InputLabel>
                 <OutlinedInput {...field} label="Введите название" disabled={isDisabled} />
-                {errors.sensor_type && <FormHelperText>{errors.sensor_type.message}</FormHelperText>}
+                {errors.sensor_type ? <FormHelperText>{errors.sensor_type.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -136,7 +136,7 @@ export function SignUpFormNewTypeSensor({
               <FormControl error={Boolean(errors.model)}>
                 <InputLabel>Введите модель</InputLabel>
                 <OutlinedInput {...field} label="Введите модель" />
-                {errors.model && <FormHelperText>{errors.model.message}</FormHelperText>}
+                {errors.model ? <FormHelperText>{errors.model.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
@@ -147,7 +147,7 @@ export function SignUpFormNewTypeSensor({
               <Box>Зарегистрировать</Box>
             )}
           </Button>
-          {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+          {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
         </Stack>
       </form>
     </Stack>

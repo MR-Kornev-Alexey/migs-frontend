@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { X } from '@phosphor-icons/react';
 import formatDateTime from '@/lib/common/format-date-time';
-import {ErrorData} from "@/types/sensor";
+import {type ErrorData} from "@/types/sensor";
 
 // Define the structure of the error data
 

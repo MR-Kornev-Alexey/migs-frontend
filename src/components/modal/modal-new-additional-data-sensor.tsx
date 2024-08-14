@@ -1,10 +1,10 @@
 import React from 'react';
-import {AlertColor, Modal} from '@mui/material';
+import {type AlertColor, Modal} from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import {X} from '@phosphor-icons/react';
 import {SignUpFormAddDataSensor} from "@/components/dashboard/additional-data-sensor/sign-up-form-add-data-sensor";
-import {SensorInfo} from "@/types/sensor";
+import {type SensorInfo} from "@/types/sensor";
 
 
 interface ModalNewAdditionalDataSensorProps {
@@ -52,7 +52,7 @@ const ModalNewAdditionalDataSensor: React.FC<ModalNewAdditionalDataSensorProps> 
             </Box>
           </Stack>
           <SignUpFormAddDataSensor
-            sensorMain={sensorMain as SensorInfo}
+            sensorMain={sensorMain!}
             successOfResult={successOfResult}
             isMessageAlertModal={isMessageAlertModal}
             isAlertModalColor={isAlertModalColor}

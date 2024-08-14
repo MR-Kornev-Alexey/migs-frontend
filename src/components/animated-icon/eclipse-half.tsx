@@ -14,7 +14,7 @@ export function SvgSpinnersEclipseHalf(props: SVGProps<SVGSVGElement>) {
           repeatCount="indefinite"
           type="rotate"
           values="0 12 12;360 12 12"
-        ></animateTransform>
+         />
       </path>
     </svg>
   );

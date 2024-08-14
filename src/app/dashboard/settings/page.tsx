@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import ImportExportButtons from '@/lib/common/import-export-buttons';
 import jsonData from '@/lib/json/sensors.json';
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/store/store";
+import {type AppDispatch, type RootState} from "@/store/store";
 import Box from "@mui/material/Box";
 import OrganizationsPaginationActionsTable from "@/components/tables/organizations-pagination-actions-table";
 import Button from "@mui/material/Button";
@@ -20,7 +20,7 @@ import {sensorsClient} from "@/components/dashboard/sensors/sensors-client";
 import ModalNewObject from "@/components/modal/modal-new-object";
 import {addObjects} from "@/store/object-reducer";
 import Spinner from "@/components/animated-icon/spinner";
-import {ApiResult} from "@/types/result-api";
+import {type ApiResult} from "@/types/result-api";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
 import ModalNewModelSensor from "@/components/modal/modal-new-model-sensor";
 import ModalDataOrganisation from "@/components/modal/modal-data-organisation";
@@ -109,7 +109,7 @@ export default function Page(): React.JSX.Element {
         setAlertColor('error');
       }
     } catch (error) {
-      setIsMessage('Произошла ошибка:' + (error as Error).message);
+      setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
       setAlertColor('error');
     } finally {
       setIsPending(false);
@@ -218,15 +218,13 @@ export default function Page(): React.JSX.Element {
         <Button variant="contained" onClick={openModalNewType}>
           Добавить новый тип датчика
         </Button>
-        {showInit && (
-          <Button disabled={isPending} onClick={initAllTypeSensors} variant="contained">
+        {showInit ? <Button disabled={isPending} onClick={initAllTypeSensors} variant="contained">
             {isPending ? (
               <Spinner/>
             ) : (
               <Box>Первичная инсталлация</Box>
             )}
-          </Button>
-        )}
+          </Button> : null}
       </Box>
       <ModalNewModelSensor
         isOpen={isOpenNewTypeSensor}
@@ -259,7 +257,7 @@ export default function Page(): React.JSX.Element {
         onRegistrationObjectSuccess={onRegistrationObjectSuccess}
         rowsOrganizations={organizations}
       />
-      {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
     </Stack>
   );
 }

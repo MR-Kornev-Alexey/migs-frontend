@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';
 import { SignUpFormNewTypeSensor } from '@/components/dashboard/type-of-sensors/sign-up-form-new-type-sensor';
-import {ApiResult} from "@/types/result-api";
+import {type ApiResult} from "@/types/result-api";
 
 // Define the types for the props
 interface ModalNewModelSensorProps {

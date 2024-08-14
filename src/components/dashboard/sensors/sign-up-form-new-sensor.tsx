@@ -14,13 +14,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import calculateRequestCode from '@/lib/calculate/calculate-request-code';
-import {AlertColor} from "@mui/material";
+import {type AlertColor} from "@mui/material";
 import typeOfSensorsForCreate from "@/components/dashboard/sensors/type-of-sensors-foe-create";
-import {ApiResult} from "@/types/result-api";
+import {type ApiResult} from "@/types/result-api";
 import {sensorsClient} from "@/components/dashboard/sensors/sensors-client";
-import {AppDispatch, RootState} from '@/store/store';
+import {type AppDispatch, RootState} from '@/store/store';
 import {useDispatch} from "react-redux";
-import {DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
+import {type DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
 import {Spinner} from "@phosphor-icons/react";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
 import {addSensors} from "@/store/sensors-reducer";
@@ -98,7 +98,7 @@ export function SignUpFormNewSensor({
         setAlertColor('error');
       }
     } catch (error) {
-      setIsMessage('Произошла ошибка:' + (error as Error).message);
+      setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
       setAlertColor('error');
     } finally {
       setIsPending(false);
@@ -233,7 +233,7 @@ export function SignUpFormNewSensor({
               <Box>Добавить</Box>
             )}
           </Button>
-          {isMessage && <Alert color={alertColor}>{isMessage}</Alert>}
+          {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
         </Stack>
       </form>
     </Stack>

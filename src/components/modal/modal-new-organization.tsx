@@ -1,5 +1,5 @@
 import React from 'react';
-import {AlertColor, Modal} from '@mui/material';
+import {type AlertColor, Modal} from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';

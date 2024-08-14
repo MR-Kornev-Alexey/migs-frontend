@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@mui/material';
 import convertUnits from '@/components/dashboard/additional-data-sensor/convert-units';
-import {AdditionalSensorInfo} from "@/types/sensor";
+import {type AdditionalSensorInfo} from "@/types/sensor";
 
 interface AdditionalSensorInfoTableProps {
   additionalInfo: AdditionalSensorInfo;

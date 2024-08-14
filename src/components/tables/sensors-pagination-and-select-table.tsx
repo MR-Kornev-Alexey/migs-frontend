@@ -14,7 +14,7 @@ import { SvgSpinnersBarsScale } from '@/components/animated-icon/chart-icon';
 import { LineMdPlayFilledToPauseTransition } from '@/components/animated-icon/pause-icon';
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
 import calcEmptyRows from '@/components/tables/empty-rows';
-import {Row} from "@/types/row";
+import {type Row} from "@/types/row";
 
 // Define the props interface
 interface SensorsPaginationAndSelectTableProps {
@@ -168,14 +168,14 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                   <TableCell
                     style={{ width: '7%', cursor: 'pointer' }}
                     align="center"
-                    onClick={() => handleIpAddressClick(row.id, row.ip_address)}
+                    onClick={() => { handleIpAddressClick(row.id, row.ip_address); }}
                   >
                     {editableIpAddress.rowId === row.id ? (
                       <TextField
                         value={editableIpAddress.value}
                         onChange={handleIpAddressChange}
-                        onBlur={() => handleIpAddressBlur(row.id)}
-                        onKeyPress={(event) => handleIpAddressKeyPress(event, row.id)}
+                        onBlur={() => { handleIpAddressBlur(row.id); }}
+                        onKeyPress={(event) => { handleIpAddressKeyPress(event, row.id); }}
                         autoFocus
                         aria-label="IP Address"
                       />
@@ -185,7 +185,7 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                   </TableCell>
                   <TableCell
                     style={{ width: '10%', cursor: 'pointer', textAlign: 'center' }}
-                    onClick={() => handleChangeStatus(row.id)}
+                    onClick={() => { handleChangeStatus(row.id); }}
                   >
                     {row.run ? <SvgSpinnersBarsScale /> : <LineMdPlayFilledToPauseTransition />}
                   </TableCell>
@@ -198,14 +198,14 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                   <TableCell
                     style={{ width: '7%', cursor: 'pointer' }}
                     align="center"
-                    onClick={() => handleDesignationClick(row.id, row.designation)}
+                    onClick={() => { handleDesignationClick(row.id, row.designation); }}
                   >
                     {editableDesignation.rowId === row.id ? (
                       <TextField
                         value={editableDesignation.value}
                         onChange={handleDesignationChange}
-                        onBlur={() => handleDesignationBlur(row.id)}
-                        onKeyPress={(event) => handleDesignationKeyPress(event, row.id)}
+                        onBlur={() => { handleDesignationBlur(row.id); }}
+                        onKeyPress={(event) => { handleDesignationKeyPress(event, row.id); }}
                         autoFocus
                         aria-label="Designation"
                       />
@@ -216,14 +216,14 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                   <TableCell
                     style={{ width: '7%', cursor: 'pointer' }}
                     align="center"
-                    onClick={() => handleNetAddressClick(row.id, row.network_number)}
+                    onClick={() => { handleNetAddressClick(row.id, row.network_number); }}
                   >
                     {editableNetAddress.rowId === row.id ? (
                       <TextField
                         value={editableNetAddress.value}
                         onChange={handleNetAddressChange}
-                        onBlur={() => handleNetAddressBlur(row.id)}
-                        onKeyPress={(event) => handleNetAddressKeyPress(event, row.id)}
+                        onBlur={() => { handleNetAddressBlur(row.id); }}
+                        onKeyPress={(event) => { handleNetAddressKeyPress(event, row.id); }}
                         autoFocus
                         aria-label="Net Address"
                       />
