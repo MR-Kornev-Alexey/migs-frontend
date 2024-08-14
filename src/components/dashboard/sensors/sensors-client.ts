@@ -124,7 +124,7 @@ export class SensorsClient {
     return postData(`${BASE_URL}/sensors/change_warning_one_sensor`, sendData, await this.getHeadersWithEmail());
   }
 
-  async saveFileAboutSensor(file, id): Promise<any> {
+  async saveFileAboutSensor(file:any, id:any): Promise<any> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('id', id);
