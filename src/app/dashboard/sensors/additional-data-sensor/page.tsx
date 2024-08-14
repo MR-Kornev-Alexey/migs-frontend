@@ -21,6 +21,14 @@ import RequestSensorInfoTable from "@/components/tables/request-sensor-info-tabl
 import {RequestDataForSensors} from "@/types/out-sensors-data";
 import {handleResponseNoModal} from "@/lib/utils/handle-response-no-modal";
 import { handleResponse, handleError } from '@/lib/utils/handler-response-with-modal';
+import OperationInfoAndLogForSensor from "@/components/tables/operation-info-and-log-for-sensor";
+import ModalNewOperationLogSensor from "@/components/modal/modal-new-operation-log-sensor";
+import {FilePdf} from "@phosphor-icons/react";
+import Link from "@mui/material/Link";
+import {useForm} from "react-hook-form";
+import {AxiosResponse} from "axios";
+import useUpdateSensor from "@/components/dashboard/additional-data-sensor/use-update-sensor";
+import handleApiResponseSample from "@/lib/utils/handle-api-response-sample";
 
 export default function Page(): React.JSX.Element {
   const [alertColor, setAlertColor] = useState<AlertColor>('success');
@@ -36,6 +44,14 @@ export default function Page(): React.JSX.Element {
   const dispatch: AppDispatch = useDispatch();
   const [isMessageAlertModal, setIsMessageAlertModal] = useState<string>('');
   const [isAlertModalColor, setIsAlertModalColor] = useState<AlertColor>('error');
+  const [isLogsOpen, setIsLogsOpen] = useState<boolean>(false);
+  const [file, setFile] = React.useState(null);
+  const [reloadFlag, setReloadFlag] = useState(false);
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      file: undefined,
+    },
+  });
 
   useEffect(() => {
     if (selectedID) {
@@ -57,6 +73,10 @@ export default function Page(): React.JSX.Element {
     }
   }, [allSensors, selectedID, router]);
 
+  function isAxiosResponse(result: any): result is AxiosResponse {
+    return result && result.data && result.status && result.statusText && result.headers && result.config;
+  }
+
   const openModalErrorInfoSensor = () => {
     setIsModalErrorOpen(true);
   };
@@ -75,6 +95,7 @@ export default function Page(): React.JSX.Element {
   const closeIsModalLimitValueSensor = () => {
     setIsModalLimitValueSensor(false);
   };
+
   const closeModalNewAdditionalDataSensor = () => {
     setIsAdditionalOpen(false);
   };
@@ -137,6 +158,50 @@ export default function Page(): React.JSX.Element {
       dispatch
     });
   };
+  const updateNullDataForObject = async (object_id: string, parameter: boolean) => {
+    const response: ApiResult = await sensorsClient.setNullForAllSensorOnObject(object_id, parameter);
+    console.log(response)
+    handleResponseNoModal({
+      response,
+      setIsMessage,
+      setAlertColor,
+      dispatch
+    });
+  };
+
+  const closeModalNewOperationLogSensor = () => {
+    setIsLogsOpen(false);
+  };
+  const updateOperationInfoAndLogForSensors = () => {
+    setIsLogsOpen(true);
+  }
+
+  const updateLogsInfoForSensor = async (sendLogsData: SensorInfo) => {
+    try {
+      const sensorsData: ApiResult = await sensorsClient.addLogDataForSensor(sendLogsData);
+      const success = handleResponse({
+        response: sensorsData,
+        successMessage: 'Успешное выполнение операции',
+        errorMessage: 'Неизвестная ошибка',
+        dispatch,
+        setIsMessageAlertModal,
+        setIsAlertModalColor,
+      });
+      if (success) {
+        setTimeout(() => {
+          setIsLogsOpen(false);
+          setIsMessageAlertModal('');
+        }, 1000);
+      }
+    } catch (error) {
+      handleError({
+        error,
+        setIsMessageAlertModal,
+        setIsAlertModalColor,
+      });
+    }
+  };
+
   const updateRequestDataForSensors = async (value: string, parameter: string) => {
     const sendData = {
       sensor_id: dataOfSensor?.id,
@@ -146,6 +211,7 @@ export default function Page(): React.JSX.Element {
       value,
       email: ''
     };
+
     const response: ApiResult = await sensorsClient.addRequestDataForSensor(sendData);
     handleResponseNoModal({
       response,
@@ -155,6 +221,55 @@ export default function Page(): React.JSX.Element {
     });
   };
 
+  const handleSubmitNewFile = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!file) {
+      setIsMessage('Пожалуйста, выберите файл для загрузки.');
+      setAlertColor('error');
+      return;
+    }
+
+    try {
+      const response = await sensorsClient.saveFileAboutSensor(file, dataOfSensor?.id);
+      console.log(response)
+      if (response?.statusCode === 200) {
+        setIsMessage('Файл успешно загружен.');
+        setAlertColor('success');
+        dispatch(addSensors(response?.allSensors));
+        setTimeout(() => {
+          setIsMessage('');
+        }, 2000);
+      } else {
+        setIsMessage('Ошибка загрузки файла: ' + response.error);
+        setAlertColor('error');
+      }
+    } catch (error) {
+      console.error(error);
+      setIsMessage('Ошибка загрузки файла.');
+      setAlertColor('error');
+    }
+  };
+
+  const handleFileChange = (e: any) => {
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) {
+      setIsMessage('Файл не выбран.');
+      setAlertColor('error');
+      return;
+    }
+
+    if (selectedFile.size > 5 * 1024 * 1024) {
+      setIsMessage('Размер файла не должен превышать 5 МБ.');
+      setAlertColor('error');
+      return;
+    }
+
+    setFile(selectedFile);
+    setIsMessage('Файл выбран.');
+    setAlertColor('success');
+  };
   return (
     <Stack spacing={3}>
       <Box display="flex" justifyContent="left" sx={{marginTop: 2}}>
@@ -168,8 +283,10 @@ export default function Page(): React.JSX.Element {
           <Typography variant="h5" sx={{marginY: 2}}>
             Основные данные
           </Typography>
-          <MainSensorDataTable dataOfSensor={dataOfSensor} openModalErrorInfoSensor={openModalErrorInfoSensor}
-                               updateAdditionalDataForSensors={updateAdditionalParameterForSensors}/>
+          <MainSensorDataTable dataOfSensor={dataOfSensor}
+                               openModalErrorInfoSensor={openModalErrorInfoSensor}
+                               updateAdditionalDataForSensors={updateAdditionalParameterForSensors}
+                               updateNullDataForObject={updateNullDataForObject}/>
           <Typography variant="h5" sx={{marginY: 2}}>
             Дополнительные данные
           </Typography>
@@ -188,6 +305,11 @@ export default function Page(): React.JSX.Element {
           </Grid>
           <RequestSensorInfoTable dataOfSensor={dataOfSensor}
                                   updateRequestDataForSensors={updateRequestDataForSensors}/>
+        <Box sx={{ marginTop: 2 }}>
+          <Typography variant="h5">Данные по журналам</Typography>
+          <OperationInfoAndLogForSensor dataOfSensor={dataOfSensor}
+                                        updateOperationInfoAndLogForSensors={updateOperationInfoAndLogForSensors} />
+        </Box>
           <Box sx={{marginY: 2}}>
             <Box>
               <sup>&#8432;</sup> Параметры устанавливаются для всех датчиков указанной модели и типа на объекте
@@ -196,6 +318,26 @@ export default function Page(): React.JSX.Element {
               <sup>&#8432;&nbsp;&nbsp;&#8432;</sup> Обнуление устанавливается для всех датчиков на объекте
             </Box>
           </Box>
+        <Typography variant="h5" sx={{ marginY: 3 }}>
+          Копии документов
+        </Typography>
+        <Box display="flex" justifyContent="space-around">
+          {dataOfSensor.files.map((item: any, index: number) => (
+            <Box key={index} sx={{ cursor: 'pointer' }}>
+              <Link href={item.url} target="_blank">
+                <FilePdf size={36} />
+              </Link>
+            </Box>
+          ))}
+        </Box>
+        <Box sx={{ marginY: 2 }}>
+          <form onSubmit={handleSubmitNewFile}>
+            <input type="file" onChange={handleFileChange} />
+            <Button variant="contained" type="submit" sx={{minWidth: 200}}>
+              Загрузить документ
+            </Button>
+          </form>
+        </Box>
         </Stack> : null}
       {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
       <ModalInfoAboutSensor
@@ -219,6 +361,12 @@ export default function Page(): React.JSX.Element {
         isMessageAlertModal={isMessageAlertModal}
         isAlertModalColor={isAlertModalColor}
       />
+      <ModalNewOperationLogSensor isOpen={isLogsOpen}
+                                  onClose={closeModalNewOperationLogSensor}
+                                  dataOfSensor={dataOfSensor}
+                                  isMessageAlertModal={isMessageAlertModal}
+                                  isAlertModalColor={isAlertModalColor}
+                                  updateLogsInfoForSensor={updateLogsInfoForSensor}/>
     </Stack>
   );
 }

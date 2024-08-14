@@ -180,11 +180,7 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
             <TableCell style={{ textAlign: 'center' }}>
               {dataOfSensor?.requestSensorInfo[0]?.last_base_value}
             </TableCell>
-              <TableCell
-                style={{ cursor: 'pointer' }}
-                align="center"
-                onClick={() => { handleBaseZeroClick(dataOfSensor?.requestSensorInfo[0]?.base_zero); }}
-              >
+              <TableCell align="center" >
                 {dataOfSensor?.requestSensorInfo[0]?.base_zero}
               </TableCell>
             <TableCell

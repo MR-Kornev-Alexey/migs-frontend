@@ -6,7 +6,6 @@ import {getHeaders} from '@/lib/common-api/get-header';
 import postData from '@/lib/common/post-data';
 import {type DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor";
 import {type ApiResult} from "@/types/result-api";
-import {RequestDataForSensors} from "@/types/out-sensors-data";
 
 interface SensorData {
   email: string;
@@ -69,7 +68,7 @@ export class SensorsClient {
     return postData(`${BASE_URL}/sensors/init_all_new_type_sensor`, sendData, await this.getHeadersWithEmail());
   }
 
-  async addLogDataForSensor(formData: FormData): Promise<any> {
+  async addLogDataForSensor111(formData: FormData): Promise<any> {
     const email = await this.getEmail();
     formData.append('email', email);
     try {
@@ -93,6 +92,20 @@ export class SensorsClient {
     }
   }
 
+  async addLogDataForSensor(sendData:any): Promise<ApiResult> {
+    try {
+      const email = await this.getEmail();
+      return await postData(
+        `${BASE_URL}/sensors/set_log_data_for_sensor`,
+        { logsData:sendData, email: email},
+        await this.getHeadersWithEmail()
+      );
+    } catch (error) {
+      console.error('Error adding log parameter for sensor:', error);
+      throw error;
+    }
+  }
+
   async changeIPForSensor(id: string, ip: string): Promise<any> {
     const email = await this.getEmail();
     const sendData: { email: string; ip: string; id: string; } = { email, ip, id };
@@ -111,30 +124,28 @@ export class SensorsClient {
     return postData(`${BASE_URL}/sensors/change_warning_one_sensor`, sendData, await this.getHeadersWithEmail());
   }
 
-  async saveFileAboutSensor(formData: FormData): Promise<any> {
-    const email = await this.getEmail();
-    formData.append('email', email);
+  async saveFileAboutSensor(file, id): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('id', id);
+
     try {
       const response = await fetch(`${BASE_URL}/sensors/save_file_about_sensor`, {
         method: 'POST',
-        headers: {
-          // Fetch automatically sets the 'Content-Type' to 'multipart/form-data' for FormData
-          ...await this.getHeadersWithEmail(),
-        },
         body: formData,
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       return await response.json();
     } catch (error) {
-      console.error('Произошла ошибка:', (error as Error).message);
-      return { error: (error as Error).message };
+      console.error('Error:', error);
+      throw error; // Выбрасываем ошибку, чтобы она могла быть обработана в вызывающем коде
     }
   }
+
 
   async addAdditionalDataForSensor(
     sensorsData: string, // Assuming sensorsId is a string. Adjust type if different.
@@ -229,10 +240,10 @@ export class SensorsClient {
     return postData(`${BASE_URL}/sensors/change_designation_one_sensor_from_api`, sendData, await this.getHeadersWithEmail());
   }
 
-  async setNullForOneSensor(id: string, flag: any): Promise<any> {
-    const email = await this.getEmail();
-    const sendData: { flag: any; id: string; email: string } = { email, id, flag };
-    return postData(`${BASE_URL}/sensors/set_null_for_one_sensor`, sendData, await this.getHeadersWithEmail());
+  async setNullForAllSensorOnObject(object_id: string, set_null: boolean): Promise<any> {
+    const email: string = await this.getEmail();
+    const sendData= { set_null: set_null,  object_id: object_id, email: email };
+    return postData(`${BASE_URL}/sensors/set_null_for_all_sensor_on_object`, sendData, await this.getHeadersWithEmail());
   }
 
   async sensorDuplication(netNumber: string, id: string, model: string): Promise<any> {

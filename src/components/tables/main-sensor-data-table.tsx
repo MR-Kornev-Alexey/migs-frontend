@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TextField,
+  TextField, Switch,
 } from '@mui/material';
 import { Article } from '@phosphor-icons/react';
 import { SvgSpinnersBarsScale } from '@/components/animated-icon/chart-icon';
@@ -19,11 +19,13 @@ interface MainSensorDataTableProps {
   dataOfSensor: SensorInfo;
   openModalErrorInfoSensor: () => void;
   updateAdditionalDataForSensors: (newNote: string, parameter: string) => void;
+  updateNullDataForObject: (object_id: string, parameter: boolean) => void;
 }
 
-const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor, openModalErrorInfoSensor, updateAdditionalDataForSensors }) => {
+const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor, openModalErrorInfoSensor, updateAdditionalDataForSensors, updateNullDataForObject }) => {
   // Initialize editableNote with the current notation value
   const [editableNote, setEditableNote] = useState<string | null>(null);
+  const [nullState, setNullState] = useState<boolean>(dataOfSensor?.object?.set_null || false);
 
   const handleNoteChangeClick = () => {
     // Set editableNote to current notation to start editing
@@ -46,6 +48,11 @@ const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor,
       handleNoteBlur();
     }
   };
+  const handleSetNullChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.checked;
+    setNullState(newValue);
+    updateNullDataForObject(dataOfSensor?.object?.id , newValue);
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -57,7 +64,8 @@ const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor,
             <TableCell>Модель</TableCell>
             <TableCell style={{ width: '10%', textAlign: 'center' }}>Сетевой номер</TableCell>
             <TableCell style={{ width: '10%', textAlign: 'center' }}>Активность</TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Сообщения о ошибках</TableCell>
+            <TableCell style={{width: '10%', textAlign: 'center'}}>Установка<br/>нуля <sup>&#8432;&nbsp;&nbsp;&#8432;</sup></TableCell>
+            <TableCell style={{textAlign: 'center' }}>Сообщения о ошибках</TableCell>
             <TableCell>Примечание</TableCell>
           </TableRow>
         </TableHead>
@@ -75,6 +83,13 @@ const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor,
             </TableCell>
             <TableCell style={{ width: '10%', textAlign: 'center' }}>
               {dataOfSensor.run ? <SvgSpinnersBarsScale /> : <LineMdPlayFilledToPauseTransition />}
+            </TableCell>
+            <TableCell style={{ cursor: 'pointer' }} align="center">
+              <Switch
+                checked={nullState}
+                onChange={handleSetNullChange}
+                color="primary"
+              />
             </TableCell>
             <TableCell style={{ textAlign: 'center', cursor: 'pointer' }} onClick={openModalErrorInfoSensor}>
               <Article size={24} />
