@@ -1,3 +1,5 @@
+import {MOrganisation} from "@/types/common-types";
+
 export interface ObjectInfo {
   id: string;
   organization_id: string;
@@ -8,7 +10,9 @@ export interface ObjectInfo {
   address: string;
   notation: string;
   set_null?: boolean; // Assuming this might be optional
-  periodicity?: number; // Assuming this might be optional
+  periodicity?: number;
+  Sensor: SensorInfo[];
+  organisation: MOrganisation[];
 }
 
 export interface SensorAndObjectInfoApi {
@@ -46,6 +50,8 @@ export interface SensorInfo {
   run: boolean;
   name: string;
   object: ObjectInfo;
+  row: Row[];
+  rows: Row[];
   additional_sensor_info: AdditionalSensorInfo[];
   sensor_operation_log: SensorOperationLog[];
   files: string[]; // More specific typing can be added if known
@@ -98,4 +104,14 @@ export interface LatestData {
   min_base: number;
   max_base: number;
   warning: boolean;
+}
+
+interface Row {
+  id: string;
+  name: string;
+  Sensor: any[]; // Define the correct type if possible instead of any[]
+  objectsType: string;
+  organization: {
+    name: string;
+  };
 }

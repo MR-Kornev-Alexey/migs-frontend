@@ -19,6 +19,6 @@ export async function getHeaders(): Promise<{
   return {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
-    email: email || '', // Ensure email is an empty string if not provided
+    email: email, // Ensure email is an empty string if not provided
   };
 }

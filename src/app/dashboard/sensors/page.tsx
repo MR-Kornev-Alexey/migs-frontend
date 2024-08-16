@@ -17,31 +17,11 @@ import updateSensorsAfterAPI from '@/components/dashboard/sensors/update-sensors
 import {sensorsClient} from '@/components/dashboard/sensors/sensors-client';
 import SensorsPaginationAndSelectTable from "@/components/tables/sensors-pagination-and-select-table";
 import {type ApiResult} from "@/types/result-api";
-import {type SensorInfo} from "@/types/sensor";
 import DialogChangeNetAddress from "@/components/dialogs/dialog-change-net-address";
 import ModalAddNewSensor from "@/components/modal/modal-add-new-sensor";
 import {addSelectedSensor} from "@/store/selected-sensor-reducer";
-
-// import DialogChangeNetAddress from '@/components/dialog/dialog-change-net-adress';
-// import DialogInputIP from '@/components/dialog/dialogInputIP';
-// import ModalImportSensor from '@/components/modal/modal-import-sensor';
-// import ModalNewSensor from '@/components/modal/modal-new-sensor';
-
-// Define a type for the sensor information
-
-
-// Define the API result structure
-
-
-// Define a type for the API call function
-type ApiCallFunction = (sensorId: string, value?: string) => Promise<ApiResult>;
-
-// Define a type for the update sensors callback function
-type UpdateSensorsCallback = (allSensors: SensorInfo[], newSensor: SensorInfo) => SensorInfo[];
-
-// Define a type for the success callback function
-type SuccessCallback = (result: ApiResult) => void;
-
+import ModalForAdditionalDataSensors
+  from "@/components/dashboard/additional-data-sensor/modal-for-additional-data-sensors";
 
 export default function Page(): React.JSX.Element {
   const allSensors = useSelector((state: RootState) => state.allSensors.value);
@@ -63,6 +43,7 @@ export default function Page(): React.JSX.Element {
   const [isFlagDouble, setIsFlagDouble] = useState<boolean>(false);
   const [showChoice, setShowChoice] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
+  const [isOpenModalAddData, setIsOpenModalAddData] = useState<boolean>(false);
 
   const openModalAddSensor = () => {
     setIsModalOpen(true);
@@ -73,6 +54,10 @@ export default function Page(): React.JSX.Element {
   const closeDialogNetAddress = () => {
     setIsDialogOpenNetAddress(false);
   };
+
+  const closeModalAddData = () => {
+    setIsOpenModalAddData(false);
+  };
   const onExportClick = () => {
     setIsDialogOpen(false);
   };
@@ -82,16 +67,10 @@ export default function Page(): React.JSX.Element {
 
   async function deleteOneSensor(sensor_id: string) {
     const sensorsData: ApiResult = await sensorsClient.deleteOneSensorFromApi(sensor_id);
-    console.log(sensorsData.allSensors)
     dispatch(addSensors(sensorsData.allSensors));
   }
 
-  const setIsMessage = (message: string) => {
-    setIsMessageNew(message);
-    setTimeout(() => {
-      setIsMessageNew('');
-    }, 2000);
-  };
+
 
   async function updateSensorDesignation(sensor_id: string, value: string) {
     const sensorsData: ApiResult = await sensorsClient.changeDesignationOneSensorFromApi(sensor_id, value)
@@ -102,8 +81,7 @@ export default function Page(): React.JSX.Element {
   //
   async function openAddInfoAboutSensors(sensor_id: string) {
     dispatch(addSelectedSensor(sensor_id));
-    router.push('/dashboard/sensors/additional-data-sensor');
-    console.log()
+    setIsOpenModalAddData(true);
   }
 
   async function handleChangeStatus(sensor_id: string) {
@@ -176,9 +154,9 @@ export default function Page(): React.JSX.Element {
     // console.log('sensors --', sensors);
     if (sensors.length > 0) {
       return sensors.filter((obj: any) => selected.includes(obj.object.id));
-    } 
+    }
       return sensors;
-    
+
   }
 
   return (
@@ -231,6 +209,7 @@ export default function Page(): React.JSX.Element {
         objects={allObjects}
         typesSensors={allTypesSensors}
       />
+      <ModalForAdditionalDataSensors isOpenModalAddData={isOpenModalAddData} onClose={closeModalAddData}/>
       {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
     </Stack>
   );

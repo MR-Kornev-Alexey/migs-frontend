@@ -13,15 +13,17 @@ import mainUserReducer from './main-user-reducer';
 import notificationReducer from './notification-reducer';
 import userReducer from './user-reducer';
 import organizationReducer from "@/store/organization-reducer";
+import selectedObjectsReducer from "@/store/selected-objects-reducer";
 
 // Объединяем редюсеры
 
 const rootReducer = combineReducers({
   // user: userReducer,
-  // lastValues: lastValuesReducer,
+  lastValues: lastValuesReducer,
   // addUser: addUserReducer,
   // mainUser: mainUserReducer,
   // notifications: notificationReducer,
+  selectedObjects: selectedObjectsReducer,
   selectedSensor: selectedSensorReducer,
   allSensors: sensorsReducer,
   allTypesOfSensors: typeOfSensorsReducer,

@@ -28,7 +28,7 @@ import {useForm} from "react-hook-form";
 import {AxiosResponse} from "axios";
 import BasicCard from "@/components/cards/basic-card";
 
-export default function Page(): React.JSX.Element {
+export default function PageForModal(): React.JSX.Element {
   const [alertColor, setAlertColor] = useState<AlertColor>('success');
   const [isMessage, setIsMessage] = useState<string>('');
   const [isModalErrorOpen, setIsModalErrorOpen] = useState<boolean>(false);
@@ -71,9 +71,6 @@ export default function Page(): React.JSX.Element {
     }
   }, [allSensors, selectedID, router]);
 
-  function isAxiosResponse(result: any): result is AxiosResponse {
-    return result && result.data && result.status && result.statusText && result.headers && result.config;
-  }
 
   const openModalErrorInfoSensor = () => {
     setIsModalErrorOpen(true);
@@ -271,10 +268,6 @@ export default function Page(): React.JSX.Element {
   };
   return (
     <Stack spacing={3}>
-      <Box display="flex" justifyContent="left" sx={{marginTop: 2}}>
-        <Button variant="contained" onClick={goBack} sx={{minWidth: 200}}> назад
-        </Button>
-      </Box>
       {dataOfSensor ? <Stack>
           <Typography variant="h4">
             {dataOfSensor.sensor_type} | {dataOfSensor.designation} {dataOfSensor.model}

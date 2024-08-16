@@ -33,6 +33,8 @@ export interface ApiResult {
   allObjects?: any[];
   allSensorsType?: any[];
   allSensors?:  any[];
+  notifications?: any[];
+  selectedObjects?: any[];
 }
 
 export interface Organization {
