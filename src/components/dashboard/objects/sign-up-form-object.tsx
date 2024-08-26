@@ -67,7 +67,7 @@ export function SignUpFormObject({
   } = useForm<Values>({defaultValues, resolver: zodResolver(schema)});
 
   const onSubmit = React.useCallback(
-    async (values: Values): Promise<void> => {
+    async (values: any): Promise<void> => {
       setIsPending(true);
       try {
         const result: any = await objectClient.initSignObject(values);

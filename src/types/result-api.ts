@@ -1,3 +1,5 @@
+import {MObject} from "@/types/common-types";
+
 export interface SendData {
   inn: string;
   email: string;
@@ -15,12 +17,15 @@ export interface Result {
 
 export interface Data {
   statusCode?: number;  // Make sure these fields match your API response
-  message?: string;
-  groupedData?: any;
+  message?: any;
+  groupedData?: any[];
   oneSensor?: any;
   allSensors?: any;
   organization?: any;
-  allOrganizations?: Organization[]
+  selectedObjects?: any;
+  allOrganizations?: Organization[];
+  allObjects?:   any[] | undefined;
+  selectedObject?: any;
 }
 
 export interface ApiResult {
@@ -30,11 +35,13 @@ export interface ApiResult {
   statusCode?: number;  // Note that statusCode is optional
   message?: string;
   allOrganizations?: any[];
-  allObjects?: any[];
+  allObjects?:any[] | undefined;
   allSensorsType?: any[];
   allSensors?:  any[];
   notifications?: any[];
   selectedObjects?: any[];
+  groupedData?: any[];
+  selectedObject?: any[];
 }
 
 export interface Organization {

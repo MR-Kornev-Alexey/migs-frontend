@@ -20,7 +20,7 @@ export default function Page(): React.JSX.Element {
     const fetchData = async () => {
       try {
         const responseCheckOrganization:any = await customersClient.findRoleCustomer();
-        if (responseCheckOrganization?.data.statusCode === 200) {
+        if (responseCheckOrganization?.data?.statusCode === 200) {
           setStatusInit(true);
         } else {
           setStatusInit(false);

@@ -34,7 +34,7 @@ const ModalForAdditionalDataSensors: React.FC<ModalAboutOneCustomerProps> = ({ i
         }}
       >
         <Stack id="modal-modal-title" sx={{ marginBottom: 1 }}>
-            <X size={32} onClick={onClose} style={{ cursor: 'pointer', position:"absolute", right: 40, top:28 }} />
+            <X size={32} onClick={onClose} style={{ cursor: 'pointer', position:"absolute", right: 12, top:12 }} />
           <Box sx={{ overflowY: 'auto', maxHeight: 'calc(80vh - 64px)' }}>
             {/* Adjust the maxHeight to account for padding and header */}
             <PageForModal />

@@ -15,17 +15,19 @@ import { fetchOrganizationData } from "@/lib/common-api/fetch-data-check-main";
 
 function Page(): React.JSX.Element {
   const [initialData, setInitialData] = React.useState<Organization | null>(null);
-  const [isMain, setIsMain] = React.useState<boolean>(true);
+  const isMain  = true;
   const [isMessage, setIsMessage] = React.useState<string>('check');
   const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
-  const [isMainInn, setIsMainInn] = React.useState<string>('7716852062');
-  const onClose =() => {}
+  const isMainInn = '7716852062';
+  const onClose =() => {
+    return
+  }
+
   React.useEffect(() => {
     void fetchOrganizationData(isMainInn, setInitialData, setIsMessage, setAlertColor);
   }, [isMainInn]);
 
   const handleRegistrationSuccess = (result: ApiResult): void => {
-    console.log(result);
     handleApiResult(result, setInitialData, setIsMessage, setAlertColor, isMainInn);
   };
 

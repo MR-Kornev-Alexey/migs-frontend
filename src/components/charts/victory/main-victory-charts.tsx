@@ -1,12 +1,12 @@
 import React from 'react';
 import {VictoryChart, VictoryBar, VictoryAxis, VictoryZoomContainer, VictoryTheme, VictoryContainer} from 'victory';
-import {VictoryChartData} from "@/types/victory-chart-data";
+import {type VictoryChartData} from "@/types/victory-chart-data";
 
 interface Props {
   data: VictoryChartData[];
 }
-const MyBarChart = ({data}: Props) => (
-  <VictoryChart
+function MyBarChart({data}: Props) {
+  return <VictoryChart
     containerComponent={<VictoryContainer />}
     theme={VictoryTheme.material}
     width={500}
@@ -53,6 +53,6 @@ const MyBarChart = ({data}: Props) => (
       }}
     />
   </VictoryChart>
-);
+}
 
 export default MyBarChart;

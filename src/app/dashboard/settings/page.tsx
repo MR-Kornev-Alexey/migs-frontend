@@ -25,6 +25,9 @@ import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
 import ModalNewModelSensor from "@/components/modal/modal-new-model-sensor";
 import ModalDataOrganisation from "@/components/modal/modal-data-organisation";
 import ModalDataObject from "@/components/modal/modal-data-object";
+import {organizationClient} from "@/components/dashboard/organizations/organization-client";
+import {objectClient} from "@/components/dashboard/objects/object-client";
+import {MObject} from "@/types/common-types";
 
 interface SensorKeyType {
   sensorKey: string;
@@ -51,7 +54,7 @@ export default function Page(): React.JSX.Element {
   organizationPhone: '',
   organizationEmail:''}
 );
-  const [isSelectObject, setIsSelectObject] = useState<any[]>([]);
+  const [isSelectObject, setIsSelectObject] = useState<MObject | undefined>();
   const [isOpenDataOrganisation, setIsOpenDataOrganisation] = useState<boolean>(false);
   const [isOpenDataObject, setIsOpenDataObject] = useState<boolean>(false);
   const [isSelectedObjects, setIsSelectedObjects] = useState<any[]>([]);
@@ -92,32 +95,7 @@ export default function Page(): React.JSX.Element {
   const isResultSuccess = async (result: ApiResult) => {
     dispatch(addTypeOfSensors(result.allSensorsType));
   };
-  const initAllTypeSensors = async () => {
-    setIsPending(true);
-    try {
-      const result: ApiResult = await sensorsClient.initNewAllTypeOfSensors(jsonData);
-      if (result?.statusCode === 200) {
-        dispatch(addTypeOfSensors(result.allSensorsType));
-        setIsMessage(result?.message ?? ''); // Provide a default empty string
-        setAlertColor('success');
-      } else if (result?.statusCode === 400) {
-        setIsMessage(result?.message ?? '');
-        setAlertColor('error');
-        ;
-      } else {
-        setIsMessage(result?.message ?? '');
-        setAlertColor('error');
-      }
-    } catch (error) {
-      setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
-      setAlertColor('error');
-    } finally {
-      setIsPending(false);
-      setTimeout(() => {
-        setIsMessage("");
-      }, 2500);
-    }
-  };
+
   const openModalNewType = () => {
     setIsNewKey({sensorKey: '', sensorType: ''});
     setIsOpenNewTypeSensor(true);
@@ -153,23 +131,101 @@ export default function Page(): React.JSX.Element {
     return objects.filter((obj: any) => selected.includes(obj.organization_id));
   }
 
-  const openDataSelectObject = (iDObject: any) => {
+  const openDataSelectObject = (iDObject: string) => {
     setIsOpenDataObject(true);
     const selectedObject = objects.find((obj: any) => obj.id === iDObject);
     setIsSelectObject(selectedObject);
   };
+
   useEffect(() => {
     if (typesSensors.length !== 0) {
       setShowInit(false);
     }
   }, [typesSensors]);
 
+  const deleteObject = async (idObject: string)=> {
+    try {
+      const result:any = await objectClient.deleteOneObject(idObject);
+      if (result?.statusCode === 200) {
+        dispatch(addObjects(result?.allObjects));
+        setIsMessage(result?.message ?? ''); // Provide a default empty string
+        setAlertColor('success');
+      } else if (result?.statusCode === 400) {
+        setIsMessage(result?.message ?? '');
+        setAlertColor('error');
+      } else {
+        setIsMessage(result?.message ?? '');
+        setAlertColor('error');
+      }
+    }
+    catch (error) {
+      setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
+      setAlertColor('error');
+    } finally {
+      setIsPending(false);
+      setTimeout(() => {
+        setIsMessage("");
+      }, 2500);
+    }
+  }
+  const deleteOneOrganisation = async (iDOrganisation: any) => {
+    try {
+    const result = await organizationClient.deleteOneOrganization(iDOrganisation);
+    if (result?.statusCode === 200) {
+      dispatch(addOrganizations(result?.allOrganizations));
+      setIsMessage(result?.message ?? ''); // Provide a default empty string
+      setAlertColor('success');
+    } else if (result?.statusCode === 400) {
+      setIsMessage(result?.message ?? '');
+      setAlertColor('error');
+    } else {
+      setIsMessage(result?.message ?? '');
+      setAlertColor('error');
+    }
+  } catch (error) {
+    setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
+    setAlertColor('error');
+  } finally {
+    setIsPending(false);
+    setTimeout(() => {
+      setIsMessage("");
+    }, 2500);
+  }
+  };
+
+  const initAllTypeSensors = async () => {
+    setIsPending(true);
+    try {
+      const result: ApiResult = await sensorsClient.initNewAllTypeOfSensors(jsonData);
+      if (result?.statusCode === 200) {
+        dispatch(addTypeOfSensors(result.allSensorsType));
+        setIsMessage(result?.message ?? ''); // Provide a default empty string
+        setAlertColor('success');
+      } else if (result?.statusCode === 400) {
+        setIsMessage(result?.message ?? '');
+        setAlertColor('error');
+        ;
+      } else {
+        setIsMessage(result?.message ?? '');
+        setAlertColor('error');
+      }
+    } catch (error) {
+      setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
+      setAlertColor('error');
+    } finally {
+      setIsPending(false);
+      setTimeout(() => {
+        setIsMessage("");
+      }, 2500);
+    }
+  };
 
   return (
     <Stack spacing={3}>
       <Box>
         <Typography variant="h4">Организации</Typography>
       </Box>
+      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
       {organizations?.length > 0 ? (
         <Box>
           <ImportExportButtons onExportClick={onExportClick} onImportClick={onImportClick}/>
@@ -177,7 +233,7 @@ export default function Page(): React.JSX.Element {
             rows={organizations}
             onSelectedRowsChange={onSelectedRowsChange}
             openDataOrganisation={openDataOrganisation}
-          />
+            deleteOneOrganisation={deleteOneOrganisation}/>
           <Box display="flex" justifyContent="space-around" sx={{marginTop: 2}}>
             <Button variant="contained" onClick={openModal}>
               Добавить организацию
@@ -196,7 +252,7 @@ export default function Page(): React.JSX.Element {
           <ObjectsPaginationActionsTable
             rows={onSelectedRowsObjects(objects, isSelectedObjects)}
             selectObject={openDataSelectObject}
-          />
+           deleteObject={deleteObject}/>
 
         </Stack>
       ) : (
@@ -257,7 +313,7 @@ export default function Page(): React.JSX.Element {
         onRegistrationObjectSuccess={onRegistrationObjectSuccess}
         rowsOrganizations={organizations}
       />
-      {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
+
     </Stack>
   );
 }

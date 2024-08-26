@@ -97,7 +97,7 @@ export class SensorsClient {
       const email = await this.getEmail();
       return await postData(
         `${BASE_URL}/sensors/set_log_data_for_sensor`,
-        { logsData:sendData, email: email},
+        { logsData:sendData, email},
         await this.getHeadersWithEmail()
       );
     } catch (error) {
@@ -242,7 +242,7 @@ export class SensorsClient {
 
   async setNullForAllSensorOnObject(object_id: string, set_null: boolean): Promise<any> {
     const email: string = await this.getEmail();
-    const sendData= { set_null: set_null,  object_id: object_id, email: email };
+    const sendData= { set_null,  object_id, email };
     return postData(`${BASE_URL}/sensors/set_null_for_all_sensor_on_object`, sendData, await this.getHeadersWithEmail());
   }
 

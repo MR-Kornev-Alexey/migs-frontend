@@ -9,18 +9,18 @@ import TableFooter from '@mui/material/TableFooter';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {GearFine, Trash} from '@phosphor-icons/react';
+import {GearFine, HandTap} from '@phosphor-icons/react';
 
 import setKindOfObject from '@/lib/common/kind-of-object';
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
 
 interface ObjectsPaginationActionsTableProps {
   rows: any;
-  selectObject: (id: string) => void;
-  deleteObject: (id: string) => void;
+  selectOneObjectForInfo: (id: string) => void;
+  selectOneObjectForTable: (id: string) => void;
 }
 
-export default function ObjectsPaginationActionsTable({ rows, selectObject, deleteObject }: ObjectsPaginationActionsTableProps) {
+export default function ObjectsPaginationActionsTable({ rows, selectOneObjectForInfo , selectOneObjectForTable}: ObjectsPaginationActionsTableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -42,6 +42,7 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
+              <TableCell style={{ width: '5%'}} align="center">Выбрать</TableCell>
               <TableCell>Название</TableCell>
               <TableCell  align="center">
                 Адрес
@@ -52,20 +53,20 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
               <TableCell style={{ width: '20%' }} align="center">
                 Тип объекта
               </TableCell>
-              <TableCell style={{ width: '5%' }} align="center">
+              <TableCell style={{ width: '10%' }} align="center">
                 Датчики
               </TableCell>
-              <TableCell style={{ width: '10%' }} align="center">
-                Подробнее
-              </TableCell>
-              <TableCell style={{ width: '10%' }} align="center">
-                Удалить
+              <TableCell style={{ width: '10%' ,  cursor: "pointer" }} align="center">
+                Подробно
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row:any) => (
               <TableRow key={row.id}>
+                <TableCell style={{ width: '5%',  cursor: "pointer" }} align="center"
+                           onClick={() => { selectOneObjectForTable(row.id); }}
+                ><HandTap size={24} /></TableCell>
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
@@ -78,22 +79,15 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
                 <TableCell style={{ width: '20%' }} align="center">
                   {setKindOfObject(row.objectsType)}
                 </TableCell>
-                <TableCell style={{ width: '5%' }} align="center">
+                <TableCell style={{ width: '10%' }} align="center">
                   {row.Sensor.length}
                 </TableCell>
                 <TableCell
                   style={{ width: '10%', cursor: 'pointer' }}
                   align="center"
-                  onClick={() => { selectObject(row.id); }}
+                  onClick={() => { selectOneObjectForInfo(row.id); }}
                 >
                   <GearFine size={24} />
-                </TableCell>
-                <TableCell
-                  style={{ width: '10%', cursor: 'pointer' }}
-                  align="center"
-                  onClick={() => { deleteObject(row.id); }}
-                >
-                  <Trash size={24} />
                 </TableCell>
               </TableRow>
             ))}
@@ -122,6 +116,7 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
+                labelRowsPerPage="Объектов на странице:" // Custom label
               />
             </TableRow>
           </TableFooter>

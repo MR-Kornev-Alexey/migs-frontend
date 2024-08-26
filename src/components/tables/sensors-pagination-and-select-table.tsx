@@ -279,7 +279,7 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               ActionsComponent={TablePaginationActions}
-              labelRowsPerPage="строк на странице:" // Custom label
+              labelRowsPerPage="Датчиков на странице" // Custom label
             />
           </TableRow>
         </TableFooter>

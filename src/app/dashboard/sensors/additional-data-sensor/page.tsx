@@ -25,7 +25,7 @@ import ModalNewOperationLogSensor from "@/components/modal/modal-new-operation-l
 import {Notepad} from "@phosphor-icons/react";
 import Link from "@mui/material/Link";
 import {useForm} from "react-hook-form";
-import {AxiosResponse} from "axios";
+import {type AxiosResponse} from "axios";
 import BasicCard from "@/components/cards/basic-card";
 
 export default function Page(): React.JSX.Element {
@@ -72,7 +72,7 @@ export default function Page(): React.JSX.Element {
   }, [allSensors, selectedID, router]);
 
   function isAxiosResponse(result: any): result is AxiosResponse {
-    return result && result.data && result.status && result.statusText && result.headers && result.config;
+    return result?.data && result.status && result.statusText && result.headers && result.config;
   }
 
   const openModalErrorInfoSensor = () => {
@@ -240,7 +240,7 @@ export default function Page(): React.JSX.Element {
           setIsMessage('');
         }, 2000);
       } else {
-        setIsMessage('Ошибка загрузки файла: ' + response.error);
+        setIsMessage(`Ошибка загрузки файла: ${  response.error}`);
         setAlertColor('error');
       }
     } catch (error) {

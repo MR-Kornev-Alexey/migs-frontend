@@ -14,7 +14,7 @@ import {LineMdPlayFilledToPauseTransition} from '@/components/animated-icon/paus
 import {TablePaginationActions} from '@/components/tables/table-pagination-actions';
 import calcEmptyRows from '@/components/tables/empty-rows';
 import {SensorInfo} from "@/types/sensor";
-import {NewSensor} from "@/types/common-types";
+import {type NewSensor} from "@/types/common-types";
 import Box from "@mui/material/Box";
 
 interface SensorsShowForChartsTableProps {
@@ -85,7 +85,7 @@ const SensorsShowForChartsTable: React.FC<SensorsShowForChartsTableProps> = ({
                   </TableCell>
                   <TableCell align="center">
                     {row.requestSensorInfo[0] ? <Box>
-                      {row.requestSensorInfo[0].warning ?  <BellSimpleRinging  color={"#9f093e"} size={24} /> :    <LineMdPlayFilledToPauseTransition/>}
+                      {row.requestSensorInfo[0].warning ?  <BellSimpleRinging  color="#9f093e" size={24} /> :    <LineMdPlayFilledToPauseTransition/>}
                     </Box>:<Box>
                       <LineMdPlayFilledToPauseTransition/>
                     </Box> }

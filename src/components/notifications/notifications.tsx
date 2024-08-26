@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { RootState } from '@/store/store';
-import { Alert, AlertColor } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { type RootState } from '@/store/store';
+import { Alert, type AlertColor } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -13,7 +12,7 @@ import formatDateTime from '@/lib/common/format-date-time';
 import SelectTimePeriod from '@/components/select/select-time-period';
 import { notificationsClient } from "@/components/notifications/notifications-client";
 import NotificationList from "@/components/notifications/notification-list";
-import { ApiResult } from "@/types/result-api"; // Убедитесь, что ApiResult определен
+import { type ApiResult } from "@/types/result-api";
 
 // Тип для объекта уведомления
 interface Notification {
@@ -83,9 +82,9 @@ export function Notifications(): React.JSX.Element {
   const sendRequestToApi = async () => {
     try {
       setIsMessage('');
-      const sendData:any = { period: isPeriod };
+      const sendData: any = { period: isPeriod };
       const result = await notificationsClient.getAllNotificationsFromApi(sendData);
-      handleResult(result as ApiResult); // Приведение типа
+      handleResult(result as ApiResult);
       setIsTitle('Выбранные уведомления');
     } catch (error) {
       handleError(error as string, 'Ошибка при загрузке данных');
@@ -134,7 +133,7 @@ export function Notifications(): React.JSX.Element {
           </Box>
         )}
       </Box>
-      <Box sx={{ marginY: 2 }}>{isMessage && <Alert color={alertColor}>{isMessage}</Alert>}</Box>
+      <Box sx={{ marginY: 2 }}>{isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}</Box>
     </Box>
   );
 }

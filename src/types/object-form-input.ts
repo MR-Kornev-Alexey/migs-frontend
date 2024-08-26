@@ -6,4 +6,6 @@ export interface ObjectFormInput {
   name: string;
   address: string;
   notation: string;
+  id: string;
+  objectsId: string;
 }

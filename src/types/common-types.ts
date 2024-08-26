@@ -85,6 +85,7 @@ export interface NewSensor {
   files: SensorFile[];
   dataFromSensor: DataFromSensor[];
   requestSensorInfo: RequestSensorInfo[];
+  Sensor: any[];
 }
 
 // additionalSensorInfo.ts

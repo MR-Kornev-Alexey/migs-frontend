@@ -237,7 +237,7 @@ export default function PageForModal(): React.JSX.Element {
           setIsMessage('');
         }, 2000);
       } else {
-        setIsMessage('Ошибка загрузки файла: ' + response.error);
+        setIsMessage(`Ошибка загрузки файла: ${  response.error}`);
         setAlertColor('error');
       }
     } catch (error) {

@@ -1,10 +1,10 @@
 import React from 'react';
-import {AlertColor, Modal} from '@mui/material';
+import {type AlertColor, Modal} from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';
 import {SignUpFormAddLog} from "@/components/dashboard/additional-data-sensor/sign-up-form-for-log";
-import {SensorInfo} from "@/types/sensor";
+import {type SensorInfo} from "@/types/sensor";
 
 interface ModalNewOperationLogSensorProps {
   isOpen: boolean;
@@ -51,9 +51,9 @@ const ModalNewOperationLogSensor: React.FC<ModalNewOperationLogSensorProps> = ({
             </Box>
           </Stack>
           <SignUpFormAddLog
-            alertModalColor={isAlertModalColor as "success" | "info" | "warning" | "error"}
-            modalMessage={isMessageAlertModal as string}
-            dataOfSensor={dataOfSensor as SensorInfo}
+            alertModalColor={isAlertModalColor!}
+            modalMessage={isMessageAlertModal!}
+            dataOfSensor={dataOfSensor!}
             updateLogsInfoForSensor={updateLogsInfoForSensor}
           />
         </Box>

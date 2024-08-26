@@ -14,13 +14,17 @@ import { CheckSquareOffset, GearFine } from '@phosphor-icons/react';
 import { useSelection } from '@/hooks/use-selection';
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
 import setKindOfObject from "@/lib/common/kind-of-object";
+import {SvgSpinnersBarsScale} from "@/components/animated-icon/chart-icon";
+import {LineMdPlayFilledToPauseTransition} from "@/components/animated-icon/pause-icon";
+import {NewSensor} from "@/types/common-types";
 
 interface AllObjectsPaginationActionsTableProps {
   rows: any;
-  onSelectedRowsChange: (id: any) => void;
+  onSelectedSensors:  (sensorsId: Set<string>) => void;
+  openAddInfoAboutSensors: (sensorsId: string) => void;
 }
 
-export default function AllObjectsPaginationActionsTable({ rows, onSelectedRowsChange }: AllObjectsPaginationActionsTableProps) {
+export default function AboutObjectPaginationAndSelectForTable({ rows, onSelectedSensors, openAddInfoAboutSensors}: AllObjectsPaginationActionsTableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -38,7 +42,7 @@ export default function AllObjectsPaginationActionsTable({ rows, onSelectedRowsC
   // Avoid calling onSelectedRowsChange if rows are not yet available or if selected hasn't changed
   React.useEffect(() => {
     if (rows.length > 0 && selected !== prevSelected.current) {
-      onSelectedRowsChange(selected);
+      onSelectedSensors(selected);
       prevSelected.current = selected; // Update the reference to the current selected state
     }
   }, [selected, rows.length]);
@@ -57,7 +61,7 @@ export default function AllObjectsPaginationActionsTable({ rows, onSelectedRowsC
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+      <Table sx={{ minWidth: 400 }} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
             <TableCell padding="checkbox">
@@ -73,18 +77,18 @@ export default function AllObjectsPaginationActionsTable({ rows, onSelectedRowsC
                 }}
               />
             </TableCell>
-            <TableCell>Название</TableCell>
-            <TableCell align="center">Адрес</TableCell>
-            <TableCell align="center">Организация</TableCell>
-            <TableCell style={{ width: '20%' }} align="center">Тип объекта</TableCell>
-            <TableCell style={{ width: '5%' }} align="center">Датчики</TableCell>
+            <TableCell>Наименование</TableCell>
+            <TableCell align="center">Активность</TableCell>
+            <TableCell align="center">Сетевой номер </TableCell>
+            <TableCell  align="center">Подробнее </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row: any) => {
+          {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row: any, index:number) => {
             const isSelected = selected?.has(row.id);
+            const isEvenRow = (index + 1) % 2 === 0; // Check if the row is even
             return (
-              <TableRow key={row.id} selected={isSelected}>
+              <TableRow key={row.id} selected={isSelected}  sx={{ backgroundColor: isEvenRow ? '#d9d9d9' : 'inherit' }}>
                 <TableCell padding="checkbox">
                   <Checkbox
                     checked={isSelected}
@@ -97,13 +101,22 @@ export default function AllObjectsPaginationActionsTable({ rows, onSelectedRowsC
                     }}
                   />
                 </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell style={{ width: '10%' }} align="center">
-                  {row.address}
+                <TableCell> {row.model} | {row.designation} </TableCell>
+                <TableCell
+                  style={{textAlign: 'center'}}
+                >
+                  {row.run ? <SvgSpinnersBarsScale/> : <LineMdPlayFilledToPauseTransition/>}
                 </TableCell>
-                <TableCell align="center">{row?.organization?.name || 'N/A'}</TableCell>
-                <TableCell align="center">{setKindOfObject(row.objectsType)}</TableCell>
-                <TableCell align="center">{row.Sensor.length}</TableCell>
+                <TableCell  align="center">{row.network_number} </TableCell>
+                <TableCell
+                  style={{ cursor: 'pointer' }}
+                  align="center"
+                  onClick={() => {
+                    openAddInfoAboutSensors(row.id);
+                  }}
+                >
+                  <GearFine size={24} />
+                </TableCell>
               </TableRow>
             );
           })}

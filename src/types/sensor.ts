@@ -1,4 +1,4 @@
-import {MOrganisation} from "@/types/common-types";
+import {type MOrganisation} from "@/types/common-types";
 
 export interface ObjectInfo {
   id: string;

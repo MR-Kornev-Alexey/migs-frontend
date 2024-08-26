@@ -1,4 +1,5 @@
-import {ApiResult} from "@/types/result-api";
+import {type ApiResult} from "@/types/result-api";
+
 type SuccessCallback = (result: ApiResult) => void;
 type SetAlertColor = (color: 'success' | 'error') => void;
 type SetIsMessage = (message: string) => void;

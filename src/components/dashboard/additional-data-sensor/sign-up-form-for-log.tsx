@@ -12,8 +12,8 @@ import Typography from '@mui/material/Typography';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 import { Spinner } from "@phosphor-icons/react";
-import { SensorInfo } from "@/types/sensor";
-import {AlertColor} from "@mui/material";
+import { type SensorInfo } from "@/types/sensor";
+import {type AlertColor} from "@mui/material";
 
 // Define the props for the component
 interface SignUpFormAddLogProps {
@@ -133,7 +133,7 @@ export const SignUpFormAddLog: React.FC<SignUpFormAddLogProps> = ({
               <Box>Зарегистрировать</Box>
             )}
           </Button>
-          {modalMessage && <Alert color={alertModalColor}>{modalMessage}</Alert>}
+          {modalMessage ? <Alert color={alertModalColor}>{modalMessage}</Alert> : null}
         </Stack>
       </form>
     </Stack>

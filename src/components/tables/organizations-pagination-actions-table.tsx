@@ -9,7 +9,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { CheckSquareOffset, GearFine } from '@phosphor-icons/react';
+import {CheckSquareOffset, GearFine, Trash} from '@phosphor-icons/react';
 
 import { useSelection } from '@/hooks/use-selection';
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
@@ -18,10 +18,11 @@ import { TablePaginationActions } from '@/components/tables/table-pagination-act
 interface organizationsPaginationActionsTable {
   rows: any;
   onSelectedRowsChange: (selected: Set<string>) => void;
-  openDataOrganisation: (id: any) => void; // Function type adjusted here
+  openDataOrganisation: (id: any) => void;
+  deleteOneOrganisation: (id: any) => void;
 }
 
-export default function OrganizationsPaginationActionsTable({ rows, onSelectedRowsChange, openDataOrganisation }: organizationsPaginationActionsTable) {
+export default function OrganizationsPaginationActionsTable({ rows, onSelectedRowsChange, openDataOrganisation, deleteOneOrganisation }: organizationsPaginationActionsTable) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const rowIds = React.useMemo(() => {
@@ -75,6 +76,9 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
             <TableCell style={{ width: '5%' }} align="center">
               <GearFine size={24} />
             </TableCell>
+            <TableCell style={{ width: '5%' }} align="center">
+              <Trash size={24} />
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -105,6 +109,13 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
                   onClick={() => { openDataOrganisation(row.id); }}
                 >
                   <GearFine size={24} />
+                </TableCell>
+                <TableCell
+                  style={{ width: '5%', cursor: 'pointer' }}
+                  align="center"
+                  onClick={() => { deleteOneOrganisation(row.id); }}
+                >
+                  <Trash size={24} />
                 </TableCell>
               </TableRow>
             );

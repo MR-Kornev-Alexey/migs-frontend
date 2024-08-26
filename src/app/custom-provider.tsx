@@ -31,14 +31,13 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Explicitly type the promises
         const promises: Promise<ApiResult>[] = [
           organizationClient.getAllOrganization(),
           objectClient.getAllObjects(),
           sensorsClient.getAllTypeOfSensors(),
           sensorsClient.getAllSensors()
         ];
-        const [orgResult, objResult,typeResult, sensorResult] = await Promise.allSettled(promises);
+        const [orgResult, objResult, typeResult, sensorResult] = await Promise.allSettled(promises);
         handleResult(orgResult, "организаций", addOrganizations, "allOrganizations");
         handleResult(objResult, "объектов", addObjects, "allObjects");
         handleResult(typeResult, "типов датчиков", addTypeOfSensors, "allSensorsType");
@@ -54,7 +53,7 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
     const handleResult = (
       result: PromiseSettledResult<ApiResult>,
       entityName: string,
-      dispatchAction: (data: any[]) => AnyAction, // Ensure this returns a valid action
+      dispatchAction: (data: any[]) => AnyAction,
       dataKey: keyof ApiResult
     ) => {
       if (result.status === "fulfilled") {
@@ -64,7 +63,7 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
           setTimeout(() => {
             setIsMessage("");
           }, 2000);
-          dispatch(dispatchAction(result.value[dataKey] || [])); // Correctly use the dispatch function
+          dispatch(dispatchAction(result.value[dataKey] || []));
         } else {
           setAlertColor("error");
           setIsMessage(
@@ -80,15 +79,18 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
 
     fetchData();
   }, [dispatch]);
+
   return (
     <LocalizationProvider>
       <UserProvider>
         <ThemeProvider>
-          {isMessage ? <Box display="flex" justifyContent="center" alignItems="center">
-              <Alert sx={{marginTop: 2}} color={alertColor}>
+          {isMessage && (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Alert sx={{ marginTop: 2 }} color={alertColor}>
                 {isMessage}
               </Alert>
-            </Box> : null}
+            </Box>
+          )}
           {children}
         </ThemeProvider>
       </UserProvider>
