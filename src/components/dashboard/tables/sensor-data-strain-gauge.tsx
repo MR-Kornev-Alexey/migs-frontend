@@ -15,14 +15,8 @@ import * as XLSX from 'xlsx';
 import parseSensorRf251 from '@/lib/parse-sensor/parse-sensor-rf251';
 import formatDateTime from "@/lib/common/format-date-time";
 import { TablePaginationActions } from "@/components/tables/table-pagination-actions";
+import hexToAsciiAndConvert from "@/lib/parse-sensor/hex-to-ascii-and-convert-for-ls5";
 
-// Define types for the props
-interface SensorDataRow {
-  id: string;
-  created_at: string;
-  request_code: string;
-  answer_code: string;
-}
 
 interface SensorDataStrainGaugeProps {
   rows: any[];
@@ -52,11 +46,15 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
   const checkAnswerCode = (code: string): string => {
     if (code.length === 28) {
       return code.replace(/(.{2})/g, '$1 ').trim();
+    } else if (code.length >= 22 && code.length !== 28) {
+      // Обрезаем строку до 22 символов, если её длина больше 22
+      const truncatedCode = code.slice(0, 22);
+      return truncatedCode.replace(/(.{2})/g, '$1 ').trim();
     } else if (code.length === 0) {
       return 'Потеря ответа датчика';
     }
-      return 'Ошибка ответа датчика';
 
+    return 'Ошибка ответа датчика';
   };
 
   // Handle exporting data to Excel
@@ -93,7 +91,9 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
               <TableCell>Запрос</TableCell>
               <TableCell align="center">Ответ</TableCell>
               <TableCell align="center">Фактическое отклонение (мкр)</TableCell>
-              <TableCell align="center">Температура (градус)</TableCell>
+              {sensorInfo[1] === "РФ-251" && <TableCell align="center">Температура (градус)
+              </TableCell>
+              }
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,8 +102,13 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
                 : rows
             ).map((row, index) => {
               const isEvenRow = (index + 1) % 2 === 0; // Check if the row is even
-              const parsedData = parseSensorRf251(row.answer_code,1);
-
+              let parsedDataRF;
+              let parsedDataLS5;
+              if(sensorInfo[1] === "РФ-251") {
+                parsedDataRF = parseSensorRf251(row.answer_code,1);
+              } else {
+                parsedDataLS5 = hexToAsciiAndConvert(row.answer_code,1);
+              }
               return (
                 <TableRow key={index} sx={{ backgroundColor: isEvenRow ? '#d9d9d9' : 'inherit' }}>
                   <TableCell style={{ width: '2%' }}>{index + 1 }</TableCell>
@@ -112,8 +117,14 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
                   <TableCell style={{ cursor: 'pointer' }} align="center">
                     {checkAnswerCode(row.answer_code)}
                   </TableCell>
-                  <TableCell align="center">{parsedData.distance}</TableCell>
-                  <TableCell align="center">{parsedData.temperature}</TableCell>
+                  <TableCell align="center">
+                    {sensorInfo[1] === "РФ-251" ? (parsedDataRF?.distance ?? 0) : (parsedDataLS5 || 0)}
+                  </TableCell>
+                  {sensorInfo[1] === "РФ-251" && (
+                    <TableCell align="center">
+                      {parsedDataRF?.temperature ?? "N/A"}
+                    </TableCell>
+                  )}
                 </TableRow>
               );
             })}

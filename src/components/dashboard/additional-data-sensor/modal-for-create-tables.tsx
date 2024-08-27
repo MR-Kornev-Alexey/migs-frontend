@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, Stack, Grid, Typography, Button, Alert, type AlertColor } from '@mui/material';
 import { X } from '@phosphor-icons/react';
@@ -159,7 +160,6 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
               {sortedData.map((sensorData, index) => {
                 const SensorComponent = sensorComponents[sensorData.sensor_key];
                 if (!SensorComponent) return null; // Skip if component is not found
-
                 return (
                   <SensorComponent
                     key={index}

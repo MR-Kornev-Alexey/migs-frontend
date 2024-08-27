@@ -43,45 +43,48 @@ export default function SelectTimePeriod({ setPeriodToParent, setOneHour }: Sele
   const updatePeriod = (selectedPeriod: string) => {
     let period: Period;
 
+    const now = dayjs().format('YYYY-MM-DDTHH:mm:ss');
+
     switch (selectedPeriod) {
       case 'hour':
         period = {
-          startDate: dayjs().subtract(1, 'hour').format('YYYY-MM-DDTHH:mm:ss'),
-          endDate: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
+          startDate: now,
+          endDate: dayjs().subtract(1, 'hour').format('YYYY-MM-DDTHH:mm:ss'),
         };
         setOneHour(true);
         break;
       case 'day':
         period = {
-          startDate: dayjs().startOf('day').format('YYYY-MM-DD'),
-          endDate: dayjs().endOf('day').format('YYYY-MM-DD'),
+          startDate: now,
+          endDate: dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm:ss'),
         };
         setOneHour(false);
         break;
       case 'week':
         period = {
-          startDate: dayjs().subtract(1, 'week').format('YYYY-MM-DD'),
-          endDate: dayjs().format('YYYY-MM-DD'),
+          startDate: now,
+          endDate: dayjs().subtract(1, 'week').format('YYYY-MM-DDTHH:mm:ss'),
         };
         setOneHour(false);
         break;
       case 'month':
         period = {
-          startDate: dayjs().subtract(1, 'month').format('YYYY-MM-DD'),
-          endDate: dayjs().format('YYYY-MM-DD'),
+          startDate: now,
+          endDate: dayjs().subtract(1, 'month').format('YYYY-MM-DDTHH:mm:ss'),
         };
         setOneHour(false);
         break;
       default:
         period = {
-          startDate: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-          endDate: dayjs().format('YYYY-MM-DD'),
+          startDate: now,
+          endDate: dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm:ss'),
         };
         setOneHour(false);
     }
 
     setPeriodToParent(period);
   };
+
 
   return (
     <Box sx={{ minWidth: 260, flexDirection: 'column' }} display="flex" justifyContent="center">
