@@ -7,7 +7,7 @@ export interface Config {
 }
 
 // Retrieve BASE_URL and LOG_LEVEL from environment variables
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://89.108.76.29:8000';
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://80.78.245.91:8000';
 // export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
 // Define the configuration object
 export const config: Config = {
