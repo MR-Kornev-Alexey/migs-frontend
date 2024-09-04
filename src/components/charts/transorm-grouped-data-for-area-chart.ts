@@ -90,7 +90,8 @@ export default async function transformGroupedDataForAreaVictory(
       }
 
       // Сортировка sensorData по значению x (дате) в порядке возрастания
-      sensorData.sort((a, b) => dayjs(a.x).isAfter(dayjs(b.x)) ? 1 : -1);
+      sensorData.sort((a, b) => dayjs(a.x).isBefore(dayjs(b.x)) ? -1 : 1);
+
 
       // Проверяем, есть ли данные в массиве data перед использованием data[0]
       if (data.length > 0) {
@@ -102,7 +103,8 @@ export default async function transformGroupedDataForAreaVictory(
           sensorId,
           sensorName: `${sensor_type} | ${model}`,
           sensorLocation: `${designation} | ${network_number}`,
-          sensorColor: generateRandomColor(), // Генерация и добавление случайного цвета
+          // sensorColor: generateRandomColor(),
+          sensorColor: "#0476d3",
           sensorData,
         });
       }

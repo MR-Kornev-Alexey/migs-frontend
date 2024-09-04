@@ -55,27 +55,17 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
 
             {/* Настройка оси Y */}
             <VictoryAxis
-              dependentAxis
-              tickFormat={(t) => `${t} мкм`} // Форматирование меток на оси Y
+              tickFormat={(x) => `${x}`}
               style={{
-                axis: { stroke: '#756f6a' },
-                grid: { stroke: '#e6e6e6' }, // Добавляем сетку по оси Y
-                ticks: { stroke: 'grey', size: 5 },
-                tickLabels: { fontSize: 8, padding: 5 }, // Установка шрифта на 8 для оси Y
-              }}
-            />
-
-            {/* Настройка оси X */}
-            <VictoryAxis
-              tickFormat={(t) => t} // Отображаем строки (даты) как метки на оси X
-              style={{
+                axis: { stroke: '#000' },
+                axisLabel: { fontSize: 6 },
+                ticks: { stroke: '#000', size: 5 },
                 tickLabels: {
-                  fontSize: 7, // Устанавливаем шрифт на 7 для оси X
-                  padding: 5,
-                  angle: 45, // Поворачиваем метки на 45 градусов
-                  textAnchor: 'start', // Точка привязки текста после поворота
-                },
-                grid: { stroke: '#e6e6e6' }, // Добавляем сетку по оси X, если требуется
+                  fontSize: 5,
+                  fill: '#000',
+                  angle: 270+45, // Поворот меток на 90 градусов
+                  textAnchor: 'end' // Выравнивание текста по началу
+                }
               }}
             />
 

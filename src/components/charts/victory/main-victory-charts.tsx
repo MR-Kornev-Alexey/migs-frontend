@@ -32,7 +32,7 @@ function MyBarChart({data}: Props) {
       tickFormat={(x) => `${x}`}
       style={{
         axis: { stroke: '#000' },
-        axisLabel: { fontSize: 8 },
+        axisLabel: { fontSize: 6 },
         ticks: { stroke: '#000', size: 5 },
         tickLabels: {
           fontSize: 6,
