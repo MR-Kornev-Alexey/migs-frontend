@@ -8,7 +8,7 @@ import {
   VictoryVoronoiContainer,
   VictoryAxis,
   VictoryTheme,
-  VictoryLabel
+  VictoryLabel,
 } from 'victory';
 
 // Типы данных для компонента
@@ -50,22 +50,35 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
               x={250}  // Позиция по оси X (центр графика)
               y={20}   // Позиция по оси Y (внутри сверху)
               textAnchor="middle" // Центрируем текст
-              style={{ fontSize: 10 }} // Стилизация текста
+              style={{ fontSize: 9}} // Стилизация текста
             />
 
             {/* Настройка оси Y */}
             <VictoryAxis
+              dependentAxis
+              tickFormat={(t) => `${t} мкм`} // Форматирование меток на оси Y
+              style={{
+                axis: { stroke: '#000' },
+                axisLabel: { fontSize: 5 },
+                ticks: { stroke: '#000', size: 5 },
+                tickLabels: { fontSize: 5, padding: 5, fill: '#333' }, // Увеличен шрифт и добавлен цвет для меток оси Y
+                grid: { stroke: '#e6e6e6' }, // Добавлена сетка для оси Y
+              }}
+            />
+
+            {/* Настройка оси X */}
+            <VictoryAxis
               tickFormat={(x) => `${x}`}
               style={{
                 axis: { stroke: '#000' },
-                axisLabel: { fontSize: 6 },
-                ticks: { stroke: '#000', size: 5 },
+                ticks: { stroke: '#000', size: 4 },
                 tickLabels: {
                   fontSize: 5,
                   fill: '#000',
                   angle: 270+45, // Поворот меток на 90 градусов
                   textAnchor: 'end' // Выравнивание текста по началу
-                }
+                },
+                grid: { stroke: '#e6e6e6' }, // Добавлена сетка для оси X
               }}
             />
 

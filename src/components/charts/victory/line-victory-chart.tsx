@@ -7,7 +7,6 @@ import {
   VictoryTooltip,
   VictoryVoronoiContainer,
   VictoryAxis,
-  VictoryLabel,
 } from 'victory';
 
 type SensorData = {
@@ -28,24 +27,24 @@ type LineVictoryChartProps = {
 
 const LineVictoryChart: React.FC<LineVictoryChartProps> = ({ sensors }) => {
   return (
-    <VictoryChart height={250} width={500} containerComponent={<VictoryVoronoiContainer/>}>
+    <VictoryChart height={250} width={500} containerComponent={<VictoryVoronoiContainer />}>
       <VictoryAxis
         dependentAxis
         tickFormat={(t) => `${t} мкм`} // Форматирование меток на оси Y
         style={{
-          axis: { stroke: '#756f6a' },
+          axis: { stroke: '#756f6a', strokeWidth: 1 }, // Добавляем толщину линии оси
           grid: { stroke: '#e6e6e6' }, // Добавляем сетку по оси Y
           ticks: { stroke: 'grey', size: 5 },
-          tickLabels: { fontSize: 8, padding: 5 }, // Установка шрифта на 8 для оси Y
+          tickLabels: { fontSize: 10, padding: 5, fill: '#333' }, // Увеличение размера шрифта и изменение цвета для оси Y
         }}
       />
 
-      {/* Настройка оси X */}
       <VictoryAxis
         tickFormat={(t) => Number.isInteger(t) ? t : null} // Показываем только целые числа
         style={{
-          tickLabels: { fontSize: 8, padding: 5 }, // Установка шрифта на 8 для оси X
-          grid: { stroke: '#e6e6e6' } // Добавляем сетку по оси X, если требуется
+          axis: { stroke: '#756f6a', strokeWidth: 1 }, // Добавляем толщину линии оси
+          tickLabels: { fontSize: 10, padding: 5, fill: '#333' }, // Увеличение размера шрифта и изменение цвета для оси X
+          grid: { stroke: '#e6e6e6' }, // Добавляем сетку по оси X
         }}
       />
 
