@@ -16,7 +16,7 @@ const dispatcherNavItems = [
   { key: 'charts', title: 'Графики', href: paths.dashboard.charts, icon: 'chart-bar' },
   { key: 'tables', title: 'Таблицы', href: paths.dashboard.tables, icon: 'table' },
   { key: 'sensors', title: 'Датчики', href: paths.dashboard.sensors, icon: 'plugs-connected' },
-  { key: 'worklog', title: 'Журнал работы', href: paths.dashboard.worklog, icon: 'log' },
+  // { key: 'worklog', title: 'Журнал работы', href: paths.dashboard.worklog, icon: 'log' },
   { key: 'manual', title: 'Руководство пользователя', href: paths.dashboard.manual, icon: 'notebook' },
 ];
 
@@ -28,7 +28,7 @@ const adminNavItems = [
   { key: 'tables', title: 'Таблицы', href: paths.dashboard.tables, icon: 'table' },
   { key: 'sensors', title: 'Датчики', href: paths.dashboard.sensors, icon: 'plugs-connected' },
   { key: 'terminal', title: 'Консоль', href: paths.dashboard.terminal, icon: 'terminal' },
-  { key: 'worklog', title: 'Журнал работы', href: paths.dashboard.worklog, icon: 'log' },
+  // { key: 'worklog', title: 'Журнал работы', href: paths.dashboard.worklog, icon: 'log' },
   { key: 'manual', title: 'Руководство пользователя', href: paths.dashboard.manual, icon: 'notebook' },
   { key: 'settings', title: 'Настройки', href: paths.dashboard.settings, icon: 'gear-six' },
 ];
@@ -41,7 +41,7 @@ const supervisorNavItems = [
   { key: 'tables', title: 'Таблицы', href: paths.dashboard.tables, icon: 'table' },
   { key: 'sensors', title: 'Датчики', href: paths.dashboard.sensors, icon: 'plugs-connected' },
   { key: 'terminal', title: 'Консоль', href: paths.dashboard.terminal, icon: 'terminal' },
-  { key: 'worklog', title: 'Журнал работы', href: paths.dashboard.worklog, icon: 'log' },
+  // { key: 'worklog', title: 'Журнал работы', href: paths.dashboard.worklog, icon: 'log' },
   { key: 'manual', title: 'Руководство пользователя', href: paths.dashboard.manual, icon: 'notebook' },
   { key: 'settings', title: 'Настройки', href: paths.dashboard.settings, icon: 'gear-six' },
 ];
