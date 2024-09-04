@@ -1,5 +1,5 @@
 import React from 'react';
-import {VictoryChart, VictoryBar, VictoryAxis, VictoryZoomContainer, VictoryTheme, VictoryContainer} from 'victory';
+import {VictoryChart, VictoryBar, VictoryAxis,  VictoryTheme, VictoryContainer} from 'victory';
 import {type VictoryChartData} from "@/types/victory-chart-data";
 
 interface Props {
@@ -10,7 +10,7 @@ function MyBarChart({data}: Props) {
     containerComponent={<VictoryContainer />}
     theme={VictoryTheme.material}
     width={500}
-    height={200}
+    height={260}
     domainPadding={{ x: 20 }}
     padding={{ top: 20, bottom: 90, left: 30, right: 30 }}
   >

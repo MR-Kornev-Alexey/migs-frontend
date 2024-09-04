@@ -49,7 +49,7 @@ const SensorDataInclinoMeter: React.FC<SensorDataInclinoMeterProps> = ({ rows, s
 
   const handleExportIND3 = () => {
     const exportData = rows.map((row, index) => {
-      const parsedData = parseSensorInD3(row.answer_code, 1);
+      const parsedData = parseSensorInD3(row.answer_code, 1, 3000);
       return {
         '№№': index + 1,
         'Дата': formatDateTime(row.created_at),
@@ -90,7 +90,7 @@ const SensorDataInclinoMeter: React.FC<SensorDataInclinoMeterProps> = ({ rows, s
           </TableHead>
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-              const parsedData = parseSensorInD3(row.answer_code, 1);
+              const parsedData = parseSensorInD3(row.answer_code, 1, 3000);
               const isEvenRow = (index + 1) % 2 === 0;
 
               return (

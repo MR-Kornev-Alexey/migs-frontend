@@ -13,8 +13,11 @@ const selectedSensorSlice = createSlice({
     addSelectedSensor(state, action: PayloadAction<string>) {
       state.value = action.payload;
     },
+    clearSelectedSensors(state, action: PayloadAction<string>) {
+      state.value = '';
+    },
   },
 });
 
-export const { addSelectedSensor } = selectedSensorSlice.actions;
+export const { addSelectedSensor, clearSelectedSensors } = selectedSensorSlice.actions;
 export default selectedSensorSlice.reducer;

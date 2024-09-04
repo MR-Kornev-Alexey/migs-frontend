@@ -1,12 +1,14 @@
 import hexStringToBuffer from "@/lib/parse-sensor/hex-string-to-buffer";
 
-// Определение типа для возвращаемого объекта
-interface SensorData {
-  distance: any | undefined;
-  temperature: any | undefined;
-}
+export default function parseSensorRf251(hexString: string | undefined, coefficient: number, limitValue: number) {
+  // Проверка на неопределённость или пустоту hexString
+  if (!hexString) {
+    return {
+      distance: "ошибка",
+      temperature: "ошибка"
+    };
+  }
 
-export default function parseSensorRf251(hexString: string, coefficient: number): SensorData {
   const buffer = hexStringToBuffer(hexString);
   let distanceHex = '';
 
@@ -44,15 +46,20 @@ export default function parseSensorRf251(hexString: string, coefficient: number)
 
   // Определяем знак и масштабируем значение
   if ((temperatureValue & 0x8000) !== 0) {
-    temperatureValue -=
-      0x10000; // Если старший бит установлен, это отрицательное число
+    temperatureValue -= 0x10000; // Если старший бит установлен, это отрицательное число
   }
   temperatureValue *= 0.1; // Преобразуем в десятые доли градуса
   // Округляем значение температуры до двух знаков после запятой
   temperatureValue = parseFloat(temperatureValue.toFixed(2));
-
-  return {
-    distance: distanceValue * coefficient,
-    temperature: temperatureValue * coefficient
-  };
+  if (Math.abs(Number(distanceValue)) >= limitValue) {
+    return {
+      distance: "ошибка",
+      temperature: "ошибка"
+    };
+  } else {
+    return {
+      distance: distanceValue * coefficient,
+      temperature: temperatureValue * coefficient
+    };
+  }
 }

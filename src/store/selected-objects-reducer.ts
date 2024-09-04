@@ -4,7 +4,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import {MObject} from "@/types/common-types";
 
 const initialState: { value: MObject[] } = {
-  value: [],
+  value: []
 };
 
 const selectedObjectsSlice = createSlice({
@@ -14,8 +14,11 @@ const selectedObjectsSlice = createSlice({
     addSelectedObjects(state, action: PayloadAction<MObject[]>) {
       state.value = action.payload;
     },
+    clearSelectedObjects(state, action: PayloadAction<MObject[]>) {
+      state.value = [];
+    },
   },
 });
 
-export const { addSelectedObjects } = selectedObjectsSlice.actions;
+export const { addSelectedObjects, clearSelectedObjects } = selectedObjectsSlice.actions;
 export default selectedObjectsSlice.reducer;

@@ -37,7 +37,7 @@ export default function ObjectsPaginationActionsTable({ rows, selectOneObjectFor
   };
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={3}   sx={{marginY:2}} >
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead>

@@ -1,22 +1,25 @@
-'use client';
-import React, {useState, useEffect} from 'react';
-import {
-  Stack,
-} from '@mui/material';
-import ModalForCreateCharts from "@/components/dashboard/additional-data-sensor/modal-for-create-charts";
-import ObjectsSelection from "@/lib/common/objects-selection";
-export default function Page(): React.JSX.Element {
-  const [isOpenModalCreateData, setIsOpenModalCreateData] = useState<boolean>(false);
-  const closeIsOpenModalCreateData = () => {
-    setIsOpenModalCreateData(false);
-  }
+import * as React from 'react';
+import type { Metadata } from 'next';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
 
+import { config } from '@/config';
+import { AccountDetailsForm } from '@/components/dashboard/account/account-details-form';
+import { AccountInfo } from '@/components/dashboard/account/account-info';
+
+export const metadata = { title: `Account | Dashboard | ${config.site.name}` } satisfies Metadata;
+
+export default function Page(): React.JSX.Element {
   return (
     <Stack spacing={3}>
-      <ObjectsSelection title={"Графики"} subTitle={"графиков"} setIsOpenModalCreateData={setIsOpenModalCreateData}/>
-      <ModalForCreateCharts
-        isOpenModalCreateData={isOpenModalCreateData}
-        onClose={closeIsOpenModalCreateData}/>
+      <div>
+        <Typography variant="h4">Журнал работы</Typography>
+      </div>
+      <Grid container spacing={3}>
+        <Grid lg={4} md={6} xs={12} />
+        <Grid lg={8} md={6} xs={12} />
+      </Grid>
     </Stack>
   );
 }

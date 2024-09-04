@@ -39,7 +39,6 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
   const [alertColor, setAlertColor] = useState<AlertColor>('error');
   const [sortedData, setSortedData] = useState<GroupedSensorData[]>([]);
   const [selectedSensors, setSelectedSensors] = useState<string[]>([]);
-  const types = ['strainGauge', 'inclinoMeter', 'rangefinder', 'GNSSReceiver', 'temperatureSensor', 'weatherStation'];
 
   // Function to reset the modal state
   const resetModalState = () => {

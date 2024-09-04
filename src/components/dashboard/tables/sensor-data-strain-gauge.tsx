@@ -64,8 +64,8 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
       'Дата': formatDateTime(row.created_at),
       'Запрос': row.request_code,
       'Ответ': checkAnswerCode(row.answer_code),
-      'Фактическое отклонение (мкр)': parseSensorRf251(row.answer_code,1).distance,
-      'Температура (градус)': parseSensorRf251(row.answer_code,1).temperature,
+      'Фактическое отклонение (мкр)': parseSensorRf251(row.answer_code,1, 3000).distance,
+      'Температура (градус)': parseSensorRf251(row.answer_code,1, 3000).temperature,
     }));
 
     const ws = XLSX.utils.json_to_sheet(exportData);
@@ -105,9 +105,9 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
               let parsedDataRF;
               let parsedDataLS5;
               if(sensorInfo[1] === "РФ-251") {
-                parsedDataRF = parseSensorRf251(row.answer_code,1);
+                parsedDataRF = parseSensorRf251(row.answer_code,1,3000);
               } else {
-                parsedDataLS5 = hexToAsciiAndConvert(row.answer_code,1);
+                parsedDataLS5 = hexToAsciiAndConvert(row.answer_code,1, 3000);
               }
               return (
                 <TableRow key={index} sx={{ backgroundColor: isEvenRow ? '#d9d9d9' : 'inherit' }}>

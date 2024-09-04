@@ -7,9 +7,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
-
-import { BASE_URL } from '@/config';
 import Button from "@mui/material/Button";
+import {startTerminal, stopTerminal} from "@/components/dashboard/terminal/stop-terminal";
+
 
 interface ObjectInfo {
   id: string;
@@ -52,46 +52,18 @@ export default function Page() {
 
   function getSensorsName(id: string) {
     const foundSensor = findSensorById(allSensors, id);
-    return `${foundSensor?.sensor_type  } ${  foundSensor?.designation}`;
+    return `${foundSensor?.sensor_type} ${foundSensor?.designation}`;
   }
 
   function addSpacesEveryTwoChars(input: string): string {
     return input.replace(/(.{2})/g, '$1 ').trim();
   }
 
-  const startTerminal = () => {
-    if (!isTerminalRunning) {
-      const newEventSource = new EventSource(`${BASE_URL}/sse/events`);
-      newEventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log('Received message:', data);
-        setMessages((prevMessages) => [...prevMessages, data]);
-      };
-      newEventSource.onerror = (error) => {
-        console.error('EventSource error:', error);
-        newEventSource.close();
-        setIsTerminalRunning(false);
-      };
-
-      setEventSource(newEventSource);
-      setIsTerminalRunning(true);
-    }
-  };
-
-  const stopTerminal = () => {
-    if (eventSource) {
-      eventSource.close();
-      setEventSource(null);
-      setIsTerminalRunning(false);
-      console.log('Terminal stopped');
-    }
-  };
-
   const toggleTerminal = () => {
     if (isTerminalRunning) {
-      stopTerminal();
+      stopTerminal(eventSource, setEventSource, setIsTerminalRunning);
     } else {
-      startTerminal();
+      startTerminal(setMessages, setIsTerminalRunning, setEventSource);
     }
   };
 

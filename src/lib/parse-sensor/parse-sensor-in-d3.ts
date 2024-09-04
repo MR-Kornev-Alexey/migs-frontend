@@ -1,7 +1,7 @@
 import hexStringToBuffer from "@/lib/parse-sensor/hex-string-to-buffer";
 
 
-export default function parseSensorInD3(hexDataString: string, coefficient: number) {
+export default function parseSensorInD3(hexDataString: string, coefficient: number, limitValue: number) {
   const buffer = hexStringToBuffer(hexDataString);
 
   // Проверяем, что размер буфера соответствует ожидаемому размеру ответа
@@ -56,11 +56,17 @@ export default function parseSensorInD3(hexDataString: string, coefficient: numb
 
   // Расчет модуля значения
   const magnitude = Math.sqrt(angleY * angleY + angleX * angleX).toFixed(2);
-
-  // Возвращение результатов обработки данных
-  return {
-    angleY,
-    angleX,
-    magnitude: parseFloat(magnitude),
-  };
+  if (Math.abs(Number(magnitude)) >= limitValue) {
+    return {
+      angleY: "ошибка",
+      angleX: "ошибка",
+      magnitude: "ошибка",
+    };
+  } else {
+    return {
+      angleY,
+      angleX,
+      magnitude: parseFloat(magnitude),
+    };
+  }
 }

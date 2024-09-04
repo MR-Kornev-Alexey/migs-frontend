@@ -70,8 +70,6 @@ export default function Page(): React.JSX.Element {
     dispatch(addSensors(sensorsData.allSensors));
   }
 
-
-
   async function updateSensorDesignation(sensor_id: string, value: string) {
     const sensorsData: ApiResult = await sensorsClient.changeDesignationOneSensorFromApi(sensor_id, value)
     console.log(sensorsData?.allSensors)
