@@ -55,7 +55,7 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <TableCell padding="checkbox">
+            <TableCell padding="checkbox" align='left' width="2%" >
               <Checkbox
                 checked={selectedAll}
                 indeterminate={selectedSome}
@@ -68,7 +68,7 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
                 }}
               />
             </TableCell>
-            <TableCell>Название</TableCell>
+            <TableCell style={{ width: '15%' }} align='left' >Название</TableCell>
             <TableCell style={{ width: '10%' }} align="center">
               ИНН
             </TableCell>
@@ -86,7 +86,7 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
             const isSelected = selected?.has(row.id);
             return (
               <TableRow key={row.id} selected={isSelected}>
-                <TableCell padding="checkbox">
+                <TableCell padding="checkbox" align='left' width="2%">
                   <Checkbox
                     checked={isSelected}
                     onChange={(event) => {
@@ -98,7 +98,7 @@ export default function OrganizationsPaginationActionsTable({ rows, onSelectedRo
                     }}
                   />
                 </TableCell>
-                <TableCell>{row.name}</TableCell>
+                <TableCell style={{ width: '15%' }} align='left' >{row.name}</TableCell>
                 <TableCell style={{ width: '10%' }} align="center">
                   {row.inn}
                 </TableCell>

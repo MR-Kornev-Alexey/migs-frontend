@@ -44,7 +44,6 @@ export default function PageForModal(): React.JSX.Element {
   const [isAlertModalColor, setIsAlertModalColor] = useState<AlertColor>('error');
   const [isLogsOpen, setIsLogsOpen] = useState<boolean>(false);
   const [file, setFile] = React.useState(null);
-  const [reloadFlag, setReloadFlag] = useState(false);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       file: undefined,
@@ -340,7 +339,7 @@ export default function PageForModal(): React.JSX.Element {
             <sup>&#8432;</sup> Параметры устанавливаются для всех датчиков указанной модели и типа на объекте
           </Box>
           <Box>
-            <sup>&#8432;&nbsp;&nbsp;&#8432;</sup> Обнуление устанавливается для всех датчиков на объекте
+            <sup>&#8432;&nbsp;&nbsp;&#8432;</sup> Обнуление установлено для всех датчиков на объекте <span style={{fontWeight: "bold"}}>{dataOfSensor.object.name} {dataOfSensor.object.address} </span>
           </Box>
         </Box>
         </Stack> : null}

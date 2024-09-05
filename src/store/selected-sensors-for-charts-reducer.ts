@@ -12,12 +12,9 @@ const selectedSensorsForChartsReducerSlice = createSlice({
   reducers: {
     addSelectedSensorsForCharts(state, action: PayloadAction<string[]>) {
       state.value = action.payload;
-    },
-    clearSelectedSensorsForCharts(state, action: PayloadAction<string>) {
-      state.value = [];
-    },
+    }
   },
 });
 
-export const { clearSelectedSensorsForCharts, addSelectedSensorsForCharts } = selectedSensorsForChartsReducerSlice.actions;
+export const {  addSelectedSensorsForCharts } = selectedSensorsForChartsReducerSlice.actions;
 export default selectedSensorsForChartsReducerSlice.reducer;

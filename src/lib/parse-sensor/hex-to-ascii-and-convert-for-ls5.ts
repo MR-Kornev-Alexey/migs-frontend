@@ -33,9 +33,9 @@ export default function hexToAsciiAndConvert(sequence: string, coefficient: numb
     const distanceValue: number = (integerPart + fractionalPart / 10) * coefficient;
     if (Math.abs(distanceValue) >= limitValue) {
       return 'ошибка';
-    } else {
+    } 
       return distanceValue
-    }
+    
   } catch (error) {
     return 'ошибка';
   }

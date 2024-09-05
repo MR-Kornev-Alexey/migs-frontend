@@ -9,18 +9,20 @@ import TableFooter from '@mui/material/TableFooter';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {GearFine, Trash} from '@phosphor-icons/react';
+import {GearFine, NumberCircleZero, Trash} from '@phosphor-icons/react';
 
 import setKindOfObject from '@/lib/common/kind-of-object';
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
+import {Switch} from "@mui/material";
 
 interface ObjectsPaginationActionsTableProps {
   rows: any;
   selectObject: (id: string) => void;
   deleteObject: (id: string) => void;
+  updateNullDataForObject: (id: string, newValue: boolean ) => void;
 }
 
-export default function ObjectsPaginationActionsTable({ rows, selectObject, deleteObject }: ObjectsPaginationActionsTableProps) {
+export default function ObjectsPaginationActionsTable({ rows, selectObject, deleteObject , updateNullDataForObject }: ObjectsPaginationActionsTableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -35,7 +37,13 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const handleSetNullChange = (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.checked;
+    // Теперь вы можете использовать id и новое значение
+    console.log('Object ID:', id, 'New Value:', newValue);
+    updateNullDataForObject(id , newValue);
+    // updateNullDataForObject(id, newValue); // вызов вашей функции обновления
+  };
   return (
     <Stack spacing={3}>
       <TableContainer component={Paper}>
@@ -54,6 +62,9 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
               </TableCell>
               <TableCell style={{ width: '5%' }} align="center">
                 Датчики
+              </TableCell>
+              <TableCell style={{ width: '10%' }} align="center">
+                Установка нуля
               </TableCell>
               <TableCell style={{ width: '10%' }} align="center">
                 Подробнее
@@ -80,6 +91,14 @@ export default function ObjectsPaginationActionsTable({ rows, selectObject, dele
                 </TableCell>
                 <TableCell style={{ width: '5%' }} align="center">
                   {row.Sensor.length}
+                </TableCell>
+                <TableCell style={{ width: '10%' }} align="center">
+                  {row.Sensor.length > 0 ? <Switch
+                    checked={row?.set_null || false}
+                    onChange={handleSetNullChange(row.id)}  // Используем стрелочную функцию для передачи id
+                    color="primary"
+                    />: <NumberCircleZero size={32} />
+                  }
                 </TableCell>
                 <TableCell
                   style={{ width: '10%', cursor: 'pointer' }}

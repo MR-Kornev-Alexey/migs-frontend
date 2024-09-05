@@ -1,6 +1,6 @@
 export default function formatNetworkNumber(networkNumber: number): string {
   // Преобразуем сетевой номер в hex (два знака)
-  let hexString = networkNumber.toString(16).toUpperCase().padStart(2, '0');
+  const hexString = networkNumber.toString(16).toUpperCase().padStart(2, '0');
 
   // Преобразуем hex в ASCII
   let asciiString = '';

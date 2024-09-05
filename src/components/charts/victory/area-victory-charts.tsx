@@ -12,21 +12,21 @@ import {
 } from 'victory';
 
 // Типы данных для компонента
-type SensorData = {
+interface SensorData {
   x: string; // Дата в виде строки
   y: number;
-};
+}
 
-type ProcessedSensor = {
+interface ProcessedSensor {
   sensorName: string;
   sensorLocation: string;
   sensorColor: string;
   sensorData: SensorData[];
-};
+}
 
-type AreaVictoryChartProps = {
+interface AreaVictoryChartProps {
   sensors: ProcessedSensor[] | null; // Данные могут быть null, если они еще не загружены
-};
+}
 
 const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
   // Проверяем, загрузились ли данные

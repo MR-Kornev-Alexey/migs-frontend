@@ -10,7 +10,7 @@ import {
   Typography,
   TextField, Switch,
 } from '@mui/material';
-import { Article } from '@phosphor-icons/react';
+import {Article, ThumbsDown, ThumbsUp} from '@phosphor-icons/react';
 import { SvgSpinnersBarsScale } from '@/components/animated-icon/chart-icon';
 import { LineMdPlayFilledToPauseTransition } from '@/components/animated-icon/pause-icon';
 import { type SensorInfo } from "@/types/sensor";
@@ -19,7 +19,7 @@ interface MainSensorDataTableProps {
   dataOfSensor: SensorInfo;
   openModalErrorInfoSensor: () => void;
   updateAdditionalDataForSensors: (newNote: string, parameter: string) => void;
-  updateNullDataForObject: (object_id: string, parameter: boolean) => void;
+  updateNullDataForObject: (object_id: string , parameter: boolean) => void;
 }
 
 const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor, openModalErrorInfoSensor, updateAdditionalDataForSensors, updateNullDataForObject }) => {
@@ -85,11 +85,7 @@ const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor,
               {dataOfSensor.run ? <SvgSpinnersBarsScale /> : <LineMdPlayFilledToPauseTransition />}
             </TableCell>
             <TableCell style={{ cursor: 'pointer' }} align="center">
-              <Switch
-                checked={nullState}
-                onChange={handleSetNullChange}
-                color="primary"
-              />
+              {nullState ? <ThumbsUp size={24} color='#086837' /> : <ThumbsDown color='#9f093e' size={24} />}
             </TableCell>
             <TableCell style={{ textAlign: 'center', cursor: 'pointer' }} onClick={openModalErrorInfoSensor}>
               <Article size={24} />

@@ -1,8 +1,8 @@
 
-type ProcessedSensor = {
+interface ProcessedSensor {
   sensorId: string;
   yValue:number
-};
+}
 
 export default async function createSeriesForLoopDynamicCharts(selectedObject: any): Promise<ProcessedSensor[]> {
   const processedSensors: ProcessedSensor[] = [];

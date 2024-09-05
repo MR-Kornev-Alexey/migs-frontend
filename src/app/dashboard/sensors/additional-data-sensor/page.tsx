@@ -22,8 +22,6 @@ import {handleResponseNoModal} from "@/lib/utils/handle-response-no-modal";
 import { handleResponse, handleError } from '@/lib/utils/handler-response-with-modal';
 import OperationInfoAndLogForSensor from "@/components/tables/operation-info-and-log-for-sensor";
 import ModalNewOperationLogSensor from "@/components/modal/modal-new-operation-log-sensor";
-import {Notepad} from "@phosphor-icons/react";
-import Link from "@mui/material/Link";
 import {useForm} from "react-hook-form";
 import {type AxiosResponse} from "axios";
 import BasicCard from "@/components/cards/basic-card";
@@ -44,7 +42,6 @@ export default function Page(): React.JSX.Element {
   const [isAlertModalColor, setIsAlertModalColor] = useState<AlertColor>('error');
   const [isLogsOpen, setIsLogsOpen] = useState<boolean>(false);
   const [file, setFile] = React.useState(null);
-  const [reloadFlag, setReloadFlag] = useState(false);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       file: undefined,
@@ -282,10 +279,10 @@ export default function Page(): React.JSX.Element {
           <Typography variant="h5" sx={{marginY: 2}}>
             Основные данные
           </Typography>
-          <MainSensorDataTable dataOfSensor={dataOfSensor}
-                               openModalErrorInfoSensor={openModalErrorInfoSensor}
-                               updateAdditionalDataForSensors={updateAdditionalParameterForSensors}
-                               updateNullDataForObject={updateNullDataForObject}/>
+          {/*<MainSensorDataTable dataOfSensor={dataOfSensor}*/}
+          {/*                     openModalErrorInfoSensor={openModalErrorInfoSensor}*/}
+          {/*                     updateAdditionalDataForSensors={updateAdditionalParameterForSensors}*/}
+          {/*                     updateNullDataForObject={updateNullDataForObject}/>*/}
           <Typography variant="h5" sx={{marginY: 2}}>
             Дополнительные данные
           </Typography>

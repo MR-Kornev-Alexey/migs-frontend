@@ -40,8 +40,8 @@ export default function Page(): React.JSX.Element {
     if (!oneObject || !selectedSensors.length) return;
     const sendData = {
       objectsId: oneObject.id,
-      selectedSensors: selectedSensors,
-      period: period
+      selectedSensors,
+      period
     }
     const result: ApiResult = await sensorsDataClient.getGroupedDataForSelectedObject(sendData);
     if (result?.data?.statusCode === 200) {

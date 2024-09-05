@@ -20,7 +20,7 @@ function Page(): React.JSX.Element {
   const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
   const isMainInn = '7716852062';
   const onClose =() => {
-    return
+    
   }
 
   React.useEffect(() => {

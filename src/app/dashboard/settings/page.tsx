@@ -27,7 +27,9 @@ import ModalDataOrganisation from "@/components/modal/modal-data-organisation";
 import ModalDataObject from "@/components/modal/modal-data-object";
 import {organizationClient} from "@/components/dashboard/organizations/organization-client";
 import {objectClient} from "@/components/dashboard/objects/object-client";
-import {MObject} from "@/types/common-types";
+import {type MObject} from "@/types/common-types";
+import {addSensors} from "@/store/sensors-reducer";
+import DialogAlertInfo from "@/components/dialogs/dialog-alert-info";
 
 interface SensorKeyType {
   sensorKey: string;
@@ -67,6 +69,8 @@ export default function Page(): React.JSX.Element {
   const [isSensorKey, setIsNewKey] = useState<SensorKeyType>({sensorKey: '', sensorType: ''});
   const [isOpenNewTypeSensor, setIsOpenNewTypeSensor] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const [isDialogMessage, setIsDialogMessage] = React.useState<string>('Ошибка обработки данных');
   const isMain = false;
   const dispatch = useDispatch<AppDispatch>();
   const openModal = () => {
@@ -77,6 +81,9 @@ export default function Page(): React.JSX.Element {
   };
   const closeDataObject = () => {
     setIsOpenDataObject(false);
+  };
+  const closeDialog = () => {
+    setIsOpenDialog(false);
   };
   const closeDataOrganisation = () => {
     setIsOpenDataOrganisation(false);
@@ -125,6 +132,10 @@ export default function Page(): React.JSX.Element {
 
   const onRegistrationObjectSuccess = async (data: any) => {
     dispatch(addObjects(data));
+    setTimeout(() => {
+      setIsModalObjectOpen(false);
+      },1000
+    )
   };
 
   function onSelectedRowsObjects(objects: any, selected: string[]) {
@@ -133,6 +144,10 @@ export default function Page(): React.JSX.Element {
 
   const openDataSelectObject = (iDObject: string) => {
     setIsOpenDataObject(true);
+    if (!objects) {
+      console.error('allObjects is undefined');
+      return; // или другая логика обработки ошибки
+    }
     const selectedObject = objects.find((obj: any) => obj.id === iDObject);
     setIsSelectObject(selectedObject);
   };
@@ -148,6 +163,7 @@ export default function Page(): React.JSX.Element {
       const result:any = await objectClient.deleteOneObject(idObject);
       if (result?.statusCode === 200) {
         dispatch(addObjects(result?.allObjects));
+        dispatch(addSensors(result?.allSensors));
         setIsMessage(result?.message ?? ''); // Provide a default empty string
         setAlertColor('success');
       } else if (result?.statusCode === 400) {
@@ -216,7 +232,34 @@ export default function Page(): React.JSX.Element {
       setIsPending(false);
       setTimeout(() => {
         setIsMessage("");
-      }, 2500);
+      }, 1000);
+    }
+  };
+
+  const updateNullDataForObject = async (object_id: string, parameter: boolean) => {
+    try {
+      const result: ApiResult = await sensorsClient.setNullForAllSensorOnObject(object_id, parameter);
+      if (result?.statusCode === 200) {
+        dispatch(addObjects(result?.allObjects));
+        dispatch(addSensors(result?.allSensors));
+        setIsOpenDialog(true);
+        setIsDialogMessage(result?.message ?? ''); // Provide a default empty string
+        setAlertColor('success');
+      } else  {
+        setIsDialogMessage(result?.message ?? '');
+        setIsOpenDialog(true);
+        setAlertColor('error');
+      }
+    } catch (error) {
+      setIsMessage(`Произошла ошибка:${  (error as Error).message}`);
+      setIsOpenDialog(true);
+      setAlertColor('error');
+    }
+    finally {
+      setTimeout(() => {
+        setIsDialogMessage('');
+        setIsOpenDialog(false);
+      }, 7000);
     }
   };
 
@@ -252,8 +295,8 @@ export default function Page(): React.JSX.Element {
           <ObjectsPaginationActionsTable
             rows={onSelectedRowsObjects(objects, isSelectedObjects)}
             selectObject={openDataSelectObject}
-           deleteObject={deleteObject}/>
-
+            deleteObject={deleteObject}
+            updateNullDataForObject={updateNullDataForObject}/>
         </Stack>
       ) : (
         <Stack>
@@ -278,7 +321,7 @@ export default function Page(): React.JSX.Element {
             {isPending ? (
               <Spinner/>
             ) : (
-              <Box>Первичная инсталлация</Box>
+              <Box>Первичная инсталляция</Box>
             )}
           </Button> : null}
       </Box>
@@ -313,7 +356,7 @@ export default function Page(): React.JSX.Element {
         onRegistrationObjectSuccess={onRegistrationObjectSuccess}
         rowsOrganizations={organizations}
       />
-
+      <DialogAlertInfo isOpen={isOpenDialog} onClose={closeDialog} isMessageAlert={isDialogMessage} alertColor={alertColor}/>
     </Stack>
   );
 }

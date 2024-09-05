@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import ModalForCreateTables from "@/components/dashboard/additional-data-sensor/modal-for-create-tables";
 import ObjectsSelection from "@/lib/common/objects-selection";
+
 export default function Page(): React.JSX.Element {
   const [isOpenModalCreateData, setIsOpenModalCreateData] = useState<boolean>(false);
   const closeIsOpenModalCreateData = () => {
@@ -13,7 +14,7 @@ export default function Page(): React.JSX.Element {
 
   return (
     <Stack spacing={3}>
-      <ObjectsSelection title={"Таблицы"} subTitle={"таблиц"} setIsOpenModalCreateData={setIsOpenModalCreateData}/>
+      <ObjectsSelection title="Таблицы" subTitle="таблиц" setIsOpenModalCreateData={setIsOpenModalCreateData}/>
       <ModalForCreateTables
         isOpenModalCreateData={isOpenModalCreateData}
         onClose={closeIsOpenModalCreateData}/>

@@ -56,10 +56,10 @@ export default function parseSensorRf251(hexString: string | undefined, coeffici
       distance: "ошибка",
       temperature: "ошибка"
     };
-  } else {
+  } 
     return {
       distance: distanceValue * coefficient,
       temperature: temperatureValue * coefficient
     };
-  }
+  
 }

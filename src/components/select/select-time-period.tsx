@@ -24,7 +24,7 @@ export default function SelectTimePeriod({ setPeriodToParent, setOneHour }: Sele
   const [period, setPeriod] = useState<string>(''); // Типизация состояния как строки
   const [showSelfPicker, setShowSelfPicker] = useState<boolean>(false);
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
+  const handleChange = (event: SelectChangeEvent) => {
     const selectedPeriod = event.target.value;
     setPeriod(selectedPeriod);
 

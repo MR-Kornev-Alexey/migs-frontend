@@ -1,7 +1,7 @@
 'use client';
 
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import {MObject} from "@/types/common-types";
+import {type MObject} from "@/types/common-types";
 
 const initialState: { value: MObject[] } = {
   value: []

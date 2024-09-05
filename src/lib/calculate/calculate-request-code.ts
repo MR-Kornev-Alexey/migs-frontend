@@ -1,6 +1,7 @@
 import decimalToHex from '@/lib/calculate/decimal-to-hex';
 import formatSensorString from '@/lib/calculate/inclinometer-format-sensor-string';
 import formatNetworkNumber from "@/lib/calculate/ls5-format-sensor-string";
+
 export default async function calculateRequestCode(netNumber: number | string, model: string): Promise<string> {
   // Convert netNumber to a number if it's a string
   const netNumberValue = typeof netNumber === 'string' ? Number(netNumber) : netNumber;

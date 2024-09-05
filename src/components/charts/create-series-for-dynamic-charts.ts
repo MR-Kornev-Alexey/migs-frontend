@@ -1,15 +1,15 @@
-type SensorData = {
+interface SensorData {
   x: number;
   y: number;
-};
+}
 
-type ProcessedSensor = {
+interface ProcessedSensor {
   sensorId: string;
   sensorName: string;
   sensorLocation: string;
   sensorColor: string;
   sensorData: SensorData[];
-};
+}
 
 function generateRandomColor(): string {
   // Генерация случайного цвета в формате #RRGGBB

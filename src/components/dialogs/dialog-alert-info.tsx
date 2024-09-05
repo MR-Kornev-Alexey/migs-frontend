@@ -3,17 +3,20 @@ import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import {X} from '@phosphor-icons/react';
+import Typography from "@mui/material/Typography";
 
 interface DialogAlertInfoProps {
   isOpen: boolean;
   onClose: () => void;
   isMessageAlert: string;
+  alertColor: string;
 }
 
 const DialogAlertInfo: React.FC<DialogAlertInfoProps> = ({
                                                                   isOpen,
                                                                   onClose,
-                                                                  isMessageAlert
+                                                                  isMessageAlert,
+                                                                  alertColor
                                                                 }) => {
   return (
     <Dialog
@@ -24,7 +27,9 @@ const DialogAlertInfo: React.FC<DialogAlertInfoProps> = ({
         <X size={28} onClick={onClose} style={{cursor: 'pointer'}}/>
       </Box>
       <DialogContent>
-        {isMessageAlert}
+        <Typography variant="body1"  color={alertColor}>
+          {isMessageAlert}
+        </Typography>
       </DialogContent>
     </Dialog>
   );

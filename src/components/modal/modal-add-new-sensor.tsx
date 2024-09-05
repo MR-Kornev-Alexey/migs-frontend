@@ -4,13 +4,14 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { X } from '@phosphor-icons/react';
 import { SignUpFormNewSensor } from '@/components/dashboard/sensors/sign-up-form-new-sensor';
+import {type MObject} from "@/types/common-types";
 
 // Define the type for the props
 interface ModalNewSensorProps {
   isOpen: boolean;
   onClose: () => void;
-  objects: any[]; // Replace `any` with the specific type if possible
-  typesSensors: any[]; // Replace `any` with the specific type if possible
+  objects: MObject[] | undefined;
+  typesSensors: any[];
 }
 
 const ModalAddNewSensor: React.FC<ModalNewSensorProps> = ({

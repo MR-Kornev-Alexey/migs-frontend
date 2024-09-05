@@ -7,7 +7,7 @@ import {transformCode} from "@/components/charts/transform-grouped-data-for-apex
 
 
 // Типизация данных
-type GroupedData = {
+interface GroupedData {
   id: number;
   sensor_id: string;
   request_code: string;
@@ -28,13 +28,13 @@ type GroupedData = {
       coefficient: number;
     };
   };
-};
+}
 
-type SensorData = {
+interface SensorData {
   sensorName: string;
   sensorLocation: string;
   dataForCharts: { x: string; y: number | string }[];
-};
+}
 
 // Функция для преобразования и группировки данных
 export default async function transformGroupedData(groupedData: any[] | undefined): Promise<SensorData[]> {

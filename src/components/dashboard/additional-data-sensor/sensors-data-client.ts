@@ -3,7 +3,7 @@
 import {BASE_URL} from '@/config';
 import {getHeaders} from '@/lib/common-api/get-header';
 import {type ApiResult} from "@/types/result-api";
-import {NewSensor} from "@/types/common-types";
+import {type NewSensor} from "@/types/common-types";
 
 export class SensorsDataClient {
 

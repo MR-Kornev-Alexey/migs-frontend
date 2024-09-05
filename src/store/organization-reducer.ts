@@ -1,10 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-interface organizationState {
+interface OrganizationState {
   value: any[];
 }
 
-const initialState: organizationState = {
+const initialState: OrganizationState = {
   value: [],
 };
 

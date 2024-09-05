@@ -1,4 +1,4 @@
-import {MObject} from "@/types/common-types";
+import {type MObject} from "@/types/common-types";
 
 export interface SendData {
   inn: string;
@@ -35,7 +35,7 @@ export interface ApiResult {
   statusCode?: number;  // Note that statusCode is optional
   message?: string;
   allOrganizations?: any[];
-  allObjects?:any[] | undefined;
+  allObjects?: MObject[] | undefined ;
   allSensorsType?: any[];
   allSensors?:  any[];
   notifications?: any[];

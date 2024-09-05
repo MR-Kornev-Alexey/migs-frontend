@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { MObject } from "@/types/common-types";
+import { type MObject } from "@/types/common-types";
 
 interface ObjectState {
-  value: MObject[];
+  value: MObject[] | undefined;
 }
 
 const initialState: ObjectState = {
@@ -14,7 +14,7 @@ const objectSlice = createSlice({
   initialState,
   reducers: {
     // Ожидает массив объектов в качестве payload
-    addObjects(state, action: PayloadAction<MObject[]>) {
+    addObjects(state, action: PayloadAction<MObject[] | undefined>) {
       state.value = action.payload;
     },
   },

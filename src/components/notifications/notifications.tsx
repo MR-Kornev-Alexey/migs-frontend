@@ -93,12 +93,18 @@ export function Notifications(): React.JSX.Element {
 
   const findNameOfObject = (id: string): string => {
     try {
+      if (!allObjects) {
+        console.error('allObjects is undefined');
+        return 'Ошибка: данные объектов отсутствуют'; // Всегда возвращаем строку
+      }
+
       const object = allObjects.find((object) => object.id === id);
       return object ? `${object.name} ${object.address}` : 'Объект не найден';
     } catch (error) {
       return 'Ошибка при поиске объекта';
     }
   };
+
 
   return (
     <Box>

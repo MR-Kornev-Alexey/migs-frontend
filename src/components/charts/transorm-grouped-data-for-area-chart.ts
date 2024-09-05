@@ -2,7 +2,7 @@ import { transformCode } from "@/components/charts/transform-grouped-data-for-ap
 import dayjs from "dayjs";
 
 // Типы данных для функции
-type SensorInfo = {
+interface SensorInfo {
   sensor_type: string;
   model: string;
   designation: string;
@@ -11,29 +11,29 @@ type SensorInfo = {
     coefficient: number;
     limitValue: number;
   }[];
-};
+}
 
-type SensorData = {
+interface SensorData {
   id: number;
   sensor_id: string;
   request_code: string;
   answer_code: string;
   created_at: string;
   sensor: SensorInfo;
-};
+}
 
-type GroupedData = {
+interface GroupedData {
   sensorId: string;
   data: SensorData[];
-};
+}
 
-type TransformedData = {
+interface TransformedData {
   sensorId: string;
   sensorName: string;
   sensorLocation: string;
   sensorColor: string;
   sensorData: { x: string; y: number }[]; // Изменил тип x на string
-};
+}
 
 // Функция для генерации случайного цвета в формате HEX
 function generateRandomColor(): string {

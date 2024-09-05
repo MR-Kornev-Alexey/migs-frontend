@@ -24,10 +24,11 @@ import {type DefaultValuesNewSensor} from "@/types/default-values-add-new-sensor
 import {Spinner} from "@phosphor-icons/react";
 import {addTypeOfSensors} from "@/store/type-of-sensors-reducer";
 import {addSensors} from "@/store/sensors-reducer";
+import {type MObject} from "@/types/common-types";
 
 interface SignUpFormNewSensorProps {
   closeModal: () => void;
-  objects: any[]; // Replace `any` with the specific type if possible
+  objects: MObject[] | undefined; // Replace `any` with the specific type if possible
   typesSensors: any[]; // Replace `any` with the specific type if possible
 }
 export function SignUpFormNewSensor({
@@ -107,11 +108,13 @@ export function SignUpFormNewSensor({
       }, 2500);
     }
   }, []);
-
-  const objectOptions = objects.map((user) => ({
-    value: user.id,
-    label: user.name,
-  }));
+  let objectOptions: any[];
+  if (objects) {
+    objectOptions = objects.map((user) => ({
+      value: user.id,
+      label: user.name,
+    }));
+  }
 
   return (
     <Stack spacing={3}>

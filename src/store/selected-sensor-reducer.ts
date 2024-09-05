@@ -13,7 +13,7 @@ const selectedSensorSlice = createSlice({
     addSelectedSensor(state, action: PayloadAction<string>) {
       state.value = action.payload;
     },
-    clearSelectedSensors(state, action: PayloadAction<string>) {
+    clearSelectedSensors(state) {
       state.value = '';
     },
   },

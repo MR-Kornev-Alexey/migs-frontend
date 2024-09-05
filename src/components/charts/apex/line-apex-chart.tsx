@@ -1,7 +1,7 @@
 import React from 'react';
 import ApexCharts from 'react-apexcharts';
 
-const LineApexChart = ({ series, labels }: { series: any; labels: any; }) => {
+function LineApexChart({ series, labels }: { series: any; labels: any; }) {
   const options: any = {
     series: [{
       name: '',
@@ -19,7 +19,7 @@ const LineApexChart = ({ series, labels }: { series: any; labels: any; }) => {
       type: 'solid',
       opacity: [0.15],
     },
-    labels: labels,
+    labels,
     markers: {
       size: 2
     },
@@ -34,9 +34,9 @@ const LineApexChart = ({ series, labels }: { series: any; labels: any; }) => {
       shared: true,
       intersect: false,
       y: {
-        formatter: function (y: number | undefined): string {
+        formatter (y: number | undefined): string {
           if (typeof y !== "undefined") {
-            return y.toFixed(0) + " мкм";
+            return `${y.toFixed(0)  } мкм`;
           }
           return '';
         }
@@ -54,6 +54,6 @@ const LineApexChart = ({ series, labels }: { series: any; labels: any; }) => {
       />
     </div>
   );
-};
+}
 
 export default LineApexChart;

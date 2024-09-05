@@ -9,21 +9,21 @@ import {
   VictoryAxis,
 } from 'victory';
 
-type SensorData = {
+interface SensorData {
   x: number;
   y: number;
-};
+}
 
-type ProcessedSensor = {
+interface ProcessedSensor {
   sensorName: string;
   sensorLocation: string;
   sensorColor: string;
   sensorData: SensorData[];
-};
+}
 
-type LineVictoryChartProps = {
+interface LineVictoryChartProps {
   sensors: ProcessedSensor[];
-};
+}
 
 const LineVictoryChart: React.FC<LineVictoryChartProps> = ({ sensors }) => {
   return (

@@ -1,18 +1,18 @@
-type SensorInfo = {
+interface SensorInfo {
   last_base_value?: number;
   base_zero?: number;
-};
+}
 
-type Sensor = {
+interface Sensor {
   sensor_type: string;
   model: string;
   network_number: number;
   requestSensorInfo: SensorInfo[];
-};
+}
 
 export default function createSeries(data: any) {
   // Group sensors by model
-  const groupedByModel = data.Sensor.reduce((acc: { [key: string]: Sensor[] }, sensor: Sensor) => {
+  const groupedByModel = data.Sensor.reduce((acc: Record<string, Sensor[]>, sensor: Sensor) => {
     if (!acc[sensor.model]) {
       acc[sensor.model] = [];
     }
@@ -24,7 +24,7 @@ export default function createSeries(data: any) {
   const numberOfModels = Object.keys(groupedByModel).length;
   const spacing = totalLength / (numberOfModels + 1); // Calculate spacing for x-axis
 
-  let series: any[] = [];
+  const series: any[] = [];
   let xOffset: number = spacing;
 
   // Iterate through each model group
@@ -40,7 +40,7 @@ export default function createSeries(data: any) {
           name: `${sensor.sensor_type} - ${sensor.model} | ${sensor.network_number}`,
           data: [{
             x: xOffset, // Assign calculated x position
-            y: y,
+            y,
             z: 0 // Z value can be set based on additional logic if required
           }]
         });

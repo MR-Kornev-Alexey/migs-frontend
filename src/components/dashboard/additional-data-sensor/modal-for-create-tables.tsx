@@ -11,7 +11,7 @@ import { sensorsDataClient } from "@/components/dashboard/additional-data-sensor
 import groupAndSortSensorData from "@/components/dashboard/tables/group-and-sort-sensor-data";
 import SensorDataStrainGauge from "@/components/dashboard/tables/sensor-data-strain-gauge";
 import SensorDataInclinoMeter from "@/components/dashboard/tables/sensor-data-inclino-meter";
-import { MObject } from "@/types/common-types";
+import { type MObject } from "@/types/common-types";
 
 interface ModalAboutOneCustomerProps {
   isOpenModalCreateData: boolean;
@@ -168,11 +168,9 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
                 );
               })}
             </Box>
-            {isInfoMessage && (
-              <Alert color={alertColor} sx={{ marginTop: 2 }}>
+            {isInfoMessage ? <Alert color={alertColor} sx={{ marginTop: 2 }}>
                 {isInfoMessage}
-              </Alert>
-            )}
+              </Alert> : null}
           </Box>
         </Stack>
       </Box>

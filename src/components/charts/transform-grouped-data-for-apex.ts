@@ -23,7 +23,7 @@ export async function transformCode(answerCode: string, model: string, coefficie
 }
 
 // Типизация данных
-type GroupedData = {
+interface GroupedData {
   id: number;
   sensor_id: string;
   request_code: string;
@@ -45,14 +45,14 @@ type GroupedData = {
       limitValue: number;
     }[];
   };
-};
+}
 
-type RawSensorData = {
+interface RawSensorData {
   sensorName: string;
   sensorLocation: string;
   labels: string[];
   data: number[];
-};
+}
 
 // Функция для преобразования и группировки данных
 export default async function transformGroupedDataForApex(groupedData: GroupedData[] | undefined): Promise<RawSensorData[]> {

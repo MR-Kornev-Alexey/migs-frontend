@@ -1,14 +1,14 @@
 "use client"
 
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, Button, Grid, Stack, Typography} from '@mui/material';
 import {useDispatch, useSelector} from "react-redux";
 import {type AppDispatch, type RootState} from '@/store/store';
 import AllObjectsPaginationSelectTable from "@/components/tables/all-objects-pagination-select-table";
-import type {MObject, NewSensor} from "@/types/common-types";
-import {addSelectedObjects, clearSelectedObjects} from "@/store/selected-objects-reducer";
+import type {MObject, NewSensor, DataFromSensor} from "@/types/common-types";
+import {addSelectedObjects} from "@/store/selected-objects-reducer";
 import AboutObjectPaginationAndSelectForTable from "@/components/tables/sensors-pagination-and-select-table-for-tables";
-import {addSelectedSensor, clearSelectedSensors} from "@/store/selected-sensor-reducer";
+import {addSelectedSensor} from "@/store/selected-sensor-reducer";
 import ModalDataObject from "@/components/modal/modal-data-object";
 import ModalForAdditionalDataSensors
   from "@/components/dashboard/additional-data-sensor/modal-for-additional-data-sensors";
@@ -20,37 +20,19 @@ import MainVictoryBarChart from "@/components/charts/victory/main-victory-charts
 import {useRouter} from "next/navigation";
 import {addSelectedSensorsForCharts} from "@/store/selected-sensors-for-charts-reducer";
 import {BASE_URL} from "@/config";
-import {DataFromSensor} from "@/types/common-types";
-import parseSensorInD3 from "@/lib/parse-sensor/parse-sensor-in-d3";
-import parseSensorRf251 from "@/lib/parse-sensor/parse-sensor-rf251";
-import hexToAsciiAndConvert from "@/lib/parse-sensor/hex-to-ascii-and-convert-for-ls5";
-import {SensorInfo} from "@/types/sensor";
 import AreaVictoryChart from "@/components/charts/victory/area-victory-charts";
 import transformGroupedDataForAreaVictory from "@/components/charts/transorm-grouped-data-for-area-chart";
-import dayjs from "dayjs";
 
-type SensorData = {
+
+interface SensorData {
   x: string;
   y: number;
-};
+}
 
-type SelectedSensor = {
-  sensorId: string;
-  sensorName: string;
-  sensorLocation: string;
-  sensorColor: string;
-  sensorData: SensorData[];
-};
-
-type Input = {
-  sensorId: string;
-  valueY: number;
-};
 
 export default function Page(): React.JSX.Element {
   const [isOpenModalCreateData, setIsOpenModalCreateData] = useState<boolean>(false);
   const allObjects = useSelector((state: RootState) => state.allObjects.value);
-  const allSensors = useSelector((state: RootState) => state.allSensors.value);
   const [isOpenDataObject, setIsOpenDataObject] = useState<boolean>(false);
   const [isSelectObject, setIsSelectObject] = useState<MObject | undefined>();
   const dispatch: AppDispatch = useDispatch();
@@ -83,8 +65,12 @@ export default function Page(): React.JSX.Element {
       if (!selectedId) {
         return;
       }
+      if (!allObjects) {
+        console.error('allObjects is undefined');
+        return; // или другая логика обработки ошибки
+      }
+      const selectedObject: MObject | undefined = allObjects.find((object: MObject) => object.id === selectedId);
 
-      const selectedObject = allObjects.find((object) => object.id === selectedId);
       if (selectedObject) {
         const sortedSensorsList = sortedSensors(selectedObject.Sensor);
         const updatedObject = {
@@ -103,6 +89,10 @@ export default function Page(): React.JSX.Element {
 
   const selectOneObjectForInfo = (iDObject: string) => {
     setIsOpenDataObject(true);
+    if (!allObjects) {
+      console.error('allObjects is undefined');
+      return; // или другая логика обработки ошибки
+    }
     const selectedObject = allObjects.find((obj: MObject) => obj.id === iDObject);
     setIsSelectObject(selectedObject);
   };
@@ -198,74 +188,6 @@ export default function Page(): React.JSX.Element {
     };
     setIsTerminalRunning(true);
   }
-
-//   const convertSSEDataToNumber = async (inputData: DataFromSensor) => {
-//     const foundSensor = allSensors.find(sensor => sensor.id === inputData.sensor_id);
-//     const coefficient = foundSensor.additional_sensor_info[0]?.coefficient ?? 1;
-//     const limitValue = foundSensor.additional_sensor_info[0]?.limitValue ?? 6000;
-//     const formattedDate = dayjs(inputData.created_at).format('DD-MM-YYYY HH.mm.ss');
-//
-//     let transformedCode;
-//     switch (foundSensor.model) {
-//       case 'ИН-Д3':
-//         transformedCode = parseSensorInD3(inputData.answer_code, coefficient, limitValue).magnitude;
-//         break;
-//       case 'РФ-251':
-//         transformedCode = parseSensorRf251(inputData.answer_code, coefficient, limitValue).distance;
-//         break;
-//       case 'LS5':
-//         transformedCode = hexToAsciiAndConvert(inputData.answer_code, coefficient, limitValue);
-//         break;
-//       default:
-//         transformedCode = '';
-//     }
-//     console.log('transformedCode ---', transformedCode)
-//     if (transformedCode !== "ошибка" && transformedCode) {
-//       const newData = {
-//         sensorId: inputData.sensor_id,
-//         data: {
-//           x: formattedDate,
-//           y: transformedCode
-//         }
-//       };
-//       console.log('newData ---', newData)
-//       console.log('dataDynamicChartsData ---', dataDynamicChartsData)
-//       if (dataDynamicChartsData.length > 0) {
-//         const updatedDataForCharts = await updateSensorData(dataDynamicChartsData, newData);
-//         console.log('updatedDataForCharts ---', updatedDataForCharts);
-//         setDynamicChartsData(updatedDataForCharts);
-//       }
-//     }
-//   };
-//
-// // Обновление данных для всех сенсоров
-//   async function updateSensorData(
-//     selectedSensors: SelectedSensor[],
-//     input: { data: { x: string; y: number }; sensorId: string }
-//   ): Promise<SelectedSensor[]> {
-//     // Обновляем данные для всех сенсоров
-//     console.log("selectedSensors ---", selectedSensors)
-//     return selectedSensors.map(sensor => {
-//       // Если сенсор соответствует input.sensorId, обновляем его данные
-//       if (sensor.sensorId === input.sensorId) {
-//         // Сдвигаем все элементы графика влево
-//         const updatedSensorData = sensor.sensorData
-//           .slice(1) // Убираем первый элемент (самый старый)
-//           .concat(input.data); // Добавляем новый элемент в конец
-//         updatedSensorData.sort((a, b) => dayjs(a.x).isAfter(dayjs(b.x)) ? -1 : 1);
-//         console.log('updatedSensorData --- ', updatedSensorData)
-//         return {
-//           ...sensor,
-//           sensorData: updatedSensorData,
-//         };
-//       }
-//       // Если sensorId не совпадает, возвращаем сенсор без изменений
-//
-//       return sensor;
-//     });
-//   }
-
-
 
   return (
     <Stack spacing={3}>

@@ -31,14 +31,19 @@ export default function ObjectsSelection({title, subTitle, setIsOpenModalCreateD
   async function selectOneObjectForTable(selectedId: string) {
     try {
       if (!selectedId) {
+        console.warn('Не указан ID объекта для выбора');
         return;
+      }
+
+      if (!allObjects) {
+        console.error('allObjects is undefined');
+        return; // Можно добавить логику обработки ошибки
       }
 
       const selectedObject = allObjects.find((object) => object.id === selectedId);
 
       if (selectedObject) {
         const sortedSensorsList = sortedSensors(selectedObject.Sensor);
-
         const updatedObject = {
           ...selectedObject,
           Sensor: sortedSensorsList,
@@ -47,20 +52,29 @@ export default function ObjectsSelection({title, subTitle, setIsOpenModalCreateD
         dispatch(addSelectedObjects([updatedObject]));
         setIsOpenModalCreateData(true);
       } else {
-        console.warn("Object not found:", selectedId);
+        console.warn('Object not found:', selectedId);
       }
     } catch (error) {
-      console.error("Ошибка при обновлении выбранного объекта:", error);
+      console.error('Ошибка при обновлении выбранного объекта:', error);
     }
   }
 
+
   const selectOneObjectForInfo = (iDObject: string) => {
+    if (!allObjects) {
+      console.error('allObjects is undefined');
+      return; // Можно добавить логику обработки ошибки
+    }
     setIsOpenDataObject(true);
     const selectedObject = allObjects.find((obj: MObject) => obj.id === iDObject);
     setIsSelectObject(selectedObject);
   };
 
   useEffect(() => {
+    if (!allObjects) {
+      console.error('allObjects is undefined');
+      return; // Можно добавить логику обработки ошибки
+    }
     const filteredObjects = allObjects.filter(
       (obj) => Array.isArray(obj.Sensor) && obj.Sensor.length > 0
     );

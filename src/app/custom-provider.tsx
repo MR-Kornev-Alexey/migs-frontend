@@ -84,13 +84,11 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
     <LocalizationProvider>
       <UserProvider>
         <ThemeProvider>
-          {isMessage && (
-            <Box display="flex" justifyContent="center" alignItems="center">
+          {isMessage ? <Box display="flex" justifyContent="center" alignItems="center">
               <Alert sx={{ marginTop: 2 }} color={alertColor}>
                 {isMessage}
               </Alert>
-            </Box>
-          )}
+            </Box> : null}
           {children}
         </ThemeProvider>
       </UserProvider>

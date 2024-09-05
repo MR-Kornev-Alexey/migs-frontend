@@ -62,11 +62,11 @@ export default function parseSensorInD3(hexDataString: string, coefficient: numb
       angleX: "ошибка",
       magnitude: "ошибка",
     };
-  } else {
+  } 
     return {
       angleY,
       angleX,
       magnitude: parseFloat(magnitude),
     };
-  }
+  
 }

@@ -10,7 +10,7 @@ import { ArrowLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/Arrow
 import { config } from '@/config';
 import { paths } from '@/paths';
 
-export const metadata = { title: `Страница не найдена | ${config.site.name}` } satisfies Metadata;
+export const metadata = { title: `ООО НИИ МИГС | Страница не найдена | ${config.site.name}` } satisfies Metadata;
 
 export default function NotFound(): React.JSX.Element {
   return (
