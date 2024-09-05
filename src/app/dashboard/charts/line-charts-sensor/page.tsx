@@ -12,6 +12,10 @@ import transformGroupedDataForApex from "@/components/charts/transform-grouped-d
 import SelectTimePeriod from "@/components/select/select-time-period";
 import Box from "@mui/material/Box";
 import {useRouter} from "next/navigation";
+import Button from "@mui/material/Button";
+import Spinner from "@/components/animated-icon/spinner";
+import {LineMdPlayFilledToPauseTransition} from "@/components/animated-icon/pause-icon";
+import {SvgSpinnersEclipseHalf} from "@/components/animated-icon/eclipse-half";
 
 const LineApexChart = dynamic(() => import('@/components/charts/apex/line-apex-chart'), {ssr: false});
 
@@ -26,6 +30,7 @@ export default function Page(): React.JSX.Element {
   const [isPeriod, setIsPeriod] = useState<Period | null>(null);
   const [isSetOneHour, setOneHour] = useState<boolean>(false);
   const [lineChartsData, setLineChartsData] = useState<any[]>([]);
+  const [showCharts, setShowCharts] = useState<boolean>(true);
   const router = useRouter();
   const setIsPeriodAndCreateCharts = async (period: any) => {
     setIsPeriod(period);
@@ -59,6 +64,12 @@ export default function Page(): React.JSX.Element {
         <Typography variant="h4">Формирование линейных графиков</Typography>
         <Typography variant="body1" sx={{marginY: 2 }}>Для формирование линейных графиков выбегите период</Typography>
         <SelectTimePeriod setPeriodToParent={setIsPeriodAndCreateCharts} setOneHour={setOneHour}/>
+      </Box>
+      <SvgSpinnersEclipseHalf />
+      <Box display="flex" justifyContent="senter" sx={{marginTop: 3}}>
+        {showCharts ? <Button variant="contained" sx={{width: 260}} onClick={() => router.push('/dashboard/charts')}>
+          Назад
+        </Button> : null}
       </Box>
       <Box>
         {lineChartsData.length > 0 && (

@@ -36,7 +36,7 @@ function LineApexChart({ series, labels }: { series: any; labels: any; }) {
       y: {
         formatter (y: number | undefined): string {
           if (typeof y !== "undefined") {
-            return `${y.toFixed(0)  } мкм`;
+            return `${y.toFixed(1)  } мкм`;
           }
           return '';
         }
