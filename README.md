@@ -2,10 +2,10 @@
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-[![KIS MIGS](public/assets/migs/migs.png)]
+![KIS MIGS](public/assets/migs/migs.png)
 
 
-## Состав приложения
+## App composition
 
 - Frontend (Next.js | MUI)
 - Backend (Nest.js)
