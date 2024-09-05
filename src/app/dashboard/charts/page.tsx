@@ -41,7 +41,6 @@ export default function Page(): React.JSX.Element {
   const [visibleChart, setVisibleChart] = useState<boolean>(false);
   const [visibleDynamicChart, setVisibleDynamicChart] = useState<boolean>(false);
   const oneObject = useSelector((state: RootState) => state.selectedObjects.value[0]);
-  const [selectedObjects, setSelectedObjects] = useState<MObject[]>([]);
   const [isResultFromApi, setIsResultFromApi] = useState<any[]>([]);
   const [isTerminalRunning, setIsTerminalRunning] = useState(false);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
@@ -112,7 +111,6 @@ export default function Page(): React.JSX.Element {
       setIsOpenModalCreateData(false);
       setIsOpenModalAddData(false);
       setIsSelectObject(undefined);
-      setSelectedObjects([]);
     };
   }, [dispatch]);
 
