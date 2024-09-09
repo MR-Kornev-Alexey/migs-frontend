@@ -18,6 +18,7 @@ export interface SignUpParams {
   email: string;
   password: string;
   organizationInn: string;
+  token: string;
 }
 
 export interface SignInWithPasswordParams {
@@ -45,6 +46,7 @@ class AuthClient {
         throw new Error('Failed to sign up');
       }
 
+      // eslint-disable-next-line eslint-comments/require-description
       const data = await response.json();
 
       // Save user data to localStorage

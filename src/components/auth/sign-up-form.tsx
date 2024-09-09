@@ -15,7 +15,8 @@ const schema = zod.object({
   name: zod.string().min(1, { message: 'Ввод username обязателен' }),
   email: zod.string().min(1, { message: 'Ввод email обязателен' }).email(),
   password: zod.string().min(8, { message: 'Минимальное количество 8 знаков' }),
-  organizationInn: zod.string().min(1, { message: 'Ввод id предприятия обязателен' }),
+  organizationInn: zod.string().min(1, { message: 'Ввод ИНН предприятия обязателен' }),
+  token: zod.string().min(1, { message: 'Ввод токена предприятия обязателен' }),
 });
 
 // Infer TypeScript types from the Zod schema
@@ -26,6 +27,7 @@ const defaultValues: Values = {
   email: '',
   password: '',
   organizationInn: '7716852062',
+  token: ''
 };
 
 export function SignUpForm(): React.JSX.Element {
@@ -117,6 +119,17 @@ export function SignUpForm(): React.JSX.Element {
                 <InputLabel>Введите ИНН организации</InputLabel>
                 <OutlinedInput {...field} label="ИНН" />
                 {errors.organizationInn ? <FormHelperText>{errors.organizationInn.message}</FormHelperText> : null}
+              </FormControl>
+            )}
+          />
+          <Controller
+            control={control}
+            name="token"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.token)}>
+                <InputLabel>Введите токен</InputLabel>
+                <OutlinedInput {...field} label="ИНН" />
+                {errors.token ? <FormHelperText>{errors.token.message}</FormHelperText> : null}
               </FormControl>
             )}
           />
