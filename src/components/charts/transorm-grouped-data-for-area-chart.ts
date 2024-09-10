@@ -58,13 +58,13 @@ export default async function transformGroupedDataForAreaVictory(
 
         if (entry) {
           const {
-            sensor: { sensor_type, model, additional_sensor_info },
+            sensor: { model, additional_sensor_info },
             answer_code,
             created_at
           } = entry;
 
           const coefficient = additional_sensor_info[0]?.coefficient ?? 1;
-          const limitValue = additional_sensor_info[0]?.limitValue ?? 0; // Установил значение по умолчанию
+          const limitValue = additional_sensor_info[0]?.limitValue ?? 3000; // Установил значение по умолчанию
           const formattedDate = dayjs(created_at).format('DD-MM-YYYY HH.mm.ss');
           const transformedCode = await transformCode(answer_code, model, coefficient, limitValue);
 
@@ -89,9 +89,16 @@ export default async function transformGroupedDataForAreaVictory(
         }
       }
 
-      // Сортировка sensorData по значению x (дате) в порядке возрастания
-      sensorData.sort((a, b) => dayjs(a.x).isBefore(dayjs(b.x)) ? -1 : 1);
-
+      sensorData.sort((a, b) => {
+        // Предполагаем, что a.x и b.x уже строковые представления дат
+        if (a.x < b.x) {
+          return -1;
+        } else if (a.x > b.x) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
 
       // Проверяем, есть ли данные в массиве data перед использованием data[0]
       if (data.length > 0) {

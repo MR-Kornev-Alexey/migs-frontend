@@ -173,6 +173,12 @@ export interface DataFromSensor {
   created_at: Date;
 }
 
+export interface DataFromSensorSmall {
+  request_code: string;
+  answer_code: string;
+  created_at: Date;
+}
+
 // m_notifications.ts
 export interface MNotifications {
   id: number;
@@ -217,4 +223,19 @@ export enum ObjectsMaterial {
   Ferroconcrete = "ferroconcrete",
   Wood = "wood",
   Mixed = "mixed",
+}
+
+export interface GroupedSensorData {
+  model: string;
+  designation: string;
+  sensor_key: string;
+  sensor_type: string;
+  coefficient:number;
+  limitValue: number,
+  network_number: string;
+  data: {
+    request_code: string;
+    answer_code: string;
+    created_at: string;
+  }[];
 }

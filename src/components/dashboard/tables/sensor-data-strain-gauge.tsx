@@ -16,12 +16,28 @@ import parseSensorRf251 from '@/lib/parse-sensor/parse-sensor-rf251';
 import formatDateTime from "@/lib/common/format-date-time";
 import { TablePaginationActions } from "@/components/tables/table-pagination-actions";
 import hexToAsciiAndConvert from "@/lib/parse-sensor/hex-to-ascii-and-convert-for-ls5";
+import transliterateAndReplaceSpaces from "@/lib/common/transliterate-and-replace-spaces";
+
+
+interface SensorInfo {
+  sensor_type: string;
+  model: string;
+  designation: string;
+  coefficient: number;
+  limitValue: number;
+}
+
 
 
 interface SensorDataStrainGaugeProps {
-  rows: any[];
-  sensorInfo: string []; // Assumes [sensorType, model, designation]
+  rows: {
+    request_code: string;
+    answer_code: string;
+    created_at: string;
+  }[];
+  sensorInfo: SensorInfo[];
 }
+
 
 const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sensorInfo }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
@@ -57,27 +73,56 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
     return 'Ошибка ответа датчика';
   };
 
+
+  const calculateValueForExel = (model:string, code:string, coefficient:number , limitValue:number) => {
+    let distance;
+    if(model === "РФ-251") {
+      distance = parseSensorRf251(code,coefficient,limitValue).distance;
+    } else {
+      distance = hexToAsciiAndConvert(code,coefficient,limitValue);
+    }
+    return distance
+  }
+  const calculateTemperatureExel = (model:string, code:string, coefficient:number , limitValue:number) => {
+    let distance;
+    if(model === "РФ-251") {
+      distance = parseSensorRf251(code,coefficient,limitValue).temperature;
+    } else {
+      0
+    }
+    return distance
+  }
+
+
   // Handle exporting data to Excel
   const handleExportStrainGauge = () => {
-    const exportData = rows.map((row, index) => ({
-      '№№': index + 1,
-      'Дата': formatDateTime(row.created_at),
-      'Запрос': row.request_code,
-      'Ответ': checkAnswerCode(row.answer_code),
-      'Фактическое отклонение (мкр)': parseSensorRf251(row.answer_code,1, 3000).distance,
-      'Температура (градус)': parseSensorRf251(row.answer_code,1, 3000).temperature,
-    }));
+    const exportData = rows.map((row, index) => {
+      const commonData = {
+        '№№': index + 1,
+        'Дата': formatDateTime(row.created_at),
+        'Запрос': row.request_code,
+        'Ответ': checkAnswerCode(row.answer_code),
+        'Фактическое отклонение (мкр)': calculateValueForExel(sensorInfo[0].model, row.answer_code, sensorInfo[0].coefficient, sensorInfo[0].limitValue),
+      };
 
+      if (sensorInfo[0].model === "РФ-251") {
+        return {
+          ...commonData,
+          'Температура (градус)': calculateTemperatureExel(sensorInfo[0].model, row.answer_code, sensorInfo[0].coefficient, sensorInfo[0].limitValue),
+        };
+      }
+      return commonData;
+    });
     const ws = XLSX.utils.json_to_sheet(exportData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'strain_gauge_data.xlsx');
+    XLSX.writeFile(wb, transliterateAndReplaceSpaces(`data-from-${sensorInfo[0].sensor_type}-${sensorInfo[0].model}-${sensorInfo[0].designation}.xlsx`));
   };
 
   return (
     <Box sx={{marginY:2}}>
       <Typography variant="h6">
-        {sensorInfo[0]} {sensorInfo[1]} {sensorInfo[2]}
+        {sensorInfo[0]?.sensor_type} {sensorInfo[0]?.model} {sensorInfo[0]?.designation}
       </Typography>
       <Button variant="contained" onClick={handleExportStrainGauge} sx={{ marginY: 2 }}>
         Export to Excel
@@ -91,7 +136,7 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
               <TableCell>Запрос</TableCell>
               <TableCell align="center">Ответ</TableCell>
               <TableCell align="center">Фактическое отклонение (мкр)</TableCell>
-              {sensorInfo[1] === "РФ-251" && <TableCell align="center">Температура (градус)
+              {sensorInfo[0].model === "РФ-251" && <TableCell align="center">Температура (градус)
               </TableCell>
               }
             </TableRow>
@@ -104,7 +149,7 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
               const isEvenRow = (index + 1) % 2 === 0; // Check if the row is even
               let parsedDataRF;
               let parsedDataLS5;
-              if(sensorInfo[1] === "РФ-251") {
+              if(sensorInfo[0].model === "РФ-251") {
                 parsedDataRF = parseSensorRf251(row.answer_code,1,3000);
               } else {
                 parsedDataLS5 = hexToAsciiAndConvert(row.answer_code,1, 3000);
@@ -118,9 +163,9 @@ const SensorDataStrainGauge: React.FC<SensorDataStrainGaugeProps> = ({ rows, sen
                     {checkAnswerCode(row.answer_code)}
                   </TableCell>
                   <TableCell align="center">
-                    {sensorInfo[1] === "РФ-251" ? (parsedDataRF?.distance ?? 0) : (parsedDataLS5 || 0)}
+                    {sensorInfo[0].model === "РФ-251" ? (parsedDataRF?.distance ?? 0) : (parsedDataLS5 || 0)}
                   </TableCell>
-                  {sensorInfo[1] === "РФ-251" && (
+                  {sensorInfo[0].model === "РФ-251" && (
                     <TableCell align="center">
                       {parsedDataRF?.temperature ?? "N/A"}
                     </TableCell>

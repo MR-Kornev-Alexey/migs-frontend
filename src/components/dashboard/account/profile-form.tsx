@@ -94,9 +94,9 @@ export function ProfileForm({ flagEdit, receivedData, successRecorded }: Profile
     }
     : {
       user_id: '',
-      firstName: 'Elena',
-      surName: 'Petrova',
-      telegram: '@Petrova',
+      firstName: 'Иван Иванович',
+      surName: 'Иванов',
+      telegram: '@ivanov',
       position: 'Manager',
       phone: '+79809090101',
       flagEdit: false,
@@ -238,7 +238,6 @@ export function ProfileForm({ flagEdit, receivedData, successRecorded }: Profile
             />
           </Grid>
           {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-          {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
           <Grid md={12} xs={12} display="flex" justifyContent="center" alignItems="center">
             <Button disabled={isPending} type="submit" variant="contained">
               {isPending ? (

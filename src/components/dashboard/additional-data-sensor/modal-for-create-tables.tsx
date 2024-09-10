@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Modal, Box, Stack, Grid, Typography, Button, Alert, type AlertColor } from '@mui/material';
 import { X } from '@phosphor-icons/react';
 import AboutObjectPaginationAndSelectForTable from "@/components/tables/sensors-pagination-and-select-table-for-tables";
@@ -11,7 +11,8 @@ import { sensorsDataClient } from "@/components/dashboard/additional-data-sensor
 import groupAndSortSensorData from "@/components/dashboard/tables/group-and-sort-sensor-data";
 import SensorDataStrainGauge from "@/components/dashboard/tables/sensor-data-strain-gauge";
 import SensorDataInclinoMeter from "@/components/dashboard/tables/sensor-data-inclino-meter";
-import { type MObject } from "@/types/common-types";
+import { type MObject, type GroupedSensorData } from "@/types/common-types";
+
 
 interface ModalAboutOneCustomerProps {
   isOpenModalCreateData: boolean;
@@ -22,33 +23,51 @@ interface Period {
   startDate: string;
   endDate: string;
 }
-
-interface GroupedSensorData {
-  sensor_key: string;
-  data: any[];
+interface SensorInfo {
   sensor_type: string;
   model: string;
   designation: string;
+  coefficient: number;
+  limitValue: number;
 }
+
+interface SensorDataInclinoMeterProps {
+  rows: {
+    request_code: string;
+    answer_code: string;
+    created_at: string;
+  }[];
+  sensorInfo: SensorInfo[]; // Исправляем на объект
+}
+
+interface SensorDataStrainGaugeProps {
+  rows: {
+    request_code: string;
+    answer_code: string;
+    created_at: string;
+  }[];
+  sensorInfo: SensorInfo[]; // Исправляем на объект
+}
+type SensorKey = 'inclinoMeter' | 'strainGauge';
+
 
 const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModalCreateData, onClose }) => {
   const object: MObject | undefined = useSelector((state: RootState) => state.selectedObjects.value[0]);
-  const [isPeriod, setIsPeriod] = useState<any[]>([]);
+  const [isPeriod, setIsPeriod] = useState<Period | null>(null);
   const [isSetOneHour, setOneHour] = useState<boolean>(false);
   const [isInfoMessage, setIsInfoMessage] = useState<string>('');
   const [alertColor, setAlertColor] = useState<AlertColor>('error');
   const [sortedData, setSortedData] = useState<GroupedSensorData[]>([]);
   const [selectedSensors, setSelectedSensors] = useState<string[]>([]);
 
-  // Function to reset the modal state
-  const resetModalState = () => {
-    setIsPeriod([]);
+  const resetModalState = useCallback(() => {
+    setIsPeriod(null);
     setOneHour(false);
     setIsInfoMessage('');
     setAlertColor('error');
     setSortedData([]);
     setSelectedSensors([]);
-  };
+  }, []);
 
   const handleClose = () => {
     resetModalState();
@@ -63,8 +82,8 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
     setSelectedSensors(Array.from(sensorsId));
   };
 
-  const openMainTableForObject = async (): Promise<void> => {
-    if (selectedSensors.length === 0 || isPeriod.length === 0) return;
+  const openMainTableForObject = async () => {
+    if (!selectedSensors.length || !isPeriod) return;
 
     try {
       const sendData = {
@@ -77,10 +96,11 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
       const result: ApiResult = await sensorsDataClient.getGroupedDataForSelectedObject(sendData);
 
       if (result.data?.statusCode === 200) {
-        const sortedData = await groupAndSortSensorData(result?.data?.groupedData);
+        const sortedData = await groupAndSortSensorData(result.data?.groupedData);
+        console.log('sortedData ---', sortedData)
         setSortedData(sortedData);
         setAlertColor('success');
-        setIsInfoMessage(result.data?.message);
+        setIsInfoMessage(result.data?.message || '');
       } else {
         setAlertColor('error');
         setIsInfoMessage(result.data?.message || 'Произошла ошибка');
@@ -88,28 +108,21 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
     } catch (error) {
       setAlertColor('error');
       setIsInfoMessage('Ошибка загрузки данных');
-      console.error('Ошибка загрузки данных:', error);
+    } finally {
+      setTimeout(() => { setIsInfoMessage(''); }, 2000);
     }
-
-    setTimeout(() => {
-      setIsInfoMessage('');
-    }, 2000);
   };
 
+  const sensorComponents: Record<SensorKey, React.FunctionComponent<any>> = {
+    inclinoMeter: SensorDataInclinoMeter,
+    strainGauge: SensorDataStrainGauge,
+  };
   const openAddInfoAboutSensors = (id: string) => {
     console.log(id);
   };
 
-  const sensorComponents: Record<string, React.FC<{ rows: any[]; sensorInfo: string[] }>> = {
-    strainGauge: SensorDataStrainGauge,
-    inclinoMeter: SensorDataInclinoMeter,
-  };
-
   return (
-    <Modal
-      open={isOpenModalCreateData}
-      onClose={handleClose}
-    >
+    <Modal open={isOpenModalCreateData} onClose={handleClose}>
       <Box
         sx={{
           position: 'absolute',
@@ -146,7 +159,7 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
                   <SelectTimePeriod setPeriodToParent={setIsPeriod} setOneHour={setOneHour} />
                   <Button
                     variant="contained"
-                    disabled={selectedSensors.length === 0 || isPeriod.length === 0}
+                    disabled={!selectedSensors.length || !isPeriod}
                     onClick={openMainTableForObject}
                     sx={{ width: 260, height: 48, marginTop: 2 }}
                   >
@@ -156,21 +169,21 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
               </Grid>
             </Grid>
             <Box>
-              {sortedData.map((sensorData, index) => {
-                const SensorComponent = sensorComponents[sensorData.sensor_key];
+              {sortedData.map((sensorData: GroupedSensorData, index) => {
+                const SensorComponent = sensorComponents[sensorData.sensor_key as keyof typeof sensorComponents];
                 if (!SensorComponent) return null; // Skip if component is not found
                 return (
                   <SensorComponent
                     key={index}
                     rows={sensorData.data}
-                    sensorInfo={[sensorData.sensor_type, sensorData.model, sensorData.designation]}
+                    sensorInfo={[
+                      { sensor_type: sensorData.sensor_type, model: sensorData.model, designation: sensorData.designation, coefficient: sensorData.coefficient, limitValue: sensorData.limitValue }
+                    ]}
                   />
                 );
               })}
             </Box>
-            {isInfoMessage ? <Alert color={alertColor} sx={{ marginTop: 2 }}>
-                {isInfoMessage}
-              </Alert> : null}
+            {isInfoMessage && <Alert color={alertColor} sx={{ marginTop: 2 }}>{isInfoMessage}</Alert>}
           </Box>
         </Stack>
       </Box>

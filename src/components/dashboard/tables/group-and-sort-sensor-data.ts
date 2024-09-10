@@ -4,6 +4,10 @@ interface Sensor {
   designation: string;
   sensor_key: string;
   sensor_type: string;
+  additional_sensor_info: {
+    coefficient: number;
+    limitValue: number;
+  }[];
 }
 
 interface SensorDataItem {
@@ -19,6 +23,8 @@ interface GroupedSensorData {
   designation: string;
   sensor_key: string;
   sensor_type: string;
+  coefficient:number;
+  limitValue: number,
   data: {
     request_code: string;
     answer_code: string;
@@ -31,12 +37,12 @@ export default async function groupAndSortSensorData(sensorData: SensorDataItem[
   if (!sensorData) {
     return [];
   }
-
   // Группируем данные по модели сенсора, номеру сети и обозначению
   const groupedData = sensorData.reduce<Record<string, GroupedSensorData>>((acc, item) => {
     const { model, network_number, designation, sensor_key, sensor_type } = item.sensor;
     const key = `${model}-${network_number}-${designation}`;
-
+    const coefficient = item?.sensor?.additional_sensor_info[0]?.coefficient ?? 1;
+    const limitValue = item?.sensor?.additional_sensor_info[0]?.limitValue ?? 3000; // Установил значение по умолчанию
     // Если ключ еще не существует, создаем его
     if (!acc[key]) {
       acc[key] = {
@@ -45,6 +51,8 @@ export default async function groupAndSortSensorData(sensorData: SensorDataItem[
         designation,
         sensor_key,
         sensor_type,
+        coefficient,
+        limitValue,
         data: [],
       };
     }

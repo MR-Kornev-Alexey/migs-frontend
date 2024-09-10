@@ -44,7 +44,6 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
         handleResult(sensorResult, "датчиков", addSensors, "allSensors");
 
       } catch (error) {
-        console.error("Ошибка при получении данных:", error);
         setAlertColor("error");
         setIsMessage("Произошла ошибка при получении данных");
       }
@@ -71,7 +70,6 @@ const CustomProvider: React.FC<CustomProviderProps> = ({children}) => {
           );
         }
       } else {
-        console.error(`Ошибка при получении данных ${entityName}:`, result.reason);
         setAlertColor("error");
         setIsMessage(`Произошла ошибка получения данных ${entityName}`);
       }

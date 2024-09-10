@@ -43,7 +43,6 @@ export default function Page(): React.JSX.Element {
   const oneObject = useSelector((state: RootState) => state.selectedObjects.value[0]);
   const [isResultFromApi, setIsResultFromApi] = useState<any[]>([]);
   const [isTerminalRunning, setIsTerminalRunning] = useState(false);
-  const [eventSource, setEventSource] = useState<EventSource | null>(null);
   const [chartsData, setChartsData] = useState<VictoryChartData[]>([]);
   const [dataDynamicChartsData, setDynamicChartsData] = useState<any[]>([]);
   const router = useRouter();

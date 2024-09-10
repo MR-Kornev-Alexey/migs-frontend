@@ -13,6 +13,9 @@ import { AccountInfo } from '@/components/dashboard/account/account-info';
 import { ProfileForm } from '@/components/dashboard/account/profile-form';
 import {type AlertColor} from "@mui/material";
 import {type Organization} from "@/types/customer";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 
 interface AdditionalUserInfo {
   firstName: string;
@@ -23,6 +26,8 @@ interface AdditionalUserInfo {
   name: string;
   email: string;
   role: string;
+  telegramId: string;
+  telegramInfo: boolean;
   organization: Organization;
   dataUser: DataUser[]
 }
@@ -30,6 +35,8 @@ interface DataUser {
   name: string;
   email: string;
   role: string;
+  telegramId: number | null;
+  telegramInfo: boolean;
   organization: Organization;
   additionalUserInfo?: {
     firstName?: string;
@@ -46,9 +53,13 @@ export default function Page(): React.JSX.Element {
   const [isMessage, setIsMessage] = React.useState<string>('');
   const [alertColor, setAlertColor] = React.useState<AlertColor>('error');
   const [receivedData, setReceivedData] = React.useState<{
+    telegramId: null;
+    telegramInfo: boolean;
     additionalUserInfo: AdditionalUserInfo[];
   }>({
-    additionalUserInfo: [], // Initialize with an empty array
+    telegramId: null,
+    telegramInfo: false,
+    additionalUserInfo: [] // Initialize with an empty array
   });
   const [flagEdit, setFlagEdit] = useState<boolean>(false);
 
@@ -144,6 +155,18 @@ export default function Page(): React.JSX.Element {
               )}
             </Grid>
           </Grid>
+          {receivedData?.telegramId === null ?
+          <Box>
+            <Typography variant='body1'><sup>&#8432;</sup> Для получения оперативных данных в Телеграмм Боте необходимо зарегестрироваться в Телеграмме</Typography>
+          </Box>: null}
+          <Box>
+            <Typography variant='body1'><sup>&#8432;</sup>  <sup>&#8432;</sup> Включение/выключение оповещения производится в Телеграмм Боте</Typography>
+          </Box>
+          <Link sx={{marginTop:1}} href='https://t.me/MigsKisBot' target='_blank'><Button variant="contained" sx={{width:260}}>
+            Перейти в бот
+          </Button>
+          </Link>
+
         </Stack>
       )}
     </Stack>
