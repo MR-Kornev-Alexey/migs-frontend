@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {type AppDispatch, type RootState} from '@/store/store';
 import AllObjectsPaginationSelectTable from "@/components/tables/all-objects-pagination-select-table";
 import type {MObject, NewSensor, DataFromSensor} from "@/types/common-types";
-import {addSelectedObjects} from "@/store/selected-objects-reducer";
+import {addSelectedObjects, clearSelectedObjects} from "@/store/selected-objects-reducer";
 import AboutObjectPaginationAndSelectForTable from "@/components/tables/sensors-pagination-and-select-table-for-tables";
 import {addSelectedSensor} from "@/store/selected-sensor-reducer";
 import ModalDataObject from "@/components/modal/modal-data-object";
@@ -120,6 +120,7 @@ export default function Page(): React.JSX.Element {
       setIsOpenModalCreateData(false);
       setIsOpenModalAddData(false);
       setIsSelectObject(undefined);
+      dispatch(clearSelectedObjects())
     };
   }, [dispatch]);
 
@@ -187,7 +188,6 @@ export default function Page(): React.JSX.Element {
       }
     };
     newEventSource.onerror = (error) => {
-      console.error('EventSource error:', error);
       newEventSource.close();
       setIsTerminalRunning(false);
     };
