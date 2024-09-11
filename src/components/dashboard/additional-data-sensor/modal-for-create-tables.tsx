@@ -3,8 +3,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Modal, Box, Stack, Grid, Typography, Button, Alert, type AlertColor } from '@mui/material';
 import { X } from '@phosphor-icons/react';
 import AboutObjectPaginationAndSelectForTable from "@/components/tables/sensors-pagination-and-select-table-for-tables";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
+import {useDispatch, useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "@/store/store";
 import SelectTimePeriod from "@/components/select/select-time-period";
 import { type ApiResult } from "@/types/result-api";
 import { sensorsDataClient } from "@/components/dashboard/additional-data-sensor/sensors-data-client";
@@ -12,6 +12,9 @@ import groupAndSortSensorData from "@/components/dashboard/tables/group-and-sort
 import SensorDataStrainGauge from "@/components/dashboard/tables/sensor-data-strain-gauge";
 import SensorDataInclinoMeter from "@/components/dashboard/tables/sensor-data-inclino-meter";
 import { type MObject, type GroupedSensorData } from "@/types/common-types";
+import {addSelectedSensor} from "@/store/selected-sensor-reducer";
+import ModalForAdditionalDataSensors
+  from "@/components/dashboard/additional-data-sensor/modal-for-additional-data-sensors";
 
 
 interface ModalAboutOneCustomerProps {
@@ -23,31 +26,7 @@ interface Period {
   startDate: string;
   endDate: string;
 }
-interface SensorInfo {
-  sensor_type: string;
-  model: string;
-  designation: string;
-  coefficient: number;
-  limitValue: number;
-}
 
-interface SensorDataInclinoMeterProps {
-  rows: {
-    request_code: string;
-    answer_code: string;
-    created_at: string;
-  }[];
-  sensorInfo: SensorInfo[]; // Исправляем на объект
-}
-
-interface SensorDataStrainGaugeProps {
-  rows: {
-    request_code: string;
-    answer_code: string;
-    created_at: string;
-  }[];
-  sensorInfo: SensorInfo[]; // Исправляем на объект
-}
 type SensorKey = 'inclinoMeter' | 'strainGauge';
 
 
@@ -59,6 +38,8 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
   const [alertColor, setAlertColor] = useState<AlertColor>('error');
   const [sortedData, setSortedData] = useState<GroupedSensorData[]>([]);
   const [selectedSensors, setSelectedSensors] = useState<string[]>([]);
+  const dispatch: AppDispatch = useDispatch();
+  const [isOpenModalAddData, setIsOpenModalAddData] = useState<boolean>(false);
 
   const resetModalState = useCallback(() => {
     setIsPeriod(null);
@@ -117,8 +98,13 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
     inclinoMeter: SensorDataInclinoMeter,
     strainGauge: SensorDataStrainGauge,
   };
-  const openAddInfoAboutSensors = (id: string) => {
-    console.log(id);
+  async function openAddInfoAboutSensors(sensor_id: string) {
+    dispatch(addSelectedSensor(sensor_id));
+    setIsOpenModalAddData(true);
+  }
+
+  const closeModalAddData = () => {
+    setIsOpenModalAddData(false);
   };
 
   return (
@@ -186,6 +172,10 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
             {isInfoMessage && <Alert color={alertColor} sx={{ marginTop: 2 }}>{isInfoMessage}</Alert>}
           </Box>
         </Stack>
+        <ModalForAdditionalDataSensors
+          isOpenModalAddData={isOpenModalAddData}
+          onClose={closeModalAddData}
+        />
       </Box>
     </Modal>
   );

@@ -9,7 +9,9 @@ import {
   VictoryAxis,
   VictoryTheme,
   VictoryLabel,
+  VictoryLine
 } from 'victory';
+import { SvgSpinnersEclipseHalf } from "@/components/animated-icon/eclipse-half";
 
 // Типы данных для компонента
 interface SensorData {
@@ -21,6 +23,9 @@ interface ProcessedSensor {
   sensorName: string;
   sensorLocation: string;
   sensorColor: string;
+  sensorMin: number;
+  sensorMax: number;
+  sensorZero: number;
   sensorData: SensorData[];
 }
 
@@ -31,7 +36,7 @@ interface AreaVictoryChartProps {
 const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
   // Проверяем, загрузились ли данные
   if (!sensors || sensors.length === 0) {
-    return <div>Loading data...</div>; // Показываем сообщение о загрузке, пока данные не загрузятся
+    return <SvgSpinnersEclipseHalf />; // Показываем индикатор загрузки
   }
 
   return (
@@ -40,34 +45,41 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
         // Проверяем, все ли значения y равны нулю
         const allYAreZero = sensor.sensorData.every(dataPoint => dataPoint.y === 0);
 
+        // Определяем минимальное и максимальное значение по оси Y
+        const minY = sensor.sensorMin;
+        const maxY = sensor.sensorMax;
+        const zero = sensor.sensorZero;
+        // Получаем полный диапазон значений по оси X
+        const xValues = sensor.sensorData.map((d) => d.x);
+
         return (
           <div key={index} style={{ marginBottom: '20px' }}>
+            {zero}
             <VictoryChart
               height={180}
               width={500}
-              theme={VictoryTheme.material} // Добавляем тему для стилизации
+              theme={VictoryTheme.material}
               containerComponent={<VictoryVoronoiContainer />}
-              domain={{ y: allYAreZero ? [0, 10] : undefined }} // Устанавливаем домен по оси Y от 0 до 10, если все y равны нулю
+              domain={{ y: allYAreZero ? [0, 10] : undefined }} // Домен по оси Y, если все y равны 0
             >
               {/* Добавляем название внутрь графика */}
               <VictoryLabel
                 text={`${sensor.sensorName} ${sensor.sensorLocation}`}
-                x={250}  // Позиция по оси X (центр графика)
-                y={20}   // Позиция по оси Y (внутри сверху)
-                textAnchor="middle" // Центрируем текст
-                style={{ fontSize: 10 }} // Стилизация текста
+                x={250} // Центр по оси X
+                y={20}  // Внутри сверху
+                textAnchor="middle"
+                style={{ fontSize: 10 }}
               />
 
               {/* Настройка оси Y */}
               <VictoryAxis
                 dependentAxis
-                tickFormat={(t) => `${t} мкм`} // Форматирование меток на оси Y
+                tickFormat={(t) => `${t} мкм`}
                 style={{
                   axis: { stroke: '#000' },
-                  axisLabel: { fontSize: 7 },
                   ticks: { stroke: '#000', size: 5 },
-                  tickLabels: { fontSize: 7, padding: 5, fill: '#333' }, // Увеличен шрифт и добавлен цвет для меток оси Y
-                  grid: { stroke: '#e6e6e6' }, // Добавлена сетка для оси Y
+                  tickLabels: { fontSize: 7, padding: 5, fill: '#333' },
+                  grid: { stroke: '#e6e6e6' },
                 }}
               />
 
@@ -80,31 +92,51 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
                   tickLabels: {
                     fontSize: 5,
                     fill: '#000',
-                    angle: 270+45, // Поворот меток на 90 градусов
-                    textAnchor: 'end' // Выравнивание текста по началу
+                    angle: 315, // Поворот меток на 45 градусов
+                    textAnchor: 'end',
                   },
-                  grid: { stroke: '#e6e6e6' }, // Добавлена сетка для оси X
+                  grid: { stroke: '#e6e6e6' },
                 }}
               />
+
+              {/* Горизонтальная линия для минимального значения */}
+              {zero === 0 &&
+                <VictoryLine
+                style={{
+                data: { stroke: "red", strokeWidth: 1, strokeDasharray: "5,5" }
+              }}
+                data={xValues.map((x) => ({ x, y: minY }))}
+                labels={({ datum }) => `минимум: ${datum.y} мкм`}
+                labelComponent={<VictoryTooltip style={{ fontSize: 8 }} />}
+                />
+              }
+
+              {/* Горизонтальная линия для максимального значения */}
+              {zero === 0 &&
+              <VictoryLine
+                style={{
+                  data: { stroke: "blue", strokeWidth: 2, strokeDasharray: "5,5" }
+                }}
+                data={xValues.map((x) => ({ x, y: maxY }))}
+                labels={({ datum }) => `максимум: ${datum.y} мкм`}
+                labelComponent={<VictoryTooltip style={{ fontSize: 8 }} />}
+              />}
 
               <VictoryGroup
                 color={sensor.sensorColor}
                 labels={({ datum }) =>
-                  `${sensor.sensorName} ${sensor.sensorLocation}\n${datum.y} мкм`
+                  `${datum.y.toFixed(2)} мкм`
                 }
                 labelComponent={<VictoryTooltip style={{ fontSize: 8 }} />}
                 data={sensor.sensorData}
               >
                 <VictoryArea
                   style={{
-                    data: { fill: sensor.sensorColor, opacity: 0.3 }, // Устанавливаем цвет и прозрачность области
+                    data: { fill: sensor.sensorColor, opacity: 0.3 },
                   }}
                 />
                 <VictoryScatter
                   size={({ active }) => (active ? 5 : 3)}
-                  labels={({ datum }) =>
-                    `${sensor.sensorName} ${sensor.sensorLocation}\n${datum.y} мкм`
-                  }
                   labelComponent={
                     <VictoryTooltip
                       style={{ fontSize: 8 }}

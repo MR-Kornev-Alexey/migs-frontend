@@ -6,7 +6,6 @@ export async function transformToChartData(object: MObject): Promise<{
   x: string;
   y: number;
 }[]> {
-  console.log(object);
   const chartData: { color: string; x: string; y: number }[] = [];
 
   for (const sensor of object?.Sensor) {

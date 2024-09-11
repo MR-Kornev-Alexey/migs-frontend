@@ -84,7 +84,7 @@ const MainSensorDataTable: React.FC<MainSensorDataTableProps> = ({ dataOfSensor,
             <TableCell style={{ width: '10%', textAlign: 'center' }}>
               {dataOfSensor.run ? <SvgSpinnersBarsScale /> : <LineMdPlayFilledToPauseTransition />}
             </TableCell>
-            <TableCell style={{ cursor: 'pointer' }} align="center">
+            <TableCell align="center">
               {nullState ? <ThumbsUp size={24} color='#086837' /> : <ThumbsDown color='#9f093e' size={24} />}
             </TableCell>
             <TableCell style={{ textAlign: 'center', cursor: 'pointer' }} onClick={openModalErrorInfoSensor}>

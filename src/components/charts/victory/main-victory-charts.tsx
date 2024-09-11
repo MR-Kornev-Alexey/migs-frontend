@@ -22,7 +22,7 @@ function MyBarChart({data}: Props) {
     >
       <VictoryBar
         data={data}
-        labels={({ datum }) => datum.y}
+        labels={({ datum }) => datum.y.toFixed(2)}
         style={{
           data: {
             fill: ({ datum }) => datum.color,

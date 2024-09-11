@@ -7,7 +7,12 @@ interface SensorInfo {
   model: string;
   designation: string;
   network_number: number;
-  additional_sensor_info: {
+  requestSensorInfo?: {
+    min_base: number;
+    max_base: number;
+    base_zero: number;
+  }[];
+  additional_sensor_info?: {
     coefficient: number;
     limitValue: number;
   }[];
@@ -32,7 +37,10 @@ interface TransformedData {
   sensorName: string;
   sensorLocation: string;
   sensorColor: string;
-  sensorData: { x: string; y: number }[]; // Изменил тип x на string
+  sensorMin: number;
+  sensorMax: number;
+  sensorZero: number;
+  sensorData: { x: string; y: number }[];
 }
 
 // Функция для генерации случайного цвета в формате HEX
@@ -50,70 +58,73 @@ export default async function transformGroupedDataForAreaVictory(
       const { sensorId, data } = group;
 
       let lastValidValue: number | null = null;
-      const sensorData: { x: string; y: number }[] = []; // Изменил тип x на string
+      const sensorData: { x: string; y: number }[] = [];
 
-      // Создаем данные с последовательными значениями x от 1 до 10
       for (let i = 0; i < 10; i++) {
-        const entry = data[i]; // Получаем данные для текущего индекса
+        const entry = data[i];
 
         if (entry) {
           const {
-            sensor: { model, additional_sensor_info },
+            sensor: { model, additional_sensor_info, requestSensorInfo },
             answer_code,
-            created_at
+            created_at,
           } = entry;
 
-          const coefficient = additional_sensor_info[0]?.coefficient ?? 1;
-          const limitValue = additional_sensor_info[0]?.limitValue ?? 3000; // Установил значение по умолчанию
+          const coefficient: number = additional_sensor_info?.[0]?.coefficient ?? 1;
+          const limitValue: number = additional_sensor_info?.[0]?.limitValue ?? 3000;
           const formattedDate = dayjs(created_at).format('DD-MM-YYYY HH.mm.ss');
           const transformedCode = await transformCode(answer_code, model, coefficient, limitValue);
-
-          // Если transformedCode не определен или ошибка, используем предыдущее значение
+          const sensorZero: number = data[0].sensor.requestSensorInfo?.[0]?.base_zero ?? 0;
           let y: number;
           if (typeof transformedCode === "number") {
-            y = Math.abs(transformedCode) >= limitValue
-              ? lastValidValue ?? 0
-              : transformedCode;
+            const roundedValue = Math.round((transformedCode + Number.EPSILON) * 100) / 100; // Округляем до 2 знаков после запятой
+            y = Math.abs(roundedValue) >= limitValue ? lastValidValue  ?? 0 : roundedValue;
+            y = y - sensorZero
           } else {
-            y = lastValidValue ?? 0;  // Если transformedCode не число или "ошибка", используем lastValidValue
+            y = lastValidValue ?? 0;
           }
 
-          lastValidValue = y; // Обновляем предыдущее значение
-
+          lastValidValue = y;
           sensorData.push({ x: formattedDate, y });
         } else {
-          // Если данных нет для текущего индекса, используем предыдущее значение
           const lastEntryDate = data[i - 1]?.created_at || new Date().toISOString();
           const formattedDate = dayjs(lastEntryDate).format('DD-MM-YYYY HH.mm.ss');
           sensorData.push({ x: formattedDate, y: lastValidValue ?? 0 });
         }
       }
 
-      sensorData.sort((a, b) => {
-        // Предполагаем, что a.x и b.x уже строковые представления дат
-        if (a.x < b.x) {
-          return -1;
-        } else if (a.x > b.x) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+      sensorData.sort((a, b) => (a.x < b.x ? -1 : a.x > b.x ? 1 : 0));
 
-      // Проверяем, есть ли данные в массиве data перед использованием data[0]
       if (data.length > 0) {
         const {
           sensor: { sensor_type, model, designation, network_number },
-        } = data[0]; // Используем данные из первой записи для имени и локации сенсора
+        } = data[0];
 
-        transformedDataArray.push({
-          sensorId,
-          sensorName: `${sensor_type} | ${model}`,
-          sensorLocation: `${designation} | ${network_number}`,
-          // sensorColor: generateRandomColor(),
-          sensorColor: "#0476d3",
-          sensorData,
-        });
+        const sensorZero: number = data[0].sensor.requestSensorInfo?.[0]?.base_zero ?? 0;
+
+        if(sensorZero === 0 ) {
+          transformedDataArray.push({
+            sensorId,
+            sensorName: `${sensor_type} | ${model}`,
+            sensorLocation: `${designation} | ${network_number}`,
+            sensorColor: "#0476d3",
+            sensorMin: (data[0].sensor.requestSensorInfo?.[0]?.min_base ?? 0),
+            sensorMax: (data[0].sensor.requestSensorInfo?.[0]?.max_base ?? 3000),
+            sensorZero, // Сохраняем sensorZero в объекте
+            sensorData,
+          });
+        } else {
+          transformedDataArray.push({
+            sensorId,
+            sensorName: `${sensor_type} | ${model}`,
+            sensorLocation: `${designation} | ${network_number}`,
+            sensorColor: "#0476d3",
+            sensorMin: 0,
+            sensorMax:0,
+            sensorZero,
+            sensorData,
+          });
+        }
       }
     }
   }

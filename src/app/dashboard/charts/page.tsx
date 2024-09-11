@@ -44,11 +44,21 @@ export default function Page(): React.JSX.Element {
   const [isResultFromApi, setIsResultFromApi] = useState<any[]>([]);
   const [isTerminalRunning, setIsTerminalRunning] = useState(false);
   const [chartsData, setChartsData] = useState<VictoryChartData[]>([]);
-  const [dataDynamicChartsData, setDynamicChartsData] = useState<any[]>([]);
+  const [dataDynamicChartsData, setDynamicChartsData] = useState<TransformedData[]>([]);
   const router = useRouter();
   const onSelectedSensors = (sensorsId: Set<any>) => {
     setSelectedSensors(Array.from(sensorsId));
   };
+  interface TransformedData {
+    sensorId: string;
+    sensorName: string;
+    sensorLocation: string;
+    sensorColor: string;
+    sensorMin: number;
+    sensorMax: number;
+    sensorZero: number;
+    sensorData: { x: string; y: number }[];
+  }
 
   const closeDataObject = () => {
     setIsOpenDataObject(false);
@@ -172,9 +182,7 @@ export default function Page(): React.JSX.Element {
       const data: DataFromSensor = JSON.parse(event.data);
       const result: ApiResult = await sensorsDataClient.getLastValuesDataForDynamicCharts(oneObject.id, selectedSensors);
       if (result?.data?.statusCode === 200) {
-        console.log('result?.data?.groupedData:', result?.data?.groupedData);
         const createdDataForDynamicCharts = await transformGroupedDataForAreaVictory(result?.data?.groupedData);
-        console.log('Initial data for dynamic charts:', createdDataForDynamicCharts);
         setDynamicChartsData(createdDataForDynamicCharts);
       }
     };
