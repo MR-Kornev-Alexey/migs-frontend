@@ -22,10 +22,7 @@ import {handleResponseNoModal} from "@/lib/utils/handle-response-no-modal";
 import { handleResponse, handleError } from '@/lib/utils/handler-response-with-modal';
 import OperationInfoAndLogForSensor from "@/components/tables/operation-info-and-log-for-sensor";
 import ModalNewOperationLogSensor from "@/components/modal/modal-new-operation-log-sensor";
-import {Notepad} from "@phosphor-icons/react";
-import Link from "@mui/material/Link";
 import {useForm} from "react-hook-form";
-import {AxiosResponse} from "axios";
 import BasicCard from "@/components/cards/basic-card";
 
 export default function PageForModal(): React.JSX.Element {

@@ -94,9 +94,14 @@ export default function Page(): React.JSX.Element {
               {lineChartsData.map((item: any, index: number) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Box key={index}>
-                  <Typography variant="h6">
+                  <Typography variant="body1">
                     {item.sensorName} {item.sensorLocation}
                   </Typography>
+                  {item.sensorZero !== 0 &&
+                    <Typography variant="body1">
+                      логический ноль:  {item.sensorZero} мкм.
+                    </Typography>
+                  }
                   <LineApexChart series={item.data} labels={item.labels} />
                 </Box>
               ))}

@@ -28,15 +28,20 @@ function LineApexChart({ series, labels }: { series: any; labels: any; }) {
         title: {
           text: 'Микрометры',
         },
+        labels: {
+          formatter: function (value: number) {
+            return value.toFixed(2); // Округление до 2 знаков после запятой
+          }
+        }
       }
     ],
     tooltip: {
       shared: true,
       intersect: false,
       y: {
-        formatter (y: number | undefined): string {
+        formatter(y: number | undefined): string {
           if (typeof y !== "undefined") {
-            return `${y.toFixed(1)  } мкм`;
+            return `${y.toFixed(2)} мкм`; // Округление в подсказках до 2 знаков
           }
           return '';
         }

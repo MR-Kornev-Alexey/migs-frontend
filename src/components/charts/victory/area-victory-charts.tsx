@@ -54,7 +54,6 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
 
         return (
           <div key={index} style={{ marginBottom: '20px' }}>
-            {zero}
             <VictoryChart
               height={180}
               width={500}
@@ -64,11 +63,11 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
             >
               {/* Добавляем название внутрь графика */}
               <VictoryLabel
-                text={`${sensor.sensorName} ${sensor.sensorLocation}`}
+                text={`${sensor.sensorName} ${sensor.sensorLocation}\n логический ноль: ${zero}`}
                 x={250} // Центр по оси X
                 y={20}  // Внутри сверху
                 textAnchor="middle"
-                style={{ fontSize: 10 }}
+                style={{ fontSize: 7 }}
               />
 
               {/* Настройка оси Y */}
@@ -136,7 +135,7 @@ const AreaVictoryChart: React.FC<AreaVictoryChartProps> = ({ sensors }) => {
                   }}
                 />
                 <VictoryScatter
-                  size={({ active }) => (active ? 5 : 3)}
+                  size={({ active }) => (active ? 4 : 2)}
                   labelComponent={
                     <VictoryTooltip
                       style={{ fontSize: 8 }}
