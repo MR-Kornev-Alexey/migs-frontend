@@ -225,7 +225,7 @@ export default function Page(): React.JSX.Element {
         objects={allObjects}
         typesSensors={allTypesSensors}
       />
-      <ModalForAdditionalDataSensors isOpenModalAddData={isOpenModalAddData} onClose={closeModalAddData}/>
+      <ModalForAdditionalDataSensors isOpenModalAddData={isOpenModalAddData} onClose={closeModalAddData}  mainUser={mainUser}/>
       {isMessage ? <Alert color={alertColor}>{isMessage}</Alert> : null}
     </Stack>
   );

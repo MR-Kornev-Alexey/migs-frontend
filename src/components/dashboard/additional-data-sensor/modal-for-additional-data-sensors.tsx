@@ -1,15 +1,15 @@
 import React from 'react';
 import { Modal, Box, Stack } from '@mui/material';
-import Button from '@mui/material/Button';
 import { X } from '@phosphor-icons/react';
 import PageForModal from "@/components/dashboard/additional-data-sensor/page-for-modal";
 
 interface ModalAboutOneCustomerProps {
   isOpenModalAddData: boolean;
   onClose: () => void;
+  mainUser: string;
 }
 
-const ModalForAdditionalDataSensors: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModalAddData, onClose }) => {
+const ModalForAdditionalDataSensors: React.FC<ModalAboutOneCustomerProps> = ({ mainUser,isOpenModalAddData, onClose }) => {
   return (
     <Modal
       open={isOpenModalAddData}
@@ -36,8 +36,7 @@ const ModalForAdditionalDataSensors: React.FC<ModalAboutOneCustomerProps> = ({ i
         <Stack id="modal-modal-title" sx={{ marginBottom: 1 }}>
             <X size={32} onClick={onClose} style={{ cursor: 'pointer', position:"absolute", right: 12, top:12 }} />
           <Box sx={{ overflowY: 'auto', maxHeight: 'calc(80vh - 64px)' }}>
-            {/* Adjust the maxHeight to account for padding and header */}
-            <PageForModal />
+            <PageForModal mainUser={mainUser} />
           </Box>
         </Stack>
       </Box>

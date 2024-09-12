@@ -16,11 +16,13 @@ import { type SensorInfo } from "@/types/sensor";
 interface OperationInfoAndLogForSensorProps {
   dataOfSensor: SensorInfo;
   updateOperationInfoAndLogForSensors: () => void;
+  mainUser: string;
 }
 
 const OperationInfoAndLogForSensor: React.FC<OperationInfoAndLogForSensorProps> = ({
                                                                                      dataOfSensor,
                                                                                      updateOperationInfoAndLogForSensors,
+                                                                                     mainUser
                                                                                    }) => {
 
   const { sensor_operation_log } = dataOfSensor;
@@ -59,11 +61,12 @@ const OperationInfoAndLogForSensor: React.FC<OperationInfoAndLogForSensorProps> 
           </Table>
         </TableContainer>
       )}
+      {mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
       <Box display="flex" justifyContent="center" sx={{ marginY: 2 }}>
         <Button variant="contained" sx={{ minWidth: 200 }} onClick={updateOperationInfoAndLogForSensors}>
           Загрузить данные
         </Button>
-      </Box>
+      </Box>: <Box sx={{ marginY:2}} />}
     </Box>
   );
 };

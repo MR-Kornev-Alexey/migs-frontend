@@ -25,7 +25,10 @@ import ModalNewOperationLogSensor from "@/components/modal/modal-new-operation-l
 import {useForm} from "react-hook-form";
 import BasicCard from "@/components/cards/basic-card";
 
-export default function PageForModal(): React.JSX.Element {
+interface CustomerProps {
+  mainUser: string;
+}
+export default function PageForModal({mainUser}: CustomerProps): React.JSX.Element {
   const [alertColor, setAlertColor] = useState<AlertColor>('success');
   const [isMessage, setIsMessage] = useState<string>('');
   const [isModalErrorOpen, setIsModalErrorOpen] = useState<boolean>(false);
@@ -74,10 +77,6 @@ export default function PageForModal(): React.JSX.Element {
   const closeModalErrorInfoSensor = () => {
     setIsModalErrorOpen(false);
   };
-  const goBack = () => {
-    router.back();
-  };
-
   const openModalNewAdditionalDataSensor = () => {
     setIsAdditionalOpen(true);
   };
@@ -152,7 +151,6 @@ export default function PageForModal(): React.JSX.Element {
   };
   const updateNullDataForObject = async (object_id: string, parameter: boolean) => {
     const response: ApiResult = await sensorsClient.setNullForAllSensorOnObject(object_id, parameter);
-    console.log(response)
     handleResponseNoModal({
       response,
       setIsMessage,
@@ -279,40 +277,43 @@ export default function PageForModal(): React.JSX.Element {
             Дополнительные данные
           </Typography>
           {additionalInfo ? <AdditionalSensorInfoTable additionalInfo={additionalInfo}/> : null}
-          <Grid container spacing={2} sx={{marginY: 3}}>
-            <Grid
-              md={6}
-              xs={12}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Button
-                variant="contained"
-                onClick={openModalNewAdditionalDataSensor}
-                sx={{ marginBottom: { md: 0, xs: 2 }, minWidth: 200 }}
-              >
-                Загрузить данные
-              </Button>
-            </Grid>
-            <Grid md={6} xs={12} display="flex" justifyContent="center">
-              <Button variant="contained" onClick={openSetIsModalLimitValueSensor} sx={{minWidth: 200}}>
-                Управление контролем
-              </Button>
-            </Grid>
-          </Grid>
+          {mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
+            <Grid container spacing={2} sx={{marginY: 3}}>
+                <Grid
+                  md={6}
+                  xs={12}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Button
+                    variant="contained"
+                    onClick={openModalNewAdditionalDataSensor}
+                    sx={{ marginBottom: { md: 0, xs: 2 }, minWidth: 200 }}
+                  >
+                    Загрузить данные
+                  </Button>
+                </Grid>
+                <Grid md={6} xs={12} display="flex" justifyContent="center">
+                  <Button variant="contained" onClick={openSetIsModalLimitValueSensor} sx={{minWidth: 200}}>
+                    Управление контролем
+                  </Button>
+                </Grid>
+              </Grid> : <Box sx={{ marginY:2}} />
+          }
+
           <RequestSensorInfoTable dataOfSensor={dataOfSensor}
                                   updateRequestDataForSensors={updateRequestDataForSensors}/>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="h5">Данные по журналам</Typography>
           <OperationInfoAndLogForSensor dataOfSensor={dataOfSensor}
-                                        updateOperationInfoAndLogForSensors={updateOperationInfoAndLogForSensors} />
+                                        updateOperationInfoAndLogForSensors={updateOperationInfoAndLogForSensors}  mainUser={mainUser}/>
         </Box>
 
         <Typography variant="h5" sx={{ marginTop: 2 }}>
           Копии документов
         </Typography>
-        <Box
+        {dataOfSensor.files.length > 0 ?         <Box
           display="flex"
           flexWrap="wrap" // Позволяет переносить карточки на новую строку при нехватке места
           justifyContent={{ xs: 'center', md: 'space-around' }}  // Центрирование карточек
@@ -320,9 +321,15 @@ export default function PageForModal(): React.JSX.Element {
           sx={{ padding: { xs: 1, md: 2 } } } // Внешний отступ
         >
           {dataOfSensor.files.map((item: any, index: number) => (
-              <BasicCard url={item.url} key={index}  />
+            <BasicCard url={item.url} key={index}  />
           ))}
-        </Box>
+        </Box>:
+          <Typography variant="h6" align="left" sx={{ marginY: 2 }}>
+          копии документов не загружены
+        </Typography>
+        }
+
+        { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
         <Box sx={{ marginY: 3 }}>
           <form onSubmit={handleSubmitNewFile}>
             <input type="file" onChange={handleFileChange} />
@@ -330,13 +337,14 @@ export default function PageForModal(): React.JSX.Element {
               Загрузить документ
             </Button>
           </form>
-        </Box>
+        </Box> : null
+        }
         <Box sx={{marginY: 2}}>
           <Box>
             <sup>&#8432;</sup> Параметры устанавливаются для всех датчиков указанной модели и типа на объекте
           </Box>
           <Box>
-            <sup>&#8432;&nbsp;&nbsp;&#8432;</sup> Обнуление установлено для всех датчиков на объекте <span style={{fontWeight: "bold"}}>{dataOfSensor.object.name} {dataOfSensor.object.address} </span>
+            <sup>&#8432;&nbsp;&nbsp;&#8432;</sup> Обнуление установлено для всех датчиков на объекте:  <span style={{fontWeight: "bold"}}> {dataOfSensor.object.address} | {dataOfSensor.object.name}  </span>
           </Box>
         </Box>
         </Stack> : null}

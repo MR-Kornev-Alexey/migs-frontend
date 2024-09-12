@@ -20,6 +20,7 @@ import ModalForAdditionalDataSensors
 interface ModalAboutOneCustomerProps {
   isOpenModalCreateData: boolean;
   onClose: () => void;
+  mainUser: string;
 }
 
 interface Period {
@@ -30,7 +31,7 @@ interface Period {
 type SensorKey = 'inclinoMeter' | 'strainGauge';
 
 
-const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModalCreateData, onClose }) => {
+const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ mainUser, isOpenModalCreateData, onClose }) => {
   const object: MObject | undefined = useSelector((state: RootState) => state.selectedObjects.value[0]);
   const [isPeriod, setIsPeriod] = useState<Period | null>(null);
   const [isSetOneHour, setOneHour] = useState<boolean>(false);
@@ -169,10 +170,11 @@ const ModalForCreateTables: React.FC<ModalAboutOneCustomerProps> = ({ isOpenModa
                 );
               })}
             </Box>
-            {isInfoMessage && <Alert color={alertColor} sx={{ marginTop: 2 }}>{isInfoMessage}</Alert>}
+            {isInfoMessage ? <Alert color={alertColor} sx={{ marginTop: 2 }}>{isInfoMessage}</Alert> : null}
           </Box>
         </Stack>
         <ModalForAdditionalDataSensors
+          mainUser={mainUser}
           isOpenModalAddData={isOpenModalAddData}
           onClose={closeModalAddData}
         />

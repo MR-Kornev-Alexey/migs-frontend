@@ -40,6 +40,7 @@ export default function Page(): React.JSX.Element {
   const [isTerminalRunning, setIsTerminalRunning] = useState(false);
   const [chartsData, setChartsData] = useState<VictoryChartData[]>([]);
   const [dataDynamicChartsData, setDynamicChartsData] = useState<TransformedData[]>([]);
+  const [mainUser, setMainUser] = useState< string | null>(null);
   const router = useRouter();
   const onSelectedSensors = (sensorsId: Set<any>) => {
     setSelectedSensors(Array.from(sensorsId));
@@ -192,6 +193,16 @@ export default function Page(): React.JSX.Element {
     };
     setIsTerminalRunning(true);
   }
+  useEffect(() => {
+    const userString = localStorage.getItem('custom-auth-token');
+    if (userString) {
+      try {
+        setMainUser(userString);
+      } catch (error) {
+        console.error('Error parsing user data from localStorage:', error);
+      }
+    }
+  }, []);
 
   return (
     <Stack spacing={3}>
@@ -257,7 +268,7 @@ export default function Page(): React.JSX.Element {
       <ModalForAdditionalDataSensors
         isOpenModalAddData={isOpenModalAddData}
         onClose={closeModalAddData}
-      />
+        mainUser={mainUser!}/>
     </Stack>
   );
 }
