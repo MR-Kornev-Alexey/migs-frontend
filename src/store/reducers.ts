@@ -8,10 +8,12 @@ import { combineReducers } from '@reduxjs/toolkit';
 import organizationReducer from "@/store/organization-reducer";
 import selectedObjectsReducer from "@/store/selected-objects-reducer";
 import selectedSensorsForChartsReducer from "@/store/selected-sensors-for-charts-reducer";
+import selectedObjectForChartsReducer from "@/store/selected-object-for-charts-reducer";
 
 const rootReducer = combineReducers({
   lastValues: lastValuesReducer,
   selectedSensorsForCharts: selectedSensorsForChartsReducer,
+  selectedObjectForCharts: selectedObjectForChartsReducer,
   selectedObjects: selectedObjectsReducer,
   selectedSensor: selectedSensorReducer,
   allSensors: sensorsReducer,

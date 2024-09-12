@@ -2,7 +2,7 @@
 
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: { value: any[] } = {
+const initialState: { value: string[] } = {
   value: [],
 };
 

@@ -44,6 +44,7 @@ export default function Page(): React.JSX.Element {
   const [showChoice, setShowChoice] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
   const [isOpenModalAddData, setIsOpenModalAddData] = useState<boolean>(false);
+  const [mainUser, setMainUser] = useState<string | null>(null);
 
   const openModalAddSensor = () => {
     setIsModalOpen(true);
@@ -129,6 +130,17 @@ export default function Page(): React.JSX.Element {
     }
   }, [allSensors]);
 
+  useEffect(() => {
+    const userString = localStorage.getItem('custom-auth-token');
+    if (userString) {
+      try {
+        setMainUser(userString);
+      } catch (error) {
+        console.error('Error parsing user data from localStorage:', error);
+      }
+    }
+  }, []);
+
   async function restoreAllSensors(sensorsData: any) {
     setShowChoice(false);
     const selected: string[] = [];
@@ -153,10 +165,13 @@ export default function Page(): React.JSX.Element {
     if (sensors.length > 0) {
       return sensors.filter((obj: any) => selected.includes(obj.object.id));
     }
-      return sensors;
+    return sensors;
 
   }
 
+  if (!mainUser) {
+    return <div>Loading...</div>;
+  }
   return (
     <Stack spacing={3}>
       <Box>
@@ -168,6 +183,7 @@ export default function Page(): React.JSX.Element {
         <Stack>
           <ImportExportButtons onExportClick={onExportClick} onImportClick={onImportClick}/>
           <SensorsPaginationAndSelectTable
+            mainUser={mainUser}
             rows={onSelectedRowsSensors(sensors, isSelectedSensors)}
             selectObject={selectObject}
             page={page}
@@ -182,16 +198,18 @@ export default function Page(): React.JSX.Element {
           />
           <Box display="flex" justifyContent="space-around" sx={{marginTop: 3}}>
             {showChoice ? <Button variant="contained" onClick={() => restoreAllSensors(sensors)}>
-                Сбросить выборку
-              </Button> : null}
+              Сбросить выборку
+            </Button> : null}
           </Box>
         </Stack>
       )}
-      <Box display="flex" justifyContent="center" sx={{marginTop: 2}}>
-        <Button variant="contained" onClick={openModalAddSensor}>
-          Добавить датчик на объект
-        </Button>
-      </Box>
+      {mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") && (
+        <Box display="flex" justifyContent="center" sx={{ marginTop: 2 }}>
+          <Button variant="contained" onClick={openModalAddSensor}>
+            Добавить датчик на объект
+          </Button>
+        </Box>
+      )}
       <DialogChangeNetAddress
         isOpen={isDialogOpenNetAddress}
         isIDSensor={isIDSensor}

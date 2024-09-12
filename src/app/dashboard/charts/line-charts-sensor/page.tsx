@@ -13,9 +13,8 @@ import SelectTimePeriod from "@/components/select/select-time-period";
 import Box from "@mui/material/Box";
 import {useRouter} from "next/navigation";
 import Button from "@mui/material/Button";
-import Spinner from "@/components/animated-icon/spinner";
-import {LineMdPlayFilledToPauseTransition} from "@/components/animated-icon/pause-icon";
 import {SvgSpinnersEclipseHalf} from "@/components/animated-icon/eclipse-half";
+import {Grid} from "@mui/material";
 
 const LineApexChart = dynamic(() => import('@/components/charts/apex/line-apex-chart'), {ssr: false});
 
@@ -26,27 +25,30 @@ interface Period {
 
 export default function Page(): React.JSX.Element {
   const selectedSensors = useSelector((state: RootState) => state.selectedSensorsForCharts.value);
-  const oneObject = useSelector((state: RootState) => state.selectedObjects.value[0]);
-  const [isPeriod, setIsPeriod] = useState<Period | null>(null);
+  const oneSelectObject = useSelector((state: RootState) => state.selectedObjectForCharts.value);
   const [isSetOneHour, setOneHour] = useState<boolean>(false);
   const [lineChartsData, setLineChartsData] = useState<any[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const [isPeriod, setIsPeriod] = useState<never[]>([]);
+
   const router = useRouter();
 
-  const setIsPeriodAndCreateCharts = async (period: any) => {
-    setIsPending(true); // Начало загрузки — показываем спиннер
-    setIsPeriod(period);
-    const transformedData = await showAndCreateLineCharts(period);
+  const setIsPeriodAndCreateCharts = async (period: never[]) => {
+    setIsPeriod(period)
+  };
+
+  const startCreateOfCharts = async () => {
+    setIsPending(true)
+    const transformedData = await showAndCreateLineCharts(isPeriod);
     if (transformedData) {
       setLineChartsData(transformedData);
     }
     setIsPending(false); // Окончание загрузки — скрываем спиннер
-  };
-
-  const showAndCreateLineCharts = async (period: any) => {
-    if (!oneObject || !selectedSensors.length) return;
+  }
+  const showAndCreateLineCharts = async (period: Period[]) => {
+    if (!oneSelectObject || !selectedSensors.length) return;
     const sendData = {
-      objectsId: oneObject.id,
+      objectsId: oneSelectObject.length > 0 ? oneSelectObject[0].id : null,
       selectedSensors,
       period,
     };
@@ -57,7 +59,7 @@ export default function Page(): React.JSX.Element {
   };
 
   useEffect(() => {
-    if (!oneObject || !selectedSensors.length) {
+    if (!oneSelectObject || !selectedSensors.length) {
       router.push('/dashboard/charts');
     }
   }, []);
@@ -71,7 +73,18 @@ export default function Page(): React.JSX.Element {
         </Typography>
         <SelectTimePeriod setPeriodToParent={setIsPeriodAndCreateCharts} setOneHour={setOneHour} />
       </Box>
-      <Box display="flex" justifyContent="left" sx={{ marginTop: 3 }}>
+
+      <Grid container spacing={3} sx={{marginY: 2}} display="flex" justifyContent="center">
+        <Grid md={6} xs={12} display="flex" justifyContent="left">
+          <Button
+            variant="contained"
+            sx={{ width: 260 }}
+            onClick={startCreateOfCharts}
+          >
+            Загрузить
+          </Button>
+        </Grid>
+        <Grid md={6} xs={12} display="flex" justifyContent="left">
           <Button
             variant="contained"
             sx={{ width: 260 }}
@@ -81,7 +94,8 @@ export default function Page(): React.JSX.Element {
           >
             Назад
           </Button>
-      </Box>
+        </Grid>
+      </Grid>
       {/* Показ спиннера во время загрузки */}
       {isPending ? (
         <Box display="flex" justifyContent="center" alignItems="center">
@@ -92,7 +106,6 @@ export default function Page(): React.JSX.Element {
           {lineChartsData.length > 0 && (
             <Box>
               {lineChartsData.map((item: any, index: number) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <Box key={index}>
                   <Typography variant="body1">
                     {item.sensorName} {item.sensorLocation}

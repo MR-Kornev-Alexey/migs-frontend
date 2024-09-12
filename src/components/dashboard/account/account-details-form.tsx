@@ -69,11 +69,9 @@ export function AccountDetailsForm({ dataUser, changeData }: AccountDetailsFormP
                   }
                 </Grid>
                 <Grid md={6} xs={12}>
-                  {dataUser?.telegramId !== null ? <Box>
                     { dataUser?.telegramInfo ?<Typography variant="body1" color='green'><sup>&#8432;</sup> <sup>&#8432;</sup> Оповещение
                         включено</Typography>:
                       <Typography variant="body1" color='red'><sup>&#8432;</sup> <sup>&#8432;</sup> Оповещение выключено</Typography>}
-                  </Box>: null}
                 </Grid>
               </>
             ) : (

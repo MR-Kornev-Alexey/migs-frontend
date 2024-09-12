@@ -15,7 +15,7 @@ const selectedObjectsSlice = createSlice({
       state.value = action.payload;
     },
     clearSelectedObjects(state, action: PayloadAction<MObject[]>) {
-      state.value = [];
+      state.value = action.payload;
     },
   },
 });

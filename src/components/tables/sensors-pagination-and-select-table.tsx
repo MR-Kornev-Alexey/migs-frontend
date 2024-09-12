@@ -15,9 +15,11 @@ import { LineMdPlayFilledToPauseTransition } from '@/components/animated-icon/pa
 import { TablePaginationActions } from '@/components/tables/table-pagination-actions';
 import calcEmptyRows from '@/components/tables/empty-rows';
 import {type Row} from "@/types/row";
+import {dividerClasses} from "@mui/material";
 
 // Define the props interface
 interface SensorsPaginationAndSelectTableProps {
+  mainUser: string;
   rows: Row[];
   page: number;
   setPage: (page: number) => void;
@@ -31,7 +33,7 @@ interface SensorsPaginationAndSelectTableProps {
   updateSensorDesignation: (id: string, newDesignation: string) => void;
 }
 
-const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableProps> = ({
+const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableProps> = ({ mainUser,
                                                                                            rows,
                                                                                            page,
                                                                                            setPage,
@@ -147,8 +149,11 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
             </TableCell>
             <TableCell align="center">Сетевой номер</TableCell>
             <TableCell align="center">Подробнее</TableCell>
-            <TableCell align="center">Дублировать</TableCell>
-            <TableCell align="center">Удалить</TableCell>
+            { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ? <div>
+                <TableCell align="center">Дублировать</TableCell>
+                <TableCell align="center">Удалить</TableCell>
+              </div> : null
+            }
           </TableRow>
         </TableHead>
         <TableBody>
@@ -166,9 +171,19 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                     {row.object.name} | {row.object.address}
                   </TableCell>
                   <TableCell
-                    style={{ width: '7%', cursor: 'pointer' }}
+                    style={{
+                      width: '7%',
+                      cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                        ? 'pointer'
+                        : 'not-allowed',
+                    }}
                     align="center"
-                    onClick={() => { handleIpAddressClick(row.id, row.ip_address); }}
+                    onClick={() => {
+                      // Проверяем, что роль не равна 'customer' перед выполнением действия
+                      if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')) {
+                        handleIpAddressClick(row.id, row.ip_address);
+                      }
+                    }}
                   >
                     {editableIpAddress.rowId === row.id ? (
                       <TextField
@@ -184,8 +199,17 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                     )}
                   </TableCell>
                   <TableCell
-                    style={{ width: '10%', cursor: 'pointer', textAlign: 'center' }}
-                    onClick={() => { handleChangeStatus(row.id); }}
+                    style={{
+                      width: '10%',
+                      cursor: mainUser && JSON.parse(mainUser).role !== 'customer' ? 'pointer' : 'not-allowed',
+                      textAlign: 'center',
+                    }}
+                    onClick={() => {
+                      // Проверка роли перед выполнением действия
+                      if (mainUser && JSON.parse(mainUser).role !== 'customer') {
+                        handleChangeStatus(row.id);
+                      }
+                    }}
                   >
                     {row.run ? <SvgSpinnersBarsScale /> : <LineMdPlayFilledToPauseTransition />}
                   </TableCell>
@@ -196,9 +220,18 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                     {row.model}
                   </TableCell>
                   <TableCell
-                    style={{ width: '7%', cursor: 'pointer' }}
+                    style={{
+                      width: '7%',
+                      cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                        ? 'pointer'
+                        : 'not-allowed',
+                    }}
                     align="center"
-                    onClick={() => { handleDesignationClick(row.id, row.designation); }}
+                    onClick={() => {
+                      if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')) {
+                        handleDesignationClick(row.id, row.designation);
+                      }
+                    }}
                   >
                     {editableDesignation.rowId === row.id ? (
                       <TextField
@@ -214,9 +247,14 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                     )}
                   </TableCell>
                   <TableCell
-                    style={{ width: '7%', cursor: 'pointer' }}
+                    style={{ width: '7%',
+                      cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher') ? 'pointer' : 'not-allowed',
+                  }}
                     align="center"
-                    onClick={() => { handleNetAddressClick(row.id, row.network_number); }}
+                    onClick={() => {
+                      if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')){
+                        handleNetAddressClick(row.id, row.network_number)}
+                        }}
                   >
                     {editableNetAddress.rowId === row.id ? (
                       <TextField
@@ -240,24 +278,27 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                   >
                     <GearFine size={24} />
                   </TableCell>
-                  <TableCell
-                    style={{ cursor: 'pointer' }}
-                    align="center"
-                    onClick={() => {
-                      sendIdForCopy(row.id);
-                    }}
-                  >
-                    <CopySimple size={32} />
-                  </TableCell>
-                  <TableCell
-                    style={{ cursor: 'pointer' }}
-                    align="center"
-                    onClick={() => {
-                      deleteOneSensor(row.id);
-                    }}
-                  >
-                    <Trash size={24} />
-                  </TableCell>
+                  { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ? <div>
+                    <TableCell
+                      style={{ cursor: 'pointer' }}
+                      align="center"
+                      onClick={() => {
+                        sendIdForCopy(row.id);
+                      }}
+                    >
+                      <CopySimple size={32} />
+                    </TableCell>
+                    <TableCell
+                      style={{ cursor: 'pointer' }}
+                      align="center"
+                      onClick={() => {
+                        deleteOneSensor(row.id);
+                      }}
+                    >
+                      <Trash size={24} />
+                    </TableCell>
+                  </div> : null
+                  }
                 </TableRow>
               );
             }

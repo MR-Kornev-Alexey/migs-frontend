@@ -22,12 +22,7 @@ import {addSelectedSensorsForCharts} from "@/store/selected-sensors-for-charts-r
 import {BASE_URL} from "@/config";
 import AreaVictoryChart from "@/components/charts/victory/area-victory-charts";
 import transformGroupedDataForAreaVictory from "@/components/charts/transorm-grouped-data-for-area-chart";
-
-
-interface SensorData {
-  x: string;
-  y: number;
-}
+import {addSelectedObjectForCharts} from "@/store/selected-object-for-charts-reducer";
 
 
 export default function Page(): React.JSX.Element {
@@ -49,6 +44,7 @@ export default function Page(): React.JSX.Element {
   const onSelectedSensors = (sensorsId: Set<any>) => {
     setSelectedSensors(Array.from(sensorsId));
   };
+
   interface TransformedData {
     sensorId: string;
     sensorName: string;
@@ -120,7 +116,7 @@ export default function Page(): React.JSX.Element {
       setIsOpenModalCreateData(false);
       setIsOpenModalAddData(false);
       setIsSelectObject(undefined);
-      dispatch(clearSelectedObjects())
+      dispatch(clearSelectedObjects([]))
     };
   }, [dispatch]);
 
@@ -146,7 +142,10 @@ export default function Page(): React.JSX.Element {
   };
   const showLineCharts = async () => {
     if (!oneObject || !selectedSensors.length) return;
+    console.log('oneObject  ---', oneObject);
+    // Преобразование одиночного объекта в массив, если нужно
     dispatch(addSelectedSensorsForCharts(selectedSensors));
+    dispatch(addSelectedObjectForCharts([oneObject])); // Передача одиночного объекта
     router.push('/dashboard/charts/line-charts-sensor');
   };
 
@@ -242,7 +241,7 @@ export default function Page(): React.JSX.Element {
         </Box>
       )}
       {dataDynamicChartsData.length > 0 && visibleDynamicChart ? <Box>
-        <AreaVictoryChart sensors={dataDynamicChartsData} />
+        <AreaVictoryChart sensors={dataDynamicChartsData}/>
         <Box display="flex" justifyContent="center">
           <Button variant="contained" sx={{width: 300, marginTop: 1}} onClick={hideDynamicCharts}>
             Скрыть динамические графики
