@@ -302,7 +302,7 @@ export default function PageForModal({mainUser}: CustomerProps): React.JSX.Eleme
               </Grid> : <Box sx={{ marginY:2}} />
           }
 
-          <RequestSensorInfoTable dataOfSensor={dataOfSensor}
+          <RequestSensorInfoTable mainUser={mainUser} dataOfSensor={dataOfSensor}
                                   updateRequestDataForSensors={updateRequestDataForSensors}/>
         <Box sx={{ marginTop: 2 }}>
           <Typography variant="h5">Данные по журналам</Typography>

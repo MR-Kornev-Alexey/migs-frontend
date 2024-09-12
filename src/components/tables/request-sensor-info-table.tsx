@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Paper,
   Table,
@@ -10,15 +10,22 @@ import {
   TextField,
   Switch,
 } from '@mui/material';
-import { type SensorInfo } from "@/types/sensor";
-import { PlayPause, Siren } from "@phosphor-icons/react";
+import {type SensorInfo} from "@/types/sensor";
+import {PlayPause, Siren} from "@phosphor-icons/react";
+import {BorderClear} from "@mui/icons-material";
+import Box from "@mui/material/Box";
 
 interface RequestSensorInfoTableProps {
   dataOfSensor: SensorInfo;
   updateRequestDataForSensors: (newValue: any, key: string) => void;
+  mainUser: string;
 }
 
-const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfSensor, updateRequestDataForSensors }) => {
+const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({
+                                                                         mainUser,
+                                                                         dataOfSensor,
+                                                                         updateRequestDataForSensors
+                                                                       }) => {
   const [editableRequestCode, setEditableRequestCode] = useState<string | null>(null);
   const [editablePeriodicity, setEditablePeriodicity] = useState<number | null>(null);
   const [warningState, setWarningState] = useState<boolean>(dataOfSensor?.requestSensorInfo[0]?.warning || false);
@@ -70,9 +77,7 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
   };
 
   // Handlers for base_zero
-  const handleBaseZeroClick = (baseZeroValue: number | undefined) => {
-        updateRequestDataForSensors(baseZeroValue, 'base_zero');
-  };
+
   // Handlers for min_base
   const handleMinBaseClick = () => {
     setEditableMinBase(dataOfSensor?.requestSensorInfo[0]?.min_base || 0);
@@ -126,24 +131,33 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="simple table">
+      <Table sx={{minWidth: 500}} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell style={{ textAlign: 'center' }}>Код запроса</TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Периодичность<br/>запроса <sup>&#8432;</sup></TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Последнее<br/>базовое значение</TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Логический<br/>ноль <sup>&#8432;&nbsp;&nbsp;&#8432;</sup></TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Минимальное<br/>базовое значение</TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Максимальное<br/>базовое значение</TableCell>
-            <TableCell style={{ textAlign: 'center' }}>Контроль<br/>оповещения</TableCell>
+            <TableCell style={{textAlign: 'center'}}>Код запроса</TableCell>
+            <TableCell style={{textAlign: 'center'}}>Периодичность<br/>запроса <sup>&#8432;</sup></TableCell>
+            <TableCell style={{textAlign: 'center'}}>Последнее<br/>базовое значение</TableCell>
+            <TableCell
+              style={{textAlign: 'center'}}>Логический<br/>ноль <sup>&#8432;&nbsp;&nbsp;&#8432;</sup></TableCell>
+            <TableCell style={{textAlign: 'center'}}>Минимальное<br/>базовое значение</TableCell>
+            <TableCell style={{textAlign: 'center'}}>Максимальное<br/>базовое значение</TableCell>
+            <TableCell style={{textAlign: 'center'}}>Контроль<br/>оповещения</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           <TableRow>
             <TableCell
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                  ? 'pointer'
+                  : 'not-allowed',
+              }}
               align="center"
-              onClick={handleRequestCodeClick}
+              onClick={() => {
+                if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')) {
+                  handleRequestCodeClick();
+                }
+              }}
             >
               {editableRequestCode !== null ? (
                 <TextField
@@ -159,9 +173,17 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
               )}
             </TableCell>
             <TableCell
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                  ? 'pointer'
+                  : 'not-allowed'
+              }}
               align="center"
-              onClick={handlePeriodicityClick}
+              onClick={() => {
+                if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')) {
+                  handlePeriodicityClick();
+                }
+              }}
             >
               {editablePeriodicity !== null ? (
                 <TextField
@@ -177,16 +199,24 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
                 dataOfSensor?.requestSensorInfo[0]?.periodicity
               )}
             </TableCell>
-            <TableCell style={{ textAlign: 'center' }}>
+            <TableCell style={{textAlign: 'center'}}>
               {dataOfSensor?.requestSensorInfo[0]?.last_base_value}
             </TableCell>
-              <TableCell align="center" >
-                {dataOfSensor?.requestSensorInfo[0]?.base_zero}
-              </TableCell>
+            <TableCell align="center">
+              {dataOfSensor?.requestSensorInfo[0]?.base_zero}
+            </TableCell>
             <TableCell
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                  ? 'pointer'
+                  : 'not-allowed',
+              }}
               align="center"
-              onClick={handleMinBaseClick}
+              onClick={() => {
+                if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')) {
+                  handleMinBaseClick();
+                }
+              }}
             >
               {editableMinBase !== null ? (
                 <TextField
@@ -203,9 +233,17 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
               )}
             </TableCell>
             <TableCell
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                  ? 'pointer'
+                  : 'not-allowed'
+              }}
               align="center"
-              onClick={handleMaxBaseClick}
+              onClick={() => {
+                if (mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')) {
+                  handleMaxBaseClick();
+                }
+              }}
             >
               {editableMaxBase !== null ? (
                 <TextField
@@ -221,12 +259,18 @@ const RequestSensorInfoTable: React.FC<RequestSensorInfoTableProps> = ({ dataOfS
                 dataOfSensor?.requestSensorInfo[0]?.max_base
               )}
             </TableCell>
-            <TableCell style={{ cursor: 'pointer' }} align="center">
-              <Switch
-                checked={warningState}
-                onChange={handleWarningChange}
-                color="primary"
-              />
+            <TableCell style={{
+              cursor: mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher')
+                ? 'pointer'
+                : 'not-allowed',
+            }} align="center">
+              {mainUser && (JSON.parse(mainUser).role !== 'customer' && JSON.parse(mainUser).role !== 'dispatcher') ?
+                <Switch
+                  checked={warningState}
+                  onChange={handleWarningChange}
+                  color="primary"
+                /> : <Box>Нет доступа</Box>
+              }
             </TableCell>
           </TableRow>
         </TableBody>
