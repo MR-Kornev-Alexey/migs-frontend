@@ -165,10 +165,10 @@ export default function Page(): React.JSX.Element {
             infoAboutCustomer={infoAboutCustomer}
           />{' '}
           <Box display="flex" justifyContent="space-around" sx={{ marginTop: 3 }}>
-            <Button variant="contained" onClick={openModal}>
+            <Button variant="contained" onClick={openModal} sx={{width:260}}>
               Добавить пользователя
             </Button>
-            {showChoice ? <Button variant="contained" onClick={restoreAllOrganization}>
+            {showChoice ? <Button variant="contained" onClick={restoreAllOrganization} sx={{width:260}}>
                 Сбросить выборку{' '}
               </Button> : null}
           </Box>

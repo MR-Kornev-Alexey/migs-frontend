@@ -278,7 +278,7 @@ export default function Page(): React.JSX.Element {
             openDataOrganisation={openDataOrganisation}
             deleteOneOrganisation={deleteOneOrganisation}/>
           <Box display="flex" justifyContent="space-around" sx={{marginTop: 2}}>
-            <Button variant="contained" onClick={openModal}>
+            <Button variant="contained" sx={{width:260}} onClick={openModal}>
               Добавить организацию
             </Button>
           </Box>
@@ -304,7 +304,7 @@ export default function Page(): React.JSX.Element {
         </Stack>
       )}
       <Box display="flex" justifyContent="space-around">
-        <Button variant="contained" onClick={openModalObject}>
+        <Button variant="contained" onClick={openModalObject} sx={{width:260}}>
           Добавить новый объект
         </Button>
       </Box>
@@ -317,7 +317,7 @@ export default function Page(): React.JSX.Element {
         <Button variant="contained" onClick={openModalNewType}>
           Добавить новый тип датчика
         </Button>
-        {showInit ? <Button disabled={isPending} onClick={initAllTypeSensors} variant="contained">
+        {showInit ? <Button disabled={isPending} onClick={initAllTypeSensors} variant="contained" sx={{width:260}}>
             {isPending ? (
               <Spinner/>
             ) : (

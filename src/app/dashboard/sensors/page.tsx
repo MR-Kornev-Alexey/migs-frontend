@@ -197,7 +197,7 @@ export default function Page(): React.JSX.Element {
             openAddInfoAboutSensors={openAddInfoAboutSensors}
           />
           <Box display="flex" justifyContent="space-around" sx={{marginTop: 3}}>
-            {showChoice ? <Button variant="contained" onClick={() => restoreAllSensors(sensors)}>
+            {showChoice ? <Button variant="contained" onClick={() => restoreAllSensors(sensors)} sx={{width:260}}>
               Сбросить выборку
             </Button> : null}
           </Box>
@@ -205,7 +205,7 @@ export default function Page(): React.JSX.Element {
       )}
       {mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") && (
         <Box display="flex" justifyContent="center" sx={{ marginTop: 2 }}>
-          <Button variant="contained" onClick={openModalAddSensor}>
+          <Button variant="contained" onClick={openModalAddSensor} sx={{width:260}}>
             Добавить датчик на объект
           </Button>
         </Box>

@@ -149,10 +149,13 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
             </TableCell>
             <TableCell align="center">Сетевой номер</TableCell>
             <TableCell align="center">Подробнее</TableCell>
-            { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ? <div>
+            { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
                 <TableCell align="center">Дублировать</TableCell>
-                <TableCell align="center">Удалить</TableCell>
-              </div> : null
+               : null
+            }
+            { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
+              <TableCell align="center">Удалить</TableCell>
+             : null
             }
           </TableRow>
         </TableHead>
@@ -278,7 +281,7 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                   >
                     <GearFine size={24} />
                   </TableCell>
-                  { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ? <div>
+                  { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
                     <TableCell
                       style={{ cursor: 'pointer' }}
                       align="center"
@@ -287,7 +290,9 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                       }}
                     >
                       <CopySimple size={32} />
-                    </TableCell>
+                    </TableCell>: null
+                  }
+                  { mainUser && (JSON.parse(mainUser).role === "supervisor" || JSON.parse(mainUser).role === "admin") ?
                     <TableCell
                       style={{ cursor: 'pointer' }}
                       align="center"
@@ -297,7 +302,7 @@ const SensorsPaginationAndSelectTable: React.FC<SensorsPaginationAndSelectTableP
                     >
                       <Trash size={24} />
                     </TableCell>
-                  </div> : null
+                   : null
                   }
                 </TableRow>
               );
